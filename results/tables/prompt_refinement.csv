@@ -1,0 +1,6 @@
+version,main_change,f1,dus_f1,dus_tp,candidate_coverage
+e03,END candidate review scheme,0.452,0.258,8,92.0
+e09c,Candidate-generation policy including suppression of judgment based only on arguments,0.564,0.381,12,92.0
+e10,Introduction of the domain adapter into Phase 5,0.564,0.370,10,92.0
+e11,Explicit enumeration of shared-memory operations,0.567,0.429,15,92.0
+e12,Revision of the Phase 3 candidate-screening criteria,0.620,0.493,17,96.0

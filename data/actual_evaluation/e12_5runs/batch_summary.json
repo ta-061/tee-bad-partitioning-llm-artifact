@@ -1,0 +1,173 @@
+{
+  "input_root": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12",
+  "output_root": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs",
+  "success_count": 9,
+  "failure_count": 0,
+  "results": [
+    {
+      "target": "claude-haiku-4-5-20251001",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-haiku-4-5-20251001",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001/coverage_summary.json"
+    },
+    {
+      "target": "claude-sonnet-4-5-20250929",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/coverage_summary.json"
+    },
+    {
+      "target": "deepseek-chat",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/deepseek-chat",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat/coverage_summary.json"
+    },
+    {
+      "target": "gemini-3.1-pro",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro/coverage_summary.json"
+    },
+    {
+      "target": "gemma-3-27b-it",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it/coverage_summary.json"
+    },
+    {
+      "target": "gemma-4-31b-it",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-4-31b-it",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it/coverage_summary.json"
+    },
+    {
+      "target": "gpt-5-mini-2025-08-07",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gpt-5-mini-2025-08-07",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07/coverage_summary.json"
+    },
+    {
+      "target": "gpt-5.2-2025-12-11",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gpt-5.2-2025-12-11",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11/coverage_summary.json"
+    },
+    {
+      "target": "qwen3.5-27b",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/qwen3.5-27b",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b/coverage_summary.json"
+    }
+  ],
+  "successes": [
+    {
+      "target": "claude-haiku-4-5-20251001",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-haiku-4-5-20251001",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-haiku-4-5-20251001/coverage_summary.json"
+    },
+    {
+      "target": "claude-sonnet-4-5-20250929",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/coverage_summary.json"
+    },
+    {
+      "target": "deepseek-chat",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/deepseek-chat",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/deepseek-chat/coverage_summary.json"
+    },
+    {
+      "target": "gemini-3.1-pro",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemini-3.1-pro/coverage_summary.json"
+    },
+    {
+      "target": "gemma-3-27b-it",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-3-27b-it/coverage_summary.json"
+    },
+    {
+      "target": "gemma-4-31b-it",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-4-31b-it",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gemma-4-31b-it/coverage_summary.json"
+    },
+    {
+      "target": "gpt-5-mini-2025-08-07",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gpt-5-mini-2025-08-07",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5-mini-2025-08-07/coverage_summary.json"
+    },
+    {
+      "target": "gpt-5.2-2025-12-11",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gpt-5.2-2025-12-11",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/gpt-5.2-2025-12-11/coverage_summary.json"
+    },
+    {
+      "target": "qwen3.5-27b",
+      "input_target": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/qwen3.5-27b",
+      "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b",
+      "status": "success",
+      "return_code": 0,
+      "summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b/summary.json",
+      "coverage_summary_json": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/qwen3.5-27b/coverage_summary.json"
+    }
+  ],
+  "failures": []
+}

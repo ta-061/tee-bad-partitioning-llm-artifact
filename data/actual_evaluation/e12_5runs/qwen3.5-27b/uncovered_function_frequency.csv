@@ -1,0 +1,13 @@
+function,gt_line_count,runs_missing,runs_covering,missing_ratio
+input,11,0,5,0.0
+output,7,0,5,0.0
+produce,6,0,5,0.0
+produce_2,6,0,5,0.0
+produce_3,2,0,5,0.0
+produce_i0,7,0,5,0.0
+produce_i2,7,0,5,0.0
+produce_i3,3,5,0,1.0
+produce_s,3,0,5,0.0
+produce_s2,3,0,5,0.0
+produce_s3,9,0,5,0.0
+shared_memory,11,0,5,0.0

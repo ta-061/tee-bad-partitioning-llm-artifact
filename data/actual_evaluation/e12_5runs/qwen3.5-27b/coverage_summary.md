@@ -1,0 +1,14 @@
+# Coverage Summary: qwen3.5-27b
+
+## Aggregates
+
+- All runs: avg chains 26.00, avg coverage 72.00 GT lines (96.00%), available=5/5
+- Consensus-window runs: avg chains 26.00, avg coverage 72.00 GT lines (96.00%), available=5/5
+
+## Per Run
+
+- results_1: general / 72/75 (96.0%), chains=26, sinks=12, uncovered=produce_i3
+- results_2: general / 72/75 (96.0%), chains=26, sinks=13, uncovered=produce_i3
+- results_3: general / 72/75 (96.0%), chains=26, sinks=13, uncovered=produce_i3
+- results_4: general / 72/75 (96.0%), chains=26, sinks=14, uncovered=produce_i3
+- results_5: general / 72/75 (96.0%), chains=26, sinks=14, uncovered=produce_i3

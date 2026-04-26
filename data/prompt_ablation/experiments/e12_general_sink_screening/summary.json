@@ -1,0 +1,473 @@
+{
+  "current": {
+    "vulnerability_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1/ta_vulnerabilities.json",
+    "conversations_jsonl": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1/conversations.jsonl"
+  },
+  "scis_baseline": {
+    "vulnerability_json": "<ANALYSIS_WORKSPACE>/SCIS2026-bad-partitioning-ta_LLMs_output/gpt5-mini-bad-partitioning/gpt-5-mini-ta_vulnerabilities.json",
+    "conversations_jsonl": "<ANALYSIS_WORKSPACE>/SCIS2026-bad-partitioning-ta_LLMs_output/gpt5-mini-bad-partitioning/gpt-5-mini-conversations.jsonl"
+  },
+  "gold_labels": {
+    "category_ground_truth": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv",
+    "partial_match": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv",
+    "taint_sanitizer_labels_dir": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/flow_labels/taint_sanitizer_labels"
+  },
+  "config": {
+    "sanitizer_tolerance": 2,
+    "group_merge_enabled": true,
+    "group_merge_pair_mappings": 0,
+    "diting_csv": "<ANALYSIS_WORKSPACE>/src/metrics/DITING_ans.csv",
+    "diting_projects": "bad-partitioning,badpartitioning",
+    "diting_enabled": true
+  },
+  "scoring_policy": {
+    "strict_metric": "line+category-set overlap match",
+    "line_only_metric": "line localization match over all detected lines (category ignored; includes other)",
+    "line_hit_category_precision": "strict_tp / line_tp",
+    "group_merge_rule": "Predictions are canonicalized by manual equivalent GT-line mapping (e.g., 238->223, 290->286).",
+    "diting_note": "DITING complementarity compares current LLM run vs DITING answers on same GT using strict and line-only metrics."
+  },
+  "verdict": {
+    "strict_line_category_f1": "improved",
+    "line_f1": "improved",
+    "taint_f1": "regressed",
+    "sanitizer_f1": "regressed"
+  },
+  "delta": {
+    "strict_line_category_f1": 0.2296,
+    "line_f1": 0.1326,
+    "taint_f1": -0.1738,
+    "sanitizer_f1": -0.0585
+  },
+  "coverage": {
+    "results_dir": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1",
+    "candidate_flows_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1/ta_candidate_flows.json",
+    "sinks_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1/ta_sinks.json",
+    "available": true,
+    "missing_artifacts": [],
+    "analysis_mode": "llm_only",
+    "phase3_profile_inferred": "general",
+    "phase3_profile_source": "path_hint",
+    "sink_count": 17,
+    "chain_count": 26,
+    "coverage_available": true,
+    "coverage_basis": "function_chain_proxy: if a ground-truth function appears in any candidate flow chain, all GT lines for that function are counted as covered",
+    "gt_total_line_count": 75,
+    "gt_total_function_count": 12,
+    "covered_gt_line_count": 72,
+    "uncovered_gt_line_count": 3,
+    "covered_gt_function_count": 11,
+    "uncovered_gt_function_count": 1,
+    "coverage_percent": 96.0,
+    "covered_gt_lines": [
+      116,
+      117,
+      118,
+      119,
+      121,
+      122,
+      136,
+      137,
+      138,
+      139,
+      143,
+      144,
+      154,
+      155,
+      175,
+      176,
+      177,
+      178,
+      184,
+      185,
+      186,
+      201,
+      202,
+      203,
+      204,
+      208,
+      210,
+      212,
+      220,
+      221,
+      222,
+      223,
+      227,
+      231,
+      238,
+      283,
+      284,
+      285,
+      286,
+      290,
+      291,
+      295,
+      296,
+      306,
+      307,
+      309,
+      319,
+      326,
+      329,
+      334,
+      338,
+      342,
+      357,
+      359,
+      364,
+      368,
+      374,
+      380,
+      385,
+      389,
+      393,
+      422,
+      425,
+      432,
+      439,
+      443,
+      447,
+      453,
+      459,
+      464,
+      468,
+      472
+    ],
+    "uncovered_gt_lines": [
+      254,
+      256,
+      258
+    ],
+    "covered_functions": [
+      "input",
+      "output",
+      "produce",
+      "produce_2",
+      "produce_3",
+      "produce_i0",
+      "produce_i2",
+      "produce_s",
+      "produce_s2",
+      "produce_s3",
+      "shared_memory"
+    ],
+    "uncovered_functions": [
+      "produce_i3"
+    ]
+  },
+  "current_metrics": {
+    "vulnerability_all": {
+      "strict_line_category": {
+        "tp": 53,
+        "fp": 43,
+        "fn": 22,
+        "pred_count": 96,
+        "gt_count": 75,
+        "precision": 0.5521,
+        "recall": 0.7067,
+        "f1": 0.6199
+      },
+      "line_only": {
+        "tp": 60,
+        "fp": 36,
+        "fn": 15,
+        "pred_count": 96,
+        "gt_count": 75,
+        "precision": 0.625,
+        "recall": 0.8,
+        "f1": 0.7018
+      },
+      "line_hit_category_precision": {
+        "value": 0.8833,
+        "strict_tp": 53,
+        "line_tp": 60
+      }
+    },
+    "vulnerability_by_category": {
+      "direct_usage_of_shared_memory": {
+        "tp": 17,
+        "fp": 26,
+        "fn": 9,
+        "precision": 0.3953,
+        "recall": 0.6538,
+        "f1": 0.4928
+      },
+      "input_validation_weakness": {
+        "tp": 22,
+        "fp": 17,
+        "fn": 6,
+        "precision": 0.5641,
+        "recall": 0.7857,
+        "f1": 0.6567
+      },
+      "unencrypted_data_output": {
+        "tp": 14,
+        "fp": 10,
+        "fn": 7,
+        "precision": 0.5833,
+        "recall": 0.6667,
+        "f1": 0.6222
+      }
+    },
+    "taint": {
+      "tp": 41,
+      "fp": 100,
+      "fn": 6,
+      "expected_count": 47,
+      "precision": 0.2908,
+      "recall": 0.8723,
+      "f1": 0.4362
+    },
+    "sanitizer": {
+      "tp": 7,
+      "fp": 9,
+      "fn": 10,
+      "expected_count": 17,
+      "precision": 0.4375,
+      "recall": 0.4118,
+      "f1": 0.4242
+    }
+  },
+  "scis_metrics": {
+    "vulnerability_all": {
+      "strict_line_category": {
+        "tp": 24,
+        "fp": 24,
+        "fn": 51,
+        "pred_count": 48,
+        "gt_count": 75,
+        "precision": 0.5,
+        "recall": 0.32,
+        "f1": 0.3902
+      },
+      "line_only": {
+        "tp": 35,
+        "fp": 13,
+        "fn": 40,
+        "pred_count": 48,
+        "gt_count": 75,
+        "precision": 0.7292,
+        "recall": 0.4667,
+        "f1": 0.5691
+      },
+      "line_hit_category_precision": {
+        "value": 0.6857,
+        "strict_tp": 24,
+        "line_tp": 35
+      }
+    },
+    "vulnerability_by_category": {
+      "direct_usage_of_shared_memory": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 26,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "input_validation_weakness": {
+        "tp": 10,
+        "fp": 13,
+        "fn": 18,
+        "precision": 0.4348,
+        "recall": 0.3571,
+        "f1": 0.3922
+      },
+      "unencrypted_data_output": {
+        "tp": 14,
+        "fp": 7,
+        "fn": 7,
+        "precision": 0.6667,
+        "recall": 0.6667,
+        "f1": 0.6667
+      }
+    },
+    "taint": {
+      "tp": 43,
+      "fp": 51,
+      "fn": 4,
+      "expected_count": 47,
+      "precision": 0.4574,
+      "recall": 0.9149,
+      "f1": 0.6099
+    },
+    "sanitizer": {
+      "tp": 7,
+      "fp": 5,
+      "fn": 10,
+      "expected_count": 17,
+      "precision": 0.5833,
+      "recall": 0.4118,
+      "f1": 0.4828
+    }
+  },
+  "diting_complementarity": {
+    "enabled": true,
+    "source": {
+      "diting_csv": "<ANALYSIS_WORKSPACE>/src/metrics/DITING_ans.csv",
+      "projects": [
+        "bad-partitioning",
+        "badpartitioning"
+      ]
+    },
+    "scoring_policy": {
+      "strict_line_category": "line+category-set overlap match (same as strict metric)",
+      "line_only": "line localization match (category ignored)"
+    },
+    "llm_only": {
+      "strict_line_category": {
+        "tp": 53,
+        "fp": 43,
+        "fn": 22,
+        "pred_count": 96,
+        "gt_count": 75,
+        "precision": 0.5521,
+        "recall": 0.7067,
+        "f1": 0.6199
+      },
+      "line_only": {
+        "tp": 60,
+        "fp": 36,
+        "fn": 15,
+        "pred_count": 96,
+        "gt_count": 75,
+        "precision": 0.625,
+        "recall": 0.8,
+        "f1": 0.7018
+      },
+      "pair": {
+        "tp": 53,
+        "fp": 53,
+        "fn": 22,
+        "pred_count": 106,
+        "gt_count": 75,
+        "precision": 0.5,
+        "recall": 0.7067,
+        "f1": 0.5856
+      }
+    },
+    "diting_only": {
+      "strict_line_category": {
+        "tp": 65,
+        "fp": 16,
+        "fn": 10,
+        "pred_count": 81,
+        "gt_count": 75,
+        "precision": 0.8025,
+        "recall": 0.8667,
+        "f1": 0.8333
+      },
+      "line_only": {
+        "tp": 66,
+        "fp": 15,
+        "fn": 9,
+        "pred_count": 81,
+        "gt_count": 75,
+        "precision": 0.8148,
+        "recall": 0.88,
+        "f1": 0.8462
+      },
+      "pair": {
+        "tp": 65,
+        "fp": 23,
+        "fn": 10,
+        "pred_count": 88,
+        "gt_count": 75,
+        "precision": 0.7386,
+        "recall": 0.8667,
+        "f1": 0.7975
+      }
+    },
+    "combined_union": {
+      "strict_line_category": {
+        "tp": 72,
+        "fp": 39,
+        "fn": 3,
+        "pred_count": 111,
+        "gt_count": 75,
+        "precision": 0.6486,
+        "recall": 0.96,
+        "f1": 0.7742
+      },
+      "line_only": {
+        "tp": 72,
+        "fp": 39,
+        "fn": 3,
+        "pred_count": 111,
+        "gt_count": 75,
+        "precision": 0.6486,
+        "recall": 0.96,
+        "f1": 0.7742
+      },
+      "pair": {
+        "tp": 72,
+        "fp": 63,
+        "fn": 3,
+        "pred_count": 135,
+        "gt_count": 75,
+        "precision": 0.5333,
+        "recall": 0.96,
+        "f1": 0.6857
+      },
+      "delta_vs_llm": {
+        "strict_tp": 19,
+        "strict_recall": 0.2533,
+        "strict_f1": 0.1543,
+        "line_tp": 12,
+        "line_recall": 0.16,
+        "line_f1": 0.0724
+      },
+      "delta_vs_diting": {
+        "strict_tp": 7,
+        "strict_recall": 0.0933,
+        "strict_f1": -0.0591,
+        "line_tp": 6,
+        "line_recall": 0.08,
+        "line_f1": -0.072
+      }
+    },
+    "overlap_on_ground_truth": {
+      "strict_line_category": {
+        "both_count": 46,
+        "llm_only_count": 7,
+        "diting_only_count": 19,
+        "neither_count": 3,
+        "gt_count": 75,
+        "llm_tp_count": 53,
+        "diting_tp_count": 65,
+        "union_tp_count": 72,
+        "llm_recall": 0.7067,
+        "diting_recall": 0.8667,
+        "union_recall": 0.96,
+        "union_gain_vs_llm_count": 19,
+        "union_gain_vs_diting_count": 7,
+        "union_gain_vs_llm_recall": 0.2533,
+        "union_gain_vs_diting_recall": 0.0933,
+        "tp_overlap_jaccard": 0.6389
+      },
+      "line_only": {
+        "both_count": 54,
+        "llm_only_count": 6,
+        "diting_only_count": 12,
+        "neither_count": 3,
+        "gt_count": 75,
+        "llm_tp_count": 60,
+        "diting_tp_count": 66,
+        "union_tp_count": 72,
+        "llm_recall": 0.8,
+        "diting_recall": 0.88,
+        "union_recall": 0.96,
+        "union_gain_vs_llm_count": 12,
+        "union_gain_vs_diting_count": 6,
+        "union_gain_vs_llm_recall": 0.16,
+        "union_gain_vs_diting_recall": 0.08,
+        "tp_overlap_jaccard": 0.75
+      }
+    },
+    "outputs": {
+      "gt_pair_breakdown_csv": "<ANALYSIS_WORKSPACE>/bad-partitiont-ta_pronpt_renovation/experiments/e12_general_sink_screening/diting_llm_gt_pair_breakdown.csv",
+      "bucket_characteristics_csv": "<ANALYSIS_WORKSPACE>/bad-partitiont-ta_pronpt_renovation/experiments/e12_general_sink_screening/diting_llm_bucket_characteristics.csv",
+      "prediction_overlap_csv": "<ANALYSIS_WORKSPACE>/bad-partitiont-ta_pronpt_renovation/experiments/e12_general_sink_screening/diting_llm_prediction_overlap.csv"
+    }
+  }
+}

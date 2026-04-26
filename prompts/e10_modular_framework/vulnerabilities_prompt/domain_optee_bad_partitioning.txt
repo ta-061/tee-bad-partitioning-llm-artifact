@@ -1,0 +1,67 @@
+# Domain Configuration: OP-TEE Bad-Partitioning Vulnerabilities
+#
+# This file defines the domain-specific values to inject into the
+# modular framework prompts (system.txt, taint_start.txt, taint_middle.txt, taint_end.txt).
+#
+# To adapt the framework for a different vulnerability domain:
+#   1. Copy this file and rename it (e.g., domain_android_ipc.txt).
+#   2. Replace each variable below with domain-appropriate values.
+#   3. The framework prompts reference these via {placeholder} notation.
+
+# --- Trust Model ---
+
+taint_sources: >
+  REE-originated values (TEE_Param, memref.buffer, memref.size, value.a/b)
+
+taint_sources_list: >
+  - params[i].memref.buffer (shared memory pointer, REE-visible)
+  - params[i].memref.size (REE-controlled size)
+  - params[i].value.a, params[i].value.b (REE-controlled scalars)
+
+shared_memory_type: memref.buffer
+private_alloc_type: TEE_Malloc
+
+# --- Vulnerability Categories ---
+
+rule_id_list: >
+  {Unencrypted Data Output, Input Validation Weakness, Direct Usage of Shared Memory, other}
+
+category_list_for_parallel: |
+  1. Unencrypted Data Output (UDO)
+  2. Input Validation Weakness (IVW)
+  3. Direct Usage of Shared Memory (DUS)
+  4. other
+
+category_checks: |
+  1. UDO
+     - Sensitive data (key/secret/credential/private/token/iv/nonce/session) reaches REE-visible memory without encryption.
+     - Random/public data is not UDO by default.
+  2. IVW
+     - REE-tainted size/index/length reaches a memory operation without an effective guard on all relevant paths.
+  3. DUS
+     - TA reads or trusts shared-memory content, and a check/use gap or later reuse allows REE-side modification.
+     - TA merely writing to shared memory is not DUS.
+     - copy_to_private can mitigate DUS if later use is on the private copy only.
+  4. other
+     - Use only when the candidate is still security-relevant, but does not cleanly fit UDO, IVW, or DUS.
+     - Do NOT use other as a fallback for uncertainty.
+
+# --- Sanitizer Patterns (domain-specific) ---
+
+type_validation_pattern: >
+  `if (paramTypes != expected)`, TEE_PARAM_TYPE_GET checks with return on mismatch
+
+encryption_apis: >
+  TEE_CipherDoFinal, TEE_AEEncryptFinal
+
+compare_apis: >
+  strcmp/memcmp/TEE_MemCompare
+
+# --- External and Output APIs ---
+
+external_api_list: >
+  memcpy, memmove, memset, snprintf, strcmp, memcmp,
+  TEE_MemMove, TEE_MemCopy, TEE_MemCompare
+
+output_api_list: >
+  snprintf, memcpy, TEE_MemMove, TEE_MemCopy, memmove

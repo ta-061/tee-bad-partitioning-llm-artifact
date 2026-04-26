@@ -1,0 +1,926 @@
+{
+  "model_root": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929",
+  "output_dir": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929",
+  "config": {
+    "required_runs": 5,
+    "min_votes": 3,
+    "effective_consensus_window": 5,
+    "effective_min_votes": 3,
+    "sanitizer_tolerance": 2,
+    "ground_truth": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv",
+    "partial_match": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv",
+    "group_merge_enabled": true,
+    "group_merge_pair_mappings": 0,
+    "labels_dir": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/flow_labels/taint_sanitizer_labels",
+    "diting_csv": "<SOURCE_REPO>/src/metrics/DITING_ans.csv",
+    "diting_projects": "bad-partitioning,badpartitioning",
+    "diting_enabled": true
+  },
+  "runs": {
+    "total_found": 5,
+    "all_runs": [
+      "results_1",
+      "results_2",
+      "results_3",
+      "results_4",
+      "results_5"
+    ],
+    "runs_used_for_consensus": [
+      "results_1",
+      "results_2",
+      "results_3",
+      "results_4",
+      "results_5"
+    ]
+  },
+  "run_stability": {
+    "strict_f1": {
+      "min": 0.6622,
+      "max": 0.7568,
+      "range": 0.0946
+    },
+    "strict_jaccard": {
+      "mean": 0.863,
+      "min": 0.7204,
+      "max": 1.0,
+      "pair_count": 10
+    },
+    "line_only_jaccard": {
+      "mean": 0.9443,
+      "min": 0.8659,
+      "max": 1.0,
+      "pair_count": 10
+    }
+  },
+  "coverage": {
+    "schema_version": 1,
+    "coverage_mode": "multi_run_consensus",
+    "coverage_basis": "function_chain_proxy: if a ground-truth function appears in any candidate flow chain, all GT lines for that function are counted as covered",
+    "per_run_csv": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/coverage_per_run.csv",
+    "results": [
+      {
+        "run_name": "results_1",
+        "run_index": 1,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_1",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_2",
+        "run_index": 2,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_2",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_3",
+        "run_index": 3,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_3",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_4",
+        "run_index": 4,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_4",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_5",
+        "run_index": 5,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_5",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      }
+    ],
+    "per_run": [
+      {
+        "run_name": "results_1",
+        "run_index": 1,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_1",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_2",
+        "run_index": 2,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_2",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_3",
+        "run_index": 3,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_3",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_4",
+        "run_index": 4,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_4",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      },
+      {
+        "run_name": "results_5",
+        "run_index": 5,
+        "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_5",
+        "phase3_profile_inferred": "general",
+        "phase3_profile_source": "path_hint",
+        "analysis_mode": "llm_only",
+        "coverage_available": 1,
+        "missing_artifacts": "",
+        "sink_count": 13,
+        "chain_count": 26,
+        "covered_gt_line_count": 72,
+        "gt_total_line_count": 75,
+        "uncovered_gt_line_count": 3,
+        "coverage_percent": 96.0,
+        "uncovered_functions": "produce_i3",
+        "uncovered_gt_lines": "254,256,258"
+      }
+    ],
+    "uncovered_function_frequency_csv": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/uncovered_function_frequency.csv",
+    "aggregate_all_runs": {
+      "run_count_total": 5,
+      "run_count_available": 5,
+      "run_count_skipped": 0,
+      "avg_chain_count": 26.0,
+      "min_chain_count": 26,
+      "max_chain_count": 26,
+      "avg_sink_count": 13.0,
+      "min_sink_count": 13,
+      "max_sink_count": 13,
+      "avg_covered_gt_line_count": 72.0,
+      "min_covered_gt_line_count": 72,
+      "max_covered_gt_line_count": 72,
+      "avg_coverage_percent": 96.0,
+      "min_coverage_percent": 96.0,
+      "max_coverage_percent": 96.0
+    },
+    "aggregate_selected_runs": {
+      "run_count_total": 5,
+      "run_count_available": 5,
+      "run_count_skipped": 0,
+      "avg_chain_count": 26.0,
+      "min_chain_count": 26,
+      "max_chain_count": 26,
+      "avg_sink_count": 13.0,
+      "min_sink_count": 13,
+      "max_sink_count": 13,
+      "avg_covered_gt_line_count": 72.0,
+      "min_covered_gt_line_count": 72,
+      "max_covered_gt_line_count": 72,
+      "avg_coverage_percent": 96.0,
+      "min_coverage_percent": 96.0,
+      "max_coverage_percent": 96.0
+    },
+    "aggregate_consensus_runs": {
+      "run_count_total": 5,
+      "run_count_available": 5,
+      "run_count_skipped": 0,
+      "avg_chain_count": 26.0,
+      "min_chain_count": 26,
+      "max_chain_count": 26,
+      "avg_sink_count": 13.0,
+      "min_sink_count": 13,
+      "max_sink_count": 13,
+      "avg_covered_gt_line_count": 72.0,
+      "min_covered_gt_line_count": 72,
+      "max_covered_gt_line_count": 72,
+      "avg_coverage_percent": 96.0,
+      "min_coverage_percent": 96.0,
+      "max_coverage_percent": 96.0
+    },
+    "latest_run": {
+      "results_dir": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_5",
+      "candidate_flows_json": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_5/ta_candidate_flows.json",
+      "sinks_json": "<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/claude-sonnet-4-5-20250929/results_5/ta_sinks.json",
+      "available": true,
+      "missing_artifacts": [],
+      "analysis_mode": "llm_only",
+      "phase3_profile_inferred": "general",
+      "phase3_profile_source": "path_hint",
+      "sink_count": 13,
+      "chain_count": 26,
+      "coverage_available": true,
+      "coverage_basis": "function_chain_proxy: if a ground-truth function appears in any candidate flow chain, all GT lines for that function are counted as covered",
+      "gt_total_line_count": 75,
+      "gt_total_function_count": 12,
+      "covered_gt_line_count": 72,
+      "uncovered_gt_line_count": 3,
+      "covered_gt_function_count": 11,
+      "uncovered_gt_function_count": 1,
+      "coverage_percent": 96.0,
+      "covered_gt_lines": [
+        116,
+        117,
+        118,
+        119,
+        121,
+        122,
+        136,
+        137,
+        138,
+        139,
+        143,
+        144,
+        154,
+        155,
+        175,
+        176,
+        177,
+        178,
+        184,
+        185,
+        186,
+        201,
+        202,
+        203,
+        204,
+        208,
+        210,
+        212,
+        220,
+        221,
+        222,
+        223,
+        227,
+        231,
+        238,
+        283,
+        284,
+        285,
+        286,
+        290,
+        291,
+        295,
+        296,
+        306,
+        307,
+        309,
+        319,
+        326,
+        329,
+        334,
+        338,
+        342,
+        357,
+        359,
+        364,
+        368,
+        374,
+        380,
+        385,
+        389,
+        393,
+        422,
+        425,
+        432,
+        439,
+        443,
+        447,
+        453,
+        459,
+        464,
+        468,
+        472
+      ],
+      "uncovered_gt_lines": [
+        254,
+        256,
+        258
+      ],
+      "covered_functions": [
+        "input",
+        "output",
+        "produce",
+        "produce_2",
+        "produce_3",
+        "produce_i0",
+        "produce_i2",
+        "produce_s",
+        "produce_s2",
+        "produce_s3",
+        "shared_memory"
+      ],
+      "uncovered_functions": [
+        "produce_i3"
+      ]
+    },
+    "uncovered_function_frequency_all_runs": [
+      {
+        "function": "input",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "output",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_2",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_3",
+        "gt_line_count": 2,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i0",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i2",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i3",
+        "gt_line_count": 3,
+        "runs_missing": 5,
+        "runs_covering": 0,
+        "missing_ratio": 1.0
+      },
+      {
+        "function": "produce_s",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s2",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s3",
+        "gt_line_count": 9,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "shared_memory",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      }
+    ],
+    "uncovered_function_frequency_selected_runs": [
+      {
+        "function": "input",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "output",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_2",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_3",
+        "gt_line_count": 2,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i0",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i2",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i3",
+        "gt_line_count": 3,
+        "runs_missing": 5,
+        "runs_covering": 0,
+        "missing_ratio": 1.0
+      },
+      {
+        "function": "produce_s",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s2",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s3",
+        "gt_line_count": 9,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "shared_memory",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      }
+    ],
+    "uncovered_function_frequency_consensus_runs": [
+      {
+        "function": "input",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "output",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_2",
+        "gt_line_count": 6,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_3",
+        "gt_line_count": 2,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i0",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i2",
+        "gt_line_count": 7,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_i3",
+        "gt_line_count": 3,
+        "runs_missing": 5,
+        "runs_covering": 0,
+        "missing_ratio": 1.0
+      },
+      {
+        "function": "produce_s",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s2",
+        "gt_line_count": 3,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "produce_s3",
+        "gt_line_count": 9,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      },
+      {
+        "function": "shared_memory",
+        "gt_line_count": 11,
+        "runs_missing": 0,
+        "runs_covering": 5,
+        "missing_ratio": 0.0
+      }
+    ]
+  },
+  "scoring_policy": {
+    "pair_scoring": "line+category-set overlap match",
+    "line_scoring": "line-only localization match over all detected lines (category ignored; includes other)",
+    "line_hit_category_precision": "strict_tp / line_tp",
+    "partial_match_lines": "Detected Line -> Related Ground Truth Line is applied only when category also matches",
+    "group_merge_rule": "Predictions are canonicalized by manual equivalent GT-line mapping (e.g., 238->223, 290->286).",
+    "actual_evaluation_scis_note": "SCIS comparison is disabled by default; enable via --with-scis.",
+    "diting_note": "DITING complementarity compares consensus LLM vs DITING answers on same GT using strict(line+category-set) and line-only.",
+    "run_stability_note": "strict_f1 range is computed over the runs used for consensus; strict_jaccard is the mean/min/max pairwise Jaccard similarity over predicted (line, category) sets; line_only_jaccard is the mean/min/max pairwise Jaccard similarity over predicted line sets from those runs."
+  },
+  "target_scores": {
+    "vulnerability_all": {
+      "strict_line_category": {
+        "tp": 49,
+        "fp": 24,
+        "fn": 26,
+        "pred_count": 73,
+        "gt_count": 75,
+        "precision": 0.6712,
+        "recall": 0.6533,
+        "f1": 0.6622
+      },
+      "line_only": {
+        "tp": 56,
+        "fp": 17,
+        "fn": 19,
+        "pred_count": 73,
+        "gt_count": 75,
+        "precision": 0.7671,
+        "recall": 0.7467,
+        "f1": 0.7568
+      },
+      "line_hit_category_precision": {
+        "value": 0.875,
+        "strict_tp": 49,
+        "line_tp": 56
+      }
+    },
+    "vulnerability_by_category": {
+      "direct_usage_of_shared_memory": {
+        "tp": 17,
+        "fp": 18,
+        "fn": 9,
+        "precision": 0.4857,
+        "recall": 0.6538,
+        "f1": 0.5574
+      },
+      "input_validation_weakness": {
+        "tp": 18,
+        "fp": 2,
+        "fn": 10,
+        "precision": 0.9,
+        "recall": 0.6429,
+        "f1": 0.75
+      },
+      "unencrypted_data_output": {
+        "tp": 14,
+        "fp": 7,
+        "fn": 7,
+        "precision": 0.6667,
+        "recall": 0.6667,
+        "f1": 0.6667
+      }
+    },
+    "taint_propagation": {
+      "tp": 41,
+      "fp": 19,
+      "fn": 6,
+      "expected_count": 47,
+      "precision": 0.6833,
+      "recall": 0.8723,
+      "f1": 0.7664
+    },
+    "sanitizer_recognition": {
+      "tp": 6,
+      "fp": 2,
+      "fn": 11,
+      "expected_count": 17,
+      "precision": 0.75,
+      "recall": 0.3529,
+      "f1": 0.48
+    }
+  },
+  "diff_vs_scis": {
+    "enabled": false
+  },
+  "diting_complementarity": {
+    "enabled": true,
+    "source": {
+      "diting_csv": "<SOURCE_REPO>/src/metrics/DITING_ans.csv",
+      "projects": [
+        "bad-partitioning",
+        "badpartitioning"
+      ]
+    },
+    "scoring_policy": {
+      "strict_line_category": "line+category-set overlap match (same as target strict metric)",
+      "line_only": "line localization match (category ignored)"
+    },
+    "llm_only": {
+      "strict_line_category": {
+        "tp": 49,
+        "fp": 24,
+        "fn": 26,
+        "pred_count": 73,
+        "gt_count": 75,
+        "precision": 0.6712,
+        "recall": 0.6533,
+        "f1": 0.6622
+      },
+      "line_only": {
+        "tp": 56,
+        "fp": 17,
+        "fn": 19,
+        "pred_count": 73,
+        "gt_count": 75,
+        "precision": 0.7671,
+        "recall": 0.7467,
+        "f1": 0.7568
+      },
+      "pair": {
+        "tp": 49,
+        "fp": 27,
+        "fn": 26,
+        "pred_count": 76,
+        "gt_count": 75,
+        "precision": 0.6447,
+        "recall": 0.6533,
+        "f1": 0.649
+      }
+    },
+    "diting_only": {
+      "strict_line_category": {
+        "tp": 65,
+        "fp": 16,
+        "fn": 10,
+        "pred_count": 81,
+        "gt_count": 75,
+        "precision": 0.8025,
+        "recall": 0.8667,
+        "f1": 0.8333
+      },
+      "line_only": {
+        "tp": 66,
+        "fp": 15,
+        "fn": 9,
+        "pred_count": 81,
+        "gt_count": 75,
+        "precision": 0.8148,
+        "recall": 0.88,
+        "f1": 0.8462
+      },
+      "pair": {
+        "tp": 65,
+        "fp": 23,
+        "fn": 10,
+        "pred_count": 88,
+        "gt_count": 75,
+        "precision": 0.7386,
+        "recall": 0.8667,
+        "f1": 0.7975
+      }
+    },
+    "combined_union": {
+      "strict_line_category": {
+        "tp": 70,
+        "fp": 24,
+        "fn": 5,
+        "pred_count": 94,
+        "gt_count": 75,
+        "precision": 0.7447,
+        "recall": 0.9333,
+        "f1": 0.8284
+      },
+      "line_only": {
+        "tp": 72,
+        "fp": 22,
+        "fn": 3,
+        "pred_count": 94,
+        "gt_count": 75,
+        "precision": 0.766,
+        "recall": 0.96,
+        "f1": 0.8521
+      },
+      "pair": {
+        "tp": 70,
+        "fp": 42,
+        "fn": 5,
+        "pred_count": 112,
+        "gt_count": 75,
+        "precision": 0.625,
+        "recall": 0.9333,
+        "f1": 0.7487
+      },
+      "delta_vs_llm": {
+        "strict_tp": 21,
+        "strict_recall": 0.28,
+        "strict_f1": 0.1662,
+        "line_tp": 16,
+        "line_recall": 0.2133,
+        "line_f1": 0.0953
+      },
+      "delta_vs_diting": {
+        "strict_tp": 5,
+        "strict_recall": 0.0667,
+        "strict_f1": -0.0049,
+        "line_tp": 6,
+        "line_recall": 0.08,
+        "line_f1": 0.0059
+      }
+    },
+    "overlap_on_ground_truth": {
+      "strict_line_category": {
+        "both_count": 44,
+        "llm_only_count": 5,
+        "diting_only_count": 21,
+        "neither_count": 5,
+        "gt_count": 75,
+        "llm_tp_count": 49,
+        "diting_tp_count": 65,
+        "union_tp_count": 70,
+        "llm_recall": 0.6533,
+        "diting_recall": 0.8667,
+        "union_recall": 0.9333,
+        "union_gain_vs_llm_count": 21,
+        "union_gain_vs_diting_count": 5,
+        "union_gain_vs_llm_recall": 0.28,
+        "union_gain_vs_diting_recall": 0.0667,
+        "tp_overlap_jaccard": 0.6286
+      },
+      "line_only": {
+        "both_count": 50,
+        "llm_only_count": 6,
+        "diting_only_count": 16,
+        "neither_count": 3,
+        "gt_count": 75,
+        "llm_tp_count": 56,
+        "diting_tp_count": 66,
+        "union_tp_count": 72,
+        "llm_recall": 0.7467,
+        "diting_recall": 0.88,
+        "union_recall": 0.96,
+        "union_gain_vs_llm_count": 16,
+        "union_gain_vs_diting_count": 6,
+        "union_gain_vs_llm_recall": 0.2133,
+        "union_gain_vs_diting_recall": 0.08,
+        "tp_overlap_jaccard": 0.6944
+      }
+    },
+    "outputs": {
+      "gt_pair_breakdown_csv": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/diting_llm_gt_pair_breakdown.csv",
+      "bucket_characteristics_csv": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/diting_llm_bucket_characteristics.csv",
+      "prediction_overlap_csv": "<SOURCE_REPO>/bad-partitiont-ta_actual_evaluation/e12_5runs/claude-sonnet-4-5-20250929/diting_llm_prediction_overlap.csv"
+    }
+  }
+}

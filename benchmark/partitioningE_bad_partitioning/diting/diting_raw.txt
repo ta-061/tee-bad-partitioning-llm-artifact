@@ -1,0 +1,303 @@
+== TEE Bad Partitioning Logged Run ==
+timestamp_utc: 2026-04-14T02:00:02Z
+repo_root: /home/matsulab/デスクトップ/PartitioningE-in-TEE
+target: benchmark/bad-partitioning
+log_file: bad-partitioning.txt
+
+== Environment ==
+uname: Linux kali 6.18.12+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.18.12-1kali1 (2026-02-25) x86_64 GNU/Linux
+python: Python 3.13.12
+codeql: CodeQL command-line toolchain release 2.25.1.
+cross_compiler: arm-linux-gnueabihf-gcc (Linaro GCC 6.5-2018.12) 6.5.0
+repo_commit: cb72e88
+
+== Step 1: Create CodeQL database ==
+Initializing database at /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/tee_example.
+Running build command: [make, clean, all]
+Running command in /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning: [make, clean, all]
+[2026-04-14 11:00:03] [build-stdout] /usr/bin/make -C host clean
+[2026-04-14 11:00:03] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/host' に入ります
+[2026-04-14 11:00:03] [build-stdout] rm -f main.o optee_example_hello_world
+[2026-04-14 11:00:03] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/host' から出ます
+[2026-04-14 11:00:03] [build-stdout] /usr/bin/make -C ta clean \
+[2026-04-14 11:00:03] [build-stdout] 	TA_DEV_KIT_DIR=/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/../../optee_os/out/arm/export-ta_arm32
+[2026-04-14 11:00:03] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta' に入ります
+[2026-04-14 11:00:03] [build-stdout]   CLEAN   .
+[2026-04-14 11:00:03] [build-stdout]   CLEAN   
+[2026-04-14 11:00:03] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta' から出ます
+[2026-04-14 11:00:03] [build-stdout] /usr/bin/make -C host CROSS_COMPILE="/home/matsulab/デスクトップ/tools/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-" --no-builtin-variables \
+[2026-04-14 11:00:03] [build-stdout] 	TEEC_EXPORT=/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/../../optee_client/out/export
+[2026-04-14 11:00:03] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/host' に入ります
+[2026-04-14 11:00:03] [build-stdout] /home/matsulab/デスクトップ/tools/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc -Wall -I../ta/include -I/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/../../optee_client/out/export/include -I./include -c main.c -o main.o
+[2026-04-14 11:00:03] [build-stderr] main.c: In function ‘thread_function’:
+[2026-04-14 11:00:03] [build-stderr] main.c:98:11: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘void *’ [-Wformat=]
+[2026-04-14 11:00:03] [build-stderr]   printf("%s\n", shared_mem->buffer);
+[2026-04-14 11:00:03] [build-stderr]            ^
+[2026-04-14 11:00:03] [build-stderr] main.c: In function ‘main’:
+[2026-04-14 11:00:03] [build-stderr] main.c:238:12: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘void *’ [-Wformat=]
+[2026-04-14 11:00:03] [build-stderr]    printf("%s\n", shared_mem.shadow_buffer);
+[2026-04-14 11:00:03] [build-stderr]             ^
+[2026-04-14 11:00:03] [build-stdout] /home/matsulab/デスクトップ/tools/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc -o optee_example_hello_world main.o -lteec -L/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/../../optee_client/out/export/lib -lpthread
+[2026-04-14 11:00:04] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/host' から出ます
+[2026-04-14 11:00:04] [build-stdout] /usr/bin/make -C ta CROSS_COMPILE="/home/matsulab/デスクトップ/tools/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-" LDFLAGS="" \
+[2026-04-14 11:00:04] [build-stdout] 	TA_DEV_KIT_DIR=/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/../../optee_os/out/arm/export-ta_arm32
+[2026-04-14 11:00:04] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta' に入ります
+[2026-04-14 11:00:04] [build-stdout]   CC      entry.o
+[2026-04-14 11:00:04] [build-stderr] entry.c:99:6: warning: no previous prototype for ‘enc’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void enc(char *str)
+[2026-04-14 11:00:04] [build-stderr]       ^~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘enc’:
+[2026-04-14 11:00:04] [build-stderr] entry.c:99:16: warning: unused parameter ‘str’ [-Wunused-parameter]
+[2026-04-14 11:00:04] [build-stderr]  void enc(char *str)
+[2026-04-14 11:00:04] [build-stderr]                 ^~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:104:6: warning: no previous prototype for ‘dec’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void dec(char *str)
+[2026-04-14 11:00:04] [build-stderr]       ^~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘dec’:
+[2026-04-14 11:00:04] [build-stderr] entry.c:104:16: warning: unused parameter ‘str’ [-Wunused-parameter]
+[2026-04-14 11:00:04] [build-stderr]  void dec(char *str)
+[2026-04-14 11:00:04] [build-stderr]                 ^~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:109:6: warning: no previous prototype for ‘produce_2’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_2(TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:129:6: warning: no previous prototype for ‘produce’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce(TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:151:6: warning: no previous prototype for ‘produce_3’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_3(char *buf, int size)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:196:6: warning: no previous prototype for ‘produce_i2’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_i2(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘produce_i2’:
+[2026-04-14 11:00:04] [build-stderr] entry.c:210:7: warning: unused variable ‘c’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   char c = str[params[0].value.a - 3]; //c7
+[2026-04-14 11:00:04] [build-stderr]        ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:202:7: warning: unused variable ‘arr_ref’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_ref = TEE_Malloc(b, 0); //p2-2
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:201:7: warning: unused variable ‘arr_a’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_a = TEE_Malloc(a, 0); //p2-1
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:199:6: warning: variable ‘tmp_arr’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   int tmp_arr[20];
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:196:60: warning: unused parameter ‘buf3’ [-Wunused-parameter]
+[2026-04-14 11:00:04] [build-stderr]  void produce_i2(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]                                                             ^~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:196:70: warning: unused parameter ‘size3’ [-Wunused-parameter]
+[2026-04-14 11:00:04] [build-stderr]  void produce_i2(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]                                                                       ^~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:215:6: warning: no previous prototype for ‘produce_i0’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_i0(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘produce_i0’:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:29:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_ERROR_BAD_PARAMETERS          0xFFFF0006
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:235:10: note: in expansion of macro ‘TEE_ERROR_BAD_PARAMETERS’
+[2026-04-14 11:00:04] [build-stderr]    return TEE_ERROR_BAD_PARAMETERS;
+[2026-04-14 11:00:04] [build-stderr]           ^~~~~~~~~~~~~~~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:215:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_i0(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:29:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_ERROR_BAD_PARAMETERS          0xFFFF0006
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:243:10: note: in expansion of macro ‘TEE_ERROR_BAD_PARAMETERS’
+[2026-04-14 11:00:04] [build-stderr]    return TEE_ERROR_BAD_PARAMETERS;
+[2026-04-14 11:00:04] [build-stderr]           ^~~~~~~~~~~~~~~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:215:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_i0(int a, int b, char *buf2, int size2, char *buf3, int size3, TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:231:7: warning: unused variable ‘c’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   char c = str[a - 3]; //c1
+[2026-04-14 11:00:04] [build-stderr]        ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:221:7: warning: unused variable ‘arr_ref’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_ref = TEE_Malloc(b, 0); //p1-2
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:220:7: warning: unused variable ‘arr_a’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_a = TEE_Malloc(a, 0); //p1-1
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:218:6: warning: variable ‘tmp_arr’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   int tmp_arr[20];
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:249:6: warning: no previous prototype for ‘produce_i3’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_i3(int i)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘produce_i3’:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:29:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_ERROR_BAD_PARAMETERS          0xFFFF0006
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:262:10: note: in expansion of macro ‘TEE_ERROR_BAD_PARAMETERS’
+[2026-04-14 11:00:04] [build-stderr]    return TEE_ERROR_BAD_PARAMETERS;
+[2026-04-14 11:00:04] [build-stderr]           ^~~~~~~~~~~~~~~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:249:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_i3(int i)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:258:7: warning: variable ‘c’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   char c = str[i - 3]; //c5
+[2026-04-14 11:00:04] [build-stderr]        ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:254:7: warning: unused variable ‘arr_a’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_a = TEE_Malloc(i, 0); //p1-6
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:252:6: warning: variable ‘tmp_arr’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   int tmp_arr[20];
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘input’:
+[2026-04-14 11:00:04] [build-stderr] entry.c:286:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+[2026-04-14 11:00:04] [build-stderr]   for (int i = 0; i < params[2].memref.size; i++) { //b4
+[2026-04-14 11:00:04] [build-stderr]                     ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:303:7: warning: unused variable ‘arr_path’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_path = TEE_Malloc(params[1].memref.size, 0); //pa1 -1
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:293:7: warning: variable ‘c’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   char c = ((char *)params[3].memref.buffer)[params[3].memref.size - 3]; //b7 -1
+[2026-04-14 11:00:04] [build-stderr]        ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:284:7: warning: unused variable ‘arr_ref’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_ref = TEE_Malloc(params[1].memref.size, 0); //b2
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:283:7: warning: unused variable ‘arr_a’ [-Wunused-variable]
+[2026-04-14 11:00:04] [build-stderr]   int *arr_a = TEE_Malloc(params[0].value.a, 0); //b1
+[2026-04-14 11:00:04] [build-stderr]        ^~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:281:6: warning: variable ‘tmp_arr’ set but not used [-Wunused-but-set-variable]
+[2026-04-14 11:00:04] [build-stderr]   int tmp_arr[20];
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:317:6: warning: no previous prototype for ‘produce_s2’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_s2(char *buf, int size)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:332:6: warning: no previous prototype for ‘produce_s’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_s(char *buf, int size)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘produce_s’:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:29:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_ERROR_BAD_PARAMETERS          0xFFFF0006
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:347:10: note: in expansion of macro ‘TEE_ERROR_BAD_PARAMETERS’
+[2026-04-14 11:00:04] [build-stderr]    return TEE_ERROR_BAD_PARAMETERS;
+[2026-04-14 11:00:04] [build-stderr]           ^~~~~~~~~~~~~~~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:332:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_s(char *buf, int size)
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c: At top level:
+[2026-04-14 11:00:04] [build-stderr] entry.c:355:6: warning: no previous prototype for ‘produce_s3’ [-Wmissing-prototypes]
+[2026-04-14 11:00:04] [build-stderr]  void produce_s3(TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] entry.c: In function ‘produce_s3’:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:29:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_ERROR_BAD_PARAMETERS          0xFFFF0006
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:398:10: note: in expansion of macro ‘TEE_ERROR_BAD_PARAMETERS’
+[2026-04-14 11:00:04] [build-stderr]    return TEE_ERROR_BAD_PARAMETERS;
+[2026-04-14 11:00:04] [build-stderr]           ^~~~~~~~~~~~~~~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:355:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_s3(TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] In file included from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api.h:12:0,
+[2026-04-14 11:00:04] [build-stderr]                  from /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_internal_api.h:10,
+[2026-04-14 11:00:04] [build-stderr]                  from entry.c:28:
+[2026-04-14 11:00:04] [build-stderr] /home/matsulab/デスクトップ/PartitioningE-in-TEE/optee_os/out/arm/export-ta_arm32/include/tee_api_defines.h:18:43: warning: ‘return’ with a value, in function returning void
+[2026-04-14 11:00:04] [build-stderr]  #define TEE_SUCCESS                       0x00000000
+[2026-04-14 11:00:04] [build-stderr]                                            ^
+[2026-04-14 11:00:04] [build-stderr] entry.c:408:9: note: in expansion of macro ‘TEE_SUCCESS’
+[2026-04-14 11:00:04] [build-stderr]   return TEE_SUCCESS;
+[2026-04-14 11:00:04] [build-stderr]          ^~~~~~~~~~~
+[2026-04-14 11:00:04] [build-stderr] entry.c:355:6: note: declared here
+[2026-04-14 11:00:04] [build-stderr]  void produce_s3(TEE_Param params[4])
+[2026-04-14 11:00:04] [build-stderr]       ^~~~~~~~~~
+[2026-04-14 11:00:04] [build-stdout]   CC      user_ta_header.o
+[2026-04-14 11:00:04] [build-stdout]   CPP     ta.lds
+[2026-04-14 11:00:04] [build-stdout]   LD      8aaaf200-2450-11e4-abe2-0002a5d5c51b.elf
+[2026-04-14 11:00:04] [build-stdout]   OBJDUMP 8aaaf200-2450-11e4-abe2-0002a5d5c51b.dmp
+[2026-04-14 11:00:04] [build-stdout]   OBJCOPY 8aaaf200-2450-11e4-abe2-0002a5d5c51b.stripped.elf
+[2026-04-14 11:00:04] [build-stdout]   SIGN    8aaaf200-2450-11e4-abe2-0002a5d5c51b.ta
+[2026-04-14 11:00:04] [build-stdout] make[1]: ディレクトリ '/home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta' から出ます
+Finalizing database at /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/tee_example.
+Running pre-finalize script /home/matsulab/デスクトップ/tools/codeql/cpp/tools/pre-finalize.sh in /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning.
+Running command in /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning: [/home/matsulab/デスクトップ/tools/codeql/cpp/tools/pre-finalize.sh]
+Pre-finalize script /home/matsulab/デスクトップ/tools/codeql/cpp/tools/pre-finalize.sh completed in 7 ms.
+Running TRAP import for CodeQL database at /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/tee_example...
+Grouping TRAP files by link target
+Grouping unlinked TRAP files together
+Scanning TRAP files
+Importing TRAP files
+Merging relations
+Finished writing database (relations: 221.03 KiB; string pool: 2.22 MiB).
+TRAP import complete (531ms).
+Finished zipping source archive (161.65 KiB).
+Successfully created database at /home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/tee_example.
+
+== Step 2: Run analysis ==
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/host.ql.
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/host.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/host.ql.
+Evaluation completed (283ms).
+Shutting down query evaluator.
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/switch.ql.
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/switch.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/switch.ql.
+Evaluation completed (108ms).
+Shutting down query evaluator.
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql.
+WARNING: Unrecognized value 'query' for the @kind property. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql:1,1-6,4)
+WARNING: A query that defines @severity or @problem.severity should have @kind problem or @kind path-problem. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql:1,1-6,4)
+WARNING: test is always true, as Expr is a supertype of the expression type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql:40,34-38)
+WARNING: test is always true, as the expression already has type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql:40,34-38)
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/arrayaccess.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/arrayaccess.ql.
+Evaluation completed (1.8s).
+Shutting down query evaluator.
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/ifstmt.ql.
+WARNING: Unrecognized value 'query' for the @kind property. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/ifstmt.ql:1,1-6,4)
+WARNING: A query that defines @severity or @problem.severity should have @kind problem or @kind path-problem. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/ifstmt.ql:1,1-6,4)
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/ifstmt.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/ifstmt.ql.
+Evaluation completed (67ms).
+Shutting down query evaluator.
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql.
+WARNING: Unrecognized value 'query' for the @kind property. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql:1,1-6,4)
+WARNING: A query that defines @severity or @problem.severity should have @kind problem or @kind path-problem. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql:1,1-6,4)
+WARNING: test is always true, as Expr is a supertype of the expression type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql:22,34-38)
+WARNING: test is always true, as the expression already has type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql:22,34-38)
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/dataflow.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/dataflow.ql.
+Evaluation completed (443ms).
+Shutting down query evaluator.
+Compiling query plan for /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql.
+WARNING: Unrecognized value 'query' for the @kind property. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql:1,1-6,4)
+WARNING: A query that defines @severity or @problem.severity should have @kind problem or @kind path-problem. (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql:1,1-6,4)
+WARNING: test is always true, as Expr is a supertype of the expression type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql:32,34-38)
+WARNING: test is always true, as the expression already has type Expr::Expr (/home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql:32,34-38)
+[1/1] Found in cache: /home/matsulab/デスクトップ/PartitioningE-in-TEE/query/memory.ql.
+Starting evaluation of getting-started/tee-bad-partitioning/memory.ql.
+Evaluation completed (339ms).
+Shutting down query evaluator.
+Unencrypted Data Output: 38
+['file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:291:39:291:41', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:306:14:306:16', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:307:14:307:16', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:309:39:309:41', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:175:39:175:41', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:176:65:176:67', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:177:18:177:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:178:18:178:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:179:18:179:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:184:68:184:70', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:184:73:184:74', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:185:71:185:73', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:185:76:185:77', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:185:80:185:80', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:186:18:186:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:190:73:190:74', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:191:76:191:77', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:191:80:191:80', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:136:39:136:42', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:137:65:137:68', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:138:18:138:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:139:18:139:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:143:68:143:71', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:143:74:143:75', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:144:71:144:74', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:144:77:144:78', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:144:81:144:81', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:148:74:148:75', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:116:39:116:42', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:117:65:117:68', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:118:18:118:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:119:18:119:18', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:121:68:121:71', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:121:74:121:75', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:122:71:122:74', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:122:77:122:78', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:122:81:122:81', 'file:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:126:74:126:75']
+Input Validation Weakness: 31
+['calltoTEE_Mallocfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:283:15:283:24', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:285:2:285:27', '...-...accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:295:10:295:30', '...-...accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:296:10:296:31', 'calltoTEE_Mallocfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:220:15:220:24', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:222:2:222:11', '...-...accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:231:15:231:19', 'calltoTEE_Mallocfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:201:15:201:24', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:203:2:203:11', 'calltoTEE_Mallocfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:254:15:254:24', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:256:2:256:11', '...-...accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:258:15:258:19', 'calltoTEE_Mallocfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:284:17:284:26', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:287:12:287:47', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:291:2:291:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:306:2:306:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:309:2:309:12', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:224:12:224:28', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:238:2:238:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:246:2:246:12', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:205:12:205:28', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:290:2:290:12', 'accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:293:11:293:70', '...-...accesstoarrayfile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:293:45:293:69', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:307:2:307:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:227:2:227:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:239:2:239:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:175:2:175:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:154:2:154:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:136:2:136:12', 'calltoTEE_MemMovefile:///home/matsulab/デスクトップ/PartitioningE-in-TEE/benchmark/bad-partitioning/ta/entry.c:116:2:116:12']
+Shared Memory Overwrite: 30
+['initializerforbuffile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:422:13:422:36', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:425:6:425:11', 'calltostrcmpiffile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:432:6:432:11', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:437:7:437:20', 'calltodecfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:443:2:443:4', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:457:7:457:20', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:472:7:472:12', 'calltoproduce_sfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:476:2:476:10', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:334:6:334:11', 'calltodecfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:338:2:338:4', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:340:7:340:20', 'calltoproduce_s2file:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:352:2:352:11', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:319:6:319:11', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:324:7:324:20', 'calltodecfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:329:2:329:4', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:445:7:445:20', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:451:7:451:20', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:463:7:463:12', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:468:7:468:12', 'initializerforbuffile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:357:13:357:36', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:359:6:359:11', 'calltodecfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:364:2:364:4', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:378:7:378:20', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:393:7:393:12', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:366:7:366:20', 'calltoTEE_MemComparefile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:372:7:372:20', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:384:7:384:12', 'calltostrcmpfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:389:7:389:12', 'initializerforszfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:423:15:423:36', 'initializerforszfile:///home/matsulab/デスクトップ/PartitioningEinTEE/benchmark/badpartitioning/ta/entry.c:358:15:358:36']
+
+== Finished ==
+timestamp_utc: 2026-04-14T02:00:20Z

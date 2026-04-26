@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "coverage_mode": "single_run",
+  "coverage_basis": "function_chain_proxy: if a ground-truth function appears in any candidate flow chain, all GT lines for that function are counted as covered",
+  "aggregate_all_runs": {
+    "run_count_total": 1,
+    "run_count_available": 1,
+    "run_count_skipped": 0,
+    "avg_chain_count": 14.0,
+    "min_chain_count": 14,
+    "max_chain_count": 14,
+    "avg_sink_count": 5.0,
+    "min_sink_count": 5,
+    "max_sink_count": 5,
+    "avg_covered_gt_line_count": 69.0,
+    "min_covered_gt_line_count": 69,
+    "max_covered_gt_line_count": 69,
+    "avg_coverage_percent": 92.0,
+    "min_coverage_percent": 92.0,
+    "max_coverage_percent": 92.0
+  },
+  "aggregate_selected_runs": {
+    "run_count_total": 1,
+    "run_count_available": 1,
+    "run_count_skipped": 0,
+    "avg_chain_count": 14.0,
+    "min_chain_count": 14,
+    "max_chain_count": 14,
+    "avg_sink_count": 5.0,
+    "min_sink_count": 5,
+    "max_sink_count": 5,
+    "avg_covered_gt_line_count": 69.0,
+    "min_covered_gt_line_count": 69,
+    "max_covered_gt_line_count": 69,
+    "avg_coverage_percent": 92.0,
+    "min_coverage_percent": 92.0,
+    "max_coverage_percent": 92.0
+  },
+  "aggregate_consensus_runs": {
+    "run_count_total": 1,
+    "run_count_available": 1,
+    "run_count_skipped": 0,
+    "avg_chain_count": 14.0,
+    "min_chain_count": 14,
+    "max_chain_count": 14,
+    "avg_sink_count": 5.0,
+    "min_sink_count": 5,
+    "max_sink_count": 5,
+    "avg_covered_gt_line_count": 69.0,
+    "min_covered_gt_line_count": 69,
+    "max_covered_gt_line_count": 69,
+    "avg_coverage_percent": 92.0,
+    "min_coverage_percent": 92.0,
+    "max_coverage_percent": 92.0
+  },
+  "latest_run": {
+    "results_dir": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e11_streamlined_framework/results_1",
+    "candidate_flows_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e11_streamlined_framework/results_1/ta_candidate_flows.json",
+    "sinks_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e11_streamlined_framework/results_1/ta_sinks.json",
+    "available": true,
+    "missing_artifacts": [],
+    "analysis_mode": "llm_only",
+    "phase3_profile_inferred": "write-only",
+    "phase3_profile_source": "path_hint",
+    "sink_count": 5,
+    "chain_count": 14,
+    "coverage_available": true,
+    "coverage_basis": "function_chain_proxy: if a ground-truth function appears in any candidate flow chain, all GT lines for that function are counted as covered",
+    "gt_total_line_count": 75,
+    "gt_total_function_count": 12,
+    "covered_gt_line_count": 69,
+    "uncovered_gt_line_count": 6,
+    "covered_gt_function_count": 10,
+    "uncovered_gt_function_count": 2,
+    "coverage_percent": 92.0,
+    "covered_gt_lines": [
+      116,
+      117,
+      118,
+      119,
+      121,
+      122,
+      136,
+      137,
+      138,
+      139,
+      143,
+      144,
+      154,
+      155,
+      175,
+      176,
+      177,
+      178,
+      184,
+      185,
+      186,
+      201,
+      202,
+      203,
+      204,
+      208,
+      210,
+      212,
+      220,
+      221,
+      222,
+      223,
+      227,
+      231,
+      238,
+      283,
+      284,
+      285,
+      286,
+      290,
+      291,
+      295,
+      296,
+      306,
+      307,
+      309,
+      334,
+      338,
+      342,
+      357,
+      359,
+      364,
+      368,
+      374,
+      380,
+      385,
+      389,
+      393,
+      422,
+      425,
+      432,
+      439,
+      443,
+      447,
+      453,
+      459,
+      464,
+      468,
+      472
+    ],
+    "uncovered_gt_lines": [
+      254,
+      256,
+      258,
+      319,
+      326,
+      329
+    ],
+    "covered_functions": [
+      "input",
+      "output",
+      "produce",
+      "produce_2",
+      "produce_3",
+      "produce_i0",
+      "produce_i2",
+      "produce_s",
+      "produce_s3",
+      "shared_memory"
+    ],
+    "uncovered_functions": [
+      "produce_i3",
+      "produce_s2"
+    ]
+  },
+  "results": [
+    {
+      "run_name": "results_1",
+      "results_dir": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e11_streamlined_framework/results_1",
+      "phase3_profile_inferred": "write-only",
+      "phase3_profile_source": "path_hint",
+      "analysis_mode": "llm_only",
+      "coverage_available": 1,
+      "missing_artifacts": "",
+      "sink_count": 5,
+      "chain_count": 14,
+      "covered_gt_line_count": 69,
+      "gt_total_line_count": 75,
+      "uncovered_gt_line_count": 6,
+      "coverage_percent": 92.0,
+      "uncovered_functions": "produce_i3,produce_s2",
+      "uncovered_gt_lines": "254,256,258,319,326,329"
+    }
+  ],
+  "per_run": [
+    {
+      "run_name": "results_1",
+      "results_dir": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e11_streamlined_framework/results_1",
+      "phase3_profile_inferred": "write-only",
+      "phase3_profile_source": "path_hint",
+      "analysis_mode": "llm_only",
+      "coverage_available": 1,
+      "missing_artifacts": "",
+      "sink_count": 5,
+      "chain_count": 14,
+      "covered_gt_line_count": 69,
+      "gt_total_line_count": 75,
+      "uncovered_gt_line_count": 6,
+      "coverage_percent": 92.0,
+      "uncovered_functions": "produce_i3,produce_s2",
+      "uncovered_gt_lines": "254,256,258,319,326,329"
+    }
+  ],
+  "uncovered_function_frequency_all_runs": [
+    {
+      "function": "input",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "output",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i0",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i3",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_s2",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "shared_memory",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    }
+  ],
+  "uncovered_function_frequency_selected_runs": [
+    {
+      "function": "input",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "output",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i0",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i3",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_s2",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "shared_memory",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    }
+  ],
+  "uncovered_function_frequency_consensus_runs": [
+    {
+      "function": "input",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "output",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i0",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i2",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_i3",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "produce_s2",
+      "runs_missing": 1,
+      "runs_covering": 0,
+      "missing_ratio": 1.0
+    },
+    {
+      "function": "produce_s3",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    },
+    {
+      "function": "shared_memory",
+      "runs_missing": 0,
+      "runs_covering": 1,
+      "missing_ratio": 0.0
+    }
+  ]
+}

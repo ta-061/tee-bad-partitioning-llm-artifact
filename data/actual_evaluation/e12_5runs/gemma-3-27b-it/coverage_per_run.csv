@@ -1,0 +1,6 @@
+run_name,run_index,results_dir,phase3_profile_inferred,phase3_profile_source,analysis_mode,coverage_available,missing_artifacts,sink_count,chain_count,covered_gt_line_count,gt_total_line_count,uncovered_gt_line_count,coverage_percent,uncovered_functions,uncovered_gt_lines
+results_1,1,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it/results_1,general,path_hint,llm_only,1,,16,30,75,75,0,100.0,,
+results_2,2,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it/results_2,general,path_hint,llm_only,1,,16,30,75,75,0,100.0,,
+results_3,3,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it/results_3,general,path_hint,llm_only,1,,16,30,75,75,0,100.0,,
+results_4,4,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it/results_4,general,path_hint,llm_only,1,,17,30,75,75,0,100.0,,
+results_5,5,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemma-3-27b-it/results_5,general,path_hint,llm_only,1,,16,30,75,75,0,100.0,,

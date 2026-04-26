@@ -1,0 +1,21 @@
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "{func_name}", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "{func_name}",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.

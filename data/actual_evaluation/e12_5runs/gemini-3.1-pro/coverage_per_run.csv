@@ -1,0 +1,6 @@
+run_name,run_index,results_dir,phase3_profile_inferred,phase3_profile_source,analysis_mode,coverage_available,missing_artifacts,sink_count,chain_count,covered_gt_line_count,gt_total_line_count,uncovered_gt_line_count,coverage_percent,uncovered_functions,uncovered_gt_lines
+results_1,1,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro/results_1,general,path_hint,llm_only,1,,9,22,72,75,3,96.0,produce_i3,"254,256,258"
+results_2,2,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro/results_2,general,path_hint,llm_only,1,,9,22,72,75,3,96.0,produce_i3,"254,256,258"
+results_3,3,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro/results_3,general,path_hint,llm_only,1,,10,22,72,75,3,96.0,produce_i3,"254,256,258"
+results_4,4,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro/results_4,general,path_hint,llm_only,1,,9,22,72,75,3,96.0,produce_i3,"254,256,258"
+results_5,5,<SOURCE_REPO>/benchmark/partitioningE/bad-partitioning/ta/e12/gemini-3.1-pro/results_5,general,path_hint,llm_only,1,,11,22,72,75,3,96.0,produce_i3,"254,256,258"

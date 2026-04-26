@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Artifact for LLM-Based Taint Analysis of Bad Partitioning in Trusted Applications"
+message: "If you use this artifact, please cite the accompanying paper."
+type: dataset
+authors:
+  - family-names: Yoshinaga
+    given-names: Tatsuya
+  - family-names: Yoda
+    given-names: Minami
+  - family-names: Matsuno
+    given-names: Yutaka
+year: 2026
+repository-code: "https://github.com/ta-061/tee-bad-partitioning-llm-artifact"
+license: MIT
+keywords:
+  - trusted execution environment
+  - bad partitioning
+  - taint analysis
+  - large language models
+  - reproducibility artifact

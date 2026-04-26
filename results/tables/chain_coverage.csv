@@ -1,0 +1,10 @@
+model,phase3_profile,sinks,chains,gt_lines,covered,uncovered,coverage_percent,uncovered_lines,uncovered_functions
+GPT-5-mini,general,17,22,75,72,3,96.0,"254,256,258",produce_i3
+GPT-5.2,general,12,26,75,72,3,96.0,"254,256,258",produce_i3
+Claude Sonnet 4.5,general,13,26,75,72,3,96.0,"254,256,258",produce_i3
+Claude Haiku 4.5,general,8,22,75,72,3,96.0,"254,256,258",produce_i3
+DeepSeek V3.2,general,12,26,75,72,3,96.0,"254,256,258",produce_i3
+Gemini 3.1 Pro,general,11,22,75,72,3,96.0,"254,256,258",produce_i3
+Qwen3.5-27B,general,14,26,75,72,3,96.0,"254,256,258",produce_i3
+gemma-3-27b-it,general,16,30,75,75,0,100.0,,
+gemma-4-31B-it,general,12,22,75,72,3,96.0,"254,256,258",produce_i3

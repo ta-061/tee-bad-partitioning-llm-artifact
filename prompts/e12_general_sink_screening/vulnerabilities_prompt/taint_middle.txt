@@ -1,0 +1,47 @@
+Analyze function "{source_function}" as a middle hop (MIDDLE). Use upstream context but do not copy it verbatim.
+
+EXTERNAL FUNCTION CHECK: If the code below has no function body (only "// External function: ..."), return empty-result JSON immediately. Do NOT invent analysis for unavailable functions.
+
+CODE (with call context)
+{code}
+
+TASK
+1. Continue taint propagation from upstream. Record new "LHS <- RHS @ file:line".
+   - Carry forward only untrusted-origin sources and dangerous derived values.
+2. Detect new sanitizers with evidence. Plain copy is NOT a sanitizer.
+3. For each pointer argument at this call-site, emit a vulnerability candidate when the binding reveals a concrete unsafe mechanism (caller variable → callee parameter, with origin region).
+   - Do NOT emit candidates for call-forwarding lines. Only emit when the line itself performs a dangerous operation.
+4. Surface new vulnerability candidates:
+   - Tainted index/size, pointer arithmetic, in-place shared memory writes.
+   - DUS/TOCTOU: any line where this function reads, compares, decodes, or operates on shared-memory content (or a shared-memory alias) without prior copy_to_private, including any SHARED-MEMORY READ API listed in the system prompt. Emit a candidate for EACH such line individually.
+   - Output to untrusted-visible memory: any OUTPUT SINK API listed in the system prompt writing sensitive or tainted data into shared buffers. Emit a candidate for EACH such line individually.
+5. Write `why` as mechanism-first factual support. Do not argue exploitability or rejected categories.
+6. Use `rule_id` as the best tentative label. Prefer recall over precision at this stage.
+
+SCHEMA
+{
+  "phase": "middle",
+  "taint_analysis": {
+    "function": "{source_function}",
+    "tainted_vars": ["param_range", "derived_size"],
+    "propagation": [
+      {"lhs": "dst", "rhs": "caller_buf", "site": "helper.c:18"}
+    ],
+    "sanitizers": [
+      {"kind": "bounds_check", "site": "helper.c:20", "evidence": "if (len > sizeof(buf))"}
+    ],
+    "taint_blocked": false
+  },
+  "vulnerability_candidates": [
+    {
+      "file": "helper.c",
+      "line": 18,
+      "function": "{source_function}",
+      "rule_id": "Input Validation Weakness",
+      "why": "shared-buffer alias is passed into the helper without visible bounds validation on the controlling length",
+      "sink_function": "="
+    }
+  ]
+}
+
+Output exactly one JSON. No prose. No code fences.

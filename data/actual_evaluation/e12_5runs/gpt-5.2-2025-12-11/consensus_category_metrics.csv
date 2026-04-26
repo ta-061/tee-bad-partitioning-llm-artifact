@@ -1,0 +1,6 @@
+scope,category,tp,fp,fn,precision,recall,f1
+category_pair,direct_usage_of_shared_memory,21,6,5,0.7778,0.8077,0.7925
+category_pair,input_validation_weakness,25,6,3,0.8065,0.8929,0.8475
+category_pair,unencrypted_data_output,14,8,7,0.6364,0.6667,0.6512
+overall_strict_line_category,all,60,18,15,0.7692,0.8,0.7843
+overall_line,all,60,18,15,0.7692,0.8,0.7843
