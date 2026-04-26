@@ -1,0 +1,412 @@
+# External Function: DMSG
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "DMSG", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "DMSG",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "DMSG",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "message string / format",
+      "reason": "Typical debug logging function takes a string or format and data to print; logging can leak sensitive data or be used to inject format specifiers."
+    },
+    {
+      "param_index": 1,
+      "role": "variadic data / arguments",
+      "reason": "Additional arguments provided to a debug print could contain sensitive values that are formatted into output."
+    }
+  ],
+  "reason": "Name suggests a debug message/logging function (DMSG). Such functions read and output data (strings and arguments), which can leak secrets or be abused via format-string vulnerabilities, so parameters handling message content should be treated as security-relevant."
+}
+
+# External Function: IMSG
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "IMSG", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "IMSG",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "IMSG",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "message buffer / input data",
+      "reason": "Name suggests 'I Message' or incoming message; first parameter often holds data payload read/processed by the function"
+    },
+    {
+      "param_index": 1,
+      "role": "length / size",
+      "reason": "Second parameter commonly represents size of the message buffer, important for bounds and parsing"
+    },
+    {
+      "param_index": 2,
+      "role": "metadata / type / flags",
+      "reason": "Additional parameter likely indicates message type, flags, or routing info that affects security-relevant handling"
+    }
+  ],
+  "reason": "IMSG likely denotes an inter-process or incoming message handler; such functions read/parse/route data and are common taint-analysis endpoints."
+}
+
+# External Function: TEE_Malloc
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "TEE_Malloc", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "TEE_Malloc",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "TEE_Malloc",
+  "is_sink_candidate": false,
+  "dangerous_params": [],
+  "reason": "TEE_Malloc is a memory allocation function (allocates a buffer of requested size) and does not itself read, write, compare, or transform caller data; it is limited to memory management. Any security-relevant use would depend on subsequent operations on the returned buffer, not the allocator's parameters."
+}
+
+# External Function: TEE_MemCompare
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "TEE_MemCompare", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "TEE_MemCompare",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "TEE_MemCompare",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "buffer A (input)",
+      "reason": "Likely pointer to memory whose contents are read for comparison; comparing secrets can leak information or be targeted in timing attacks."
+    },
+    {
+      "param_index": 1,
+      "role": "buffer B (input)",
+      "reason": "Likely pointer to memory whose contents are read for comparison; same risks as buffer A."
+    },
+    {
+      "param_index": 2,
+      "role": "size/length",
+      "reason": "Controls number of bytes compared; using incorrect or attacker-controlled length can cause over-read or reveal partial data."
+    }
+  ],
+  "reason": "Memory comparison function reads content of provided buffers and uses length to determine extent — such operations are security-relevant because they handle sensitive data and can introduce information leaks (including via timing) or out-of-bounds reads if lengths are untrusted."
+}
+
+# External Function: TEE_MemMove
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "TEE_MemMove", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "TEE_MemMove",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "TEE_MemMove",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "destination buffer",
+      "reason": "Data is written into this buffer; may overwrite sensitive data or be used later"
+    },
+    {
+      "param_index": 1,
+      "role": "source buffer",
+      "reason": "Data is read from this buffer; may contain sensitive input that is copied"
+    },
+    {
+      "param_index": 2,
+      "role": "size/length",
+      "reason": "Controls amount of data moved; incorrect value can cause overflows or truncated sensitive data"
+    }
+  ],
+  "reason": "MemMove copies bytes from a source to a destination with a specified length, reading and writing data and thus can move or expose sensitive information and enable memory corruption if misused"
+}
+
+# External Function: TEE_PARAM_TYPES
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "TEE_PARAM_TYPES", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "TEE_PARAM_TYPES",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "TEE_PARAM_TYPES",
+  "is_sink_candidate": false,
+  "dangerous_params": [],
+  "reason": "TEE_PARAM_TYPES is typically a macro/function used to encode or describe parameter types for Trusted Execution Environment APIs (i.e., building a type descriptor), and does not itself read, write, compare, or transform application data contents. It is limited to type/metadata construction rather than handling sensitive data."
+}
+
+# External Function: TEE_Wait
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "TEE_Wait", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "TEE_Wait",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "TEE_Wait",
+  "is_sink_candidate": false,
+  "dangerous_params": [],
+  "reason": "TEE_Wait is typically a synchronization/waiting API that blocks until an event or timeout occurs; it does not itself read, write, compare, or transform application data. Parameters (like timeout or event mask) concern timing/control, not content, so it is not a data taint sink."
+}
+
+# External Function: snprintf
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "snprintf", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "snprintf",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "snprintf",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "output buffer",
+      "reason": "receives formatted data written by the function; may be used later in security-sensitive contexts (e.g., constructing commands, tokens)"
+    },
+    {
+      "param_index": 1,
+      "role": "size limit",
+      "reason": "controls maximum written bytes; incorrect use can lead to truncation or off-by-one issues affecting security"
+    },
+    {
+      "param_index": 2,
+      "role": "format string",
+      "reason": "determines how subsequent arguments are interpreted; if attacker-controlled, can lead to format-string vulnerabilities or disclosure"
+    }
+  ],
+  "reason": "snprintf writes formatted data into a user-supplied buffer based on a format string and arguments. This can introduce vulnerabilities via buffer handling, truncation, or format-string issues, making it security-relevant."
+}
+
+# External Function: strcmp
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "strcmp", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "strcmp",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "strcmp",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "input string A",
+      "reason": "Contains user or external data being read and compared; content can influence control flow or authentication checks"
+    },
+    {
+      "param_index": 1,
+      "role": "input string B",
+      "reason": "Contains user, external, or secret string being read and compared; comparison result may leak or validate sensitive data"
+    }
+  ],
+  "reason": "strcmp reads and compares the contents of two strings; comparing attacker-controlled or sensitive strings is security-relevant because it can affect authorization, authentication, branching, or information leakage."
+}
+
+# External Function: strlen
+## Prompt:
+You are screening external functions for potential taint-analysis endpoints in a Trusted Application.
+
+TASK
+Given the function name "strlen", decide whether it could be a security-relevant endpoint where data is read, written, compared, or transformed.
+
+Return true if the function likely handles data in a security-relevant way.
+Return false if the function is clearly limited to memory management, debugging, type checking, or measuring attributes of data without accessing its content.
+
+For each parameter that handles security-relevant data, include its index (0-based) and its likely role.
+
+OUTPUT (strict JSON, no prose)
+{
+  "function": "strlen",
+  "is_sink_candidate": true|false,
+  "dangerous_params": [
+    {"param_index": 0, "role": "brief role description", "reason": "brief reason"}
+  ],
+  "reason": "brief overall reason"
+}
+
+If is_sink_candidate is false, return dangerous_params as an empty list.
+
+## Response:
+{
+  "function": "strlen",
+  "is_sink_candidate": true,
+  "dangerous_params": [
+    {
+      "param_index": 0,
+      "role": "reads input data (string pointer)",
+      "reason": "strlen walks the buffer to determine length and therefore reads the contents; if the buffer is attacker-controlled or untrusted, its contents and termination affect control flow and can reveal sensitive information or cause out-of-bounds reads."
+    }
+  ],
+  "reason": "Although strlen only measures length, it reads the memory contents byte-by-byte and relies on a terminating NUL; reading untrusted or sensitive buffers can be security-relevant (information disclosure, triggering OOB reads on unterminated data)."
+}
+

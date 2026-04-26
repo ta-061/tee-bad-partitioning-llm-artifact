@@ -1,0 +1,54 @@
+Analyze function "{source_function}" as the entry point (START).
+
+EXTERNAL FUNCTION CHECK: If the code below contains ONLY "// External function: ..." (no body), return the empty-result JSON immediately (tainted_vars=[], propagation=[], sanitizers=[], vulnerability_candidates=[], taint_blocked=false). Do NOT invent analysis for functions whose body is unavailable.
+
+CODE
+{code}
+
+TASK
+1. Identify tainted variables (REE-originated: TEE_Param fields, memref.buffer, memref.size, value.a/b).
+   - MINIMAL FORM: list only REE-origin sources and dangerous derived values (size/index/ptr variables). Use range notation for consecutive params: "params[0..3]" instead of enumerating each. Omit intermediate copies that add no new information.
+2. Trace propagation: record each "LHS <- RHS @ file:line".
+3. Detect sanitizers with evidence (bounds_check, type_validation, range_check, null_check, encryption, content_check, access_control, or semantically equivalent guard-backed patterns). Plain copy is NOT a sanitizer in this workflow.
+4. Emit vulnerability candidates even without a sink call:
+   - Pointer aliasing: p = params[i].memref.buffer -> p inherits REE-visible region.
+   - Tainted size/index arithmetic without bounds check.
+   - In-place writes to REE-visible buffers with tainted offset.
+   - Param type mismatch (paramTypes vs actual access).
+   - DUS/TOCTOU: TA reads/uses shared-memory content (or shared struct fields) assuming it is stable; check-then-use across calls/delay; use without copying to TEE-private.
+5. For each candidate, write `why` as a concise factual basis for later END-phase vulnerability judgment.
+   - Prefer mechanism-first wording such as "tainted size controls copy length without visible bounds guard" or "shared buffer is trusted across a check/use gap".
+   - Do NOT argue final exploitability, confidence, or rejected categories here.
+6. vulnerability_candidates is a PROVISIONAL candidate list. Prefer recall of concrete unsafe mechanisms over perfect category precision at this stage.
+7. Do NOT do contrastive reasoning here. Do NOT explain why other categories were rejected. END will perform parallel classification and final category validation.
+8. Use `rule_id` as the best current candidate label, but treat it as tentative when the mechanism is clear and the exact category is not fully settled.
+
+When uncertain, use "unknown" rather than guessing. Prefer emitting a concrete vulnerability candidate over silence when the local code shows an unsafe mechanism.
+
+SCHEMA
+{
+  "phase": "start",
+  "taint_analysis": {
+    "function": "{source_function}",
+    "tainted_vars": ["params[0..3]", "tainted_size_var"],
+    "propagation": [
+      {"lhs": "dst", "rhs": "params[0].memref.buffer", "site": "file.c:42"}
+    ],
+    "sanitizers": [
+      {"kind": "bounds_check", "site": "file.c:45", "evidence": "if (size > MAX_BUF)"}
+    ],
+    "taint_blocked": false
+  },
+  "vulnerability_candidates": [
+    {
+      "file": "file.c",
+      "line": 42,
+      "function": "{source_function}",
+      "rule_id": "Input Validation Weakness",
+      "why": "tainted memref.size reaches a memory operation without visible bounds validation",
+      "sink_function": "="
+    }
+  ]
+}
+
+Output exactly one JSON. No prose. No code fences.

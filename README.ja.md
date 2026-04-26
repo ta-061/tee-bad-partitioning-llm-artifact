@@ -10,7 +10,7 @@
 - PartitioningE-Bench 由来の評価対象 TA ソース
 - 手作業で整備した正解ラベル
 - DITING のベースライン出力
-- プロンプト改良比較で使った主要プロンプト
+- プロンプト改良比較で使った e 系列プロンプト一式
 - 9 モデル、5 回実行、多数決後の評価データ
 - 論文中の主要表を再生成するスクリプト
 
@@ -35,6 +35,7 @@ results/tables/
 - `main_metrics_and_union.csv`
 - `category_metrics.csv`
 - `chain_coverage.csv`
+- `all_prompt_ablation.csv`
 - `prompt_refinement.csv`
 - `paper_tables.md`
 

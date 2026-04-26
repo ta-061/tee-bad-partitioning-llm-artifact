@@ -1,0 +1,2 @@
+run_id,run_timestamp,project,llm_provider,llm_model,analysis_mode,rag_enabled,total_flows,flows_with_vulnerabilities,vulnerability_lines,structural_risk_lines,total_issues,execution_time_seconds,llm_calls,retries,retry_successes,source_file
+20260412_104416.620726_openai_gpt-5-mini-2025-08-07,2026-04-12T10:44:16.620726,bad-partitioning,openai,gpt-5-mini-2025-08-07,hybrid,False,26,26,99,0,99,3011.6515967845917,65,1,1,<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening/results_1/ta_vulnerabilities.json

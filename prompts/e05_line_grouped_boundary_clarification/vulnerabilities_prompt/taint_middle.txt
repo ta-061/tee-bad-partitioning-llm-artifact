@@ -1,0 +1,50 @@
+Analyze function "{source_function}" as a middle hop (MIDDLE). Use upstream context but do not copy it verbatim.
+
+EXTERNAL FUNCTION CHECK: If the code below contains ONLY "// External function: ..." (no body), return the empty-result JSON immediately (tainted_vars=[], propagation=[], sanitizers=[], vulnerability_candidates=[], taint_blocked=false). Do NOT invent analysis for functions whose body is unavailable.
+
+CODE (with call context)
+{code}
+
+TASK
+1. Continue taint propagation from upstream. Record new "LHS <- RHS @ file:line".
+   - MINIMAL FORM for tainted_vars: carry forward only REE-origin sources and dangerous derived values (size/index/ptr). Use range notation "params[0..3]". Drop intermediate copies that add no new information.
+2. Detect new sanitizers with evidence. Guard-backed patterns are the primary signals, but semantically equivalent patterns may also qualify. Plain copy is NOT a sanitizer in this workflow.
+3. For each pointer argument at this call-site, emit a vulnerability candidate item when the binding helps explain a concrete unsafe mechanism:
+   - Which caller variable is bound to which callee parameter.
+   - The origin region (REE-visible / TEE-private / unknown).
+   - Example: "caller's shared_buf (REE-visible) bound to callee's dst_ptr"
+4. Surface new vulnerability candidates (tainted index/size, pointer arithmetic, in-place shared memory writes, shared-memory TOCTOU/reuse without copy_to_private).
+5. Phrase `why` as factual support for the END-phase decision.
+   - Prefer mechanism-first wording that states what is unsafe in the local code path.
+   - Do NOT argue final exploitability, confidence, or rejected categories here.
+6. vulnerability_candidates is a PROVISIONAL candidate list. Prefer preserving concrete unsafe mechanisms over forcing perfect category precision here.
+7. Do NOT do contrastive reasoning here. Do NOT explain why other categories were rejected. END will perform parallel classification and final category validation.
+8. Use `rule_id` as the best current candidate label, but keep it tentative when the local mechanism is clear and the final category depends on later review.
+
+SCHEMA
+{
+  "phase": "middle",
+  "taint_analysis": {
+    "function": "{source_function}",
+    "tainted_vars": ["params[0..3]", "derived_size"],
+    "propagation": [
+      {"lhs": "dst", "rhs": "caller_buf", "site": "helper.c:18"}
+    ],
+    "sanitizers": [
+      {"kind": "bounds_check", "site": "helper.c:20", "evidence": "if (len > sizeof(buf))"}
+    ],
+    "taint_blocked": false
+  },
+  "vulnerability_candidates": [
+    {
+      "file": "helper.c",
+      "line": 18,
+      "function": "{source_function}",
+      "rule_id": "Input Validation Weakness",
+      "why": "shared-buffer alias is passed into the helper without visible bounds validation on the controlling length",
+      "sink_function": "="
+    }
+  ]
+}
+
+Output exactly one JSON. No prose. No code fences.

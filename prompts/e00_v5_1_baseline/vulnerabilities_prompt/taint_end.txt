@@ -1,0 +1,109 @@
+Produce the final candidate audit decision (END) using all START/MIDDLE results.
+
+PRIMARY TASK
+- Review every vulnerability candidate reported by START/MIDDLE.
+- Treat START/MIDDLE candidates as meaningful first-pass findings. END is the final auditor, not a fresh issue discoverer.
+- Do NOT rediscover issues from scratch when auditing a candidate.
+
+BENCHMARK-ALIGNED AUDIT POLICY
+- Judge candidates according to the bad-partitioning vulnerability definitions in this workflow.
+- Prefer accepting a candidate when it shows a concrete unsafe mechanism and no explicit effective mitigation is visible.
+- Return verdict=no only when the code clearly disproves the candidate, clearly shows an effective mitigation, or clearly shows that the candidate is not security-relevant.
+- Do NOT reject a candidate only because exploitability is not fully proven.
+- Do NOT reject a candidate only because an API is generally trusted or usually safe. Use the visible code pattern and benchmark policy first.
+
+CANDIDATES TO AUDIT
+- The host provides a JSON payload after this prompt.
+- The payload should be a JSON object with a `candidates` array formed by collecting the `vulnerability_candidates` objects emitted by START/MIDDLE.
+- Each candidate should contain at least: file, line, rule_id, why.
+- code_snippet may be included when available.
+- propagation_summary and sanitizers_nearby may also be included when available. Use them if present, but do not require them.
+
+PARALLEL CLASSIFICATION
+- For each candidate, evaluate ALL four outcomes independently before deciding:
+  1. Unencrypted Data Output (UDO)
+  2. Input Validation Weakness (IVW)
+  3. Direct Usage of Shared Memory (DUS)
+  4. other
+- Do NOT use an ordered if-else chain. Pick the best-supported final category after considering all categories in parallel.
+
+CATEGORY CHECKS
+1. UDO
+   - Sensitive data (key/secret/credential/private/token/iv/nonce/session) reaches REE-visible memory without encryption.
+   - Random/public data is not UDO by default.
+
+2. IVW
+   - REE-tainted size/index/length reaches a memory operation without an effective guard on all relevant paths.
+
+3. DUS
+   - TA reads or trusts shared-memory content, and a check/use gap or later reuse allows REE-side modification.
+   - TA merely writing to shared memory is not DUS.
+   - copy_to_private can mitigate DUS if later use is on the private copy only.
+
+4. other
+   - Use only when the candidate is still security-relevant, but does not cleanly fit UDO, IVW, or DUS.
+   - Do NOT use other as a fallback for uncertainty.
+
+DECISION RULES
+- Start from the candidate's input `rule_id` as the first hypothesis.
+- Preserve the candidate's `rule_id` unless another category is clearly better supported or the original category is clearly contradicted by the code.
+- verdict=yes:
+  - The candidate is a real vulnerability under this workflow.
+  - rule_id must be one of: "Unencrypted Data Output", "Input Validation Weakness", "Direct Usage of Shared Memory", "other".
+- verdict=no:
+  - The candidate is not a real vulnerability after review.
+  - Use this only when there is clear contradiction, clear mitigation, or clear non-security relevance.
+  - rule_id must be null.
+
+REASONING OUTPUT
+- `why`:
+  - If verdict=yes: explain why the candidate is vulnerable AND why the selected rule_id is the best fit.
+  - If verdict=no: explain why the candidate is not a real vulnerability.
+- `why_not_categories`:
+  - Write one sentence per item.
+  - If verdict=yes: include all non-selected categories.
+  - If verdict=no: include UDO, IVW, DUS, and other.
+  - Use explicit format such as "Not Unencrypted Data Output: ...".
+- Keep the response concise, but include enough evidence to justify category choice or rejection.
+
+SCHEMA
+{
+  "phase": "end",
+  "candidate_reviews": [
+    {
+      "file": "ta.c",
+      "line": 42,
+      "verdict": "yes",
+      "rule_id": "Input Validation Weakness",
+      "why": "REE-tainted size reaches a memory operation without visible bounds validation, so this is a real vulnerability and IVW is the best fit.",
+      "why_not_categories": [
+        "Not Unencrypted Data Output: no clear sensitive data is copied to REE-visible memory.",
+        "Not Direct Usage of Shared Memory: the main issue is unchecked size use rather than trust in shared-memory contents.",
+        "Not other: the candidate fits an existing benchmark category."
+      ]
+    },
+    {
+      "file": "ta.c",
+      "line": 57,
+      "verdict": "no",
+      "rule_id": null,
+      "why": "The candidate is not a real vulnerability because the shared input is copied to private memory before use and later use stays on the private copy.",
+      "why_not_categories": [
+        "Not Unencrypted Data Output: no sensitive data is exposed to REE-visible memory.",
+        "Not Input Validation Weakness: no unchecked tainted size or index is shown.",
+        "Not Direct Usage of Shared Memory: later use is on the private copy rather than the shared buffer.",
+        "Not other: the issue is not security-relevant enough to report as a vulnerability."
+      ]
+    }
+  ]
+}
+
+SELF-VERIFICATION
+1. Review every provided candidate exactly once.
+2. If verdict=yes, rule_id is one of the four allowed categories.
+3. If verdict=no, rule_id is null.
+4. why_not_categories contains one sentence per category item.
+5. Do not emit vulnerability_details, structural_risks, candidate_reports, or any second-layer issue bucket.
+6. Prefer candidate-preserving decisions unless the code clearly disproves the candidate or clearly supports a different category.
+
+Output exactly one JSON. No prose. No code fences.

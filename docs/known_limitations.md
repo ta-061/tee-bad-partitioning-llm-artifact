@@ -9,5 +9,6 @@
 - DITING outputs are included as baseline artifacts. Users who want to rerun
   DITING from scratch should consult the upstream DITING/PartitioningE
   repository and CodeQL setup.
-- The prompt-refinement comparison uses selected versions that are discussed in
-  the paper, not every exploratory prompt version produced during development.
+- The artifact includes the e-series prompt-refinement runs. Earlier
+  exploratory prompt drafts outside the e-series are not part of the compact
+  release.

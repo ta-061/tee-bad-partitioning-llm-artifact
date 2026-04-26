@@ -1,0 +1,99 @@
+{
+  "sinks": [
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer receiving copied bytes",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 2,
+      "rule_id": "weak_input_validation",
+      "reason": "number of bytes to copy",
+      "confidence": "high",
+      "role": "len"
+    },
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 1,
+      "rule_id": "weak_input_validation",
+      "reason": "source buffer supplying bytes (may be attacker-influenced)",
+      "confidence": "high",
+      "role": "buf"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 1,
+      "rule_id": "weak_input_validation",
+      "reason": "maximum number of bytes to write",
+      "confidence": "high",
+      "role": "len"
+    }
+  ],
+  "analysis_time": {
+    "total_seconds": 26.30294179916382,
+    "total_formatted": "26.30秒",
+    "llm_analysis_seconds": 25.986796617507935,
+    "llm_analysis_formatted": "25.99秒",
+    "functions_analyzed": 10,
+    "per_function": {
+      "TEE_MemMove": {
+        "seconds": 5.698200464248657,
+        "formatted": "5.70秒"
+      },
+      "snprintf": {
+        "seconds": 2.787365198135376,
+        "formatted": "2.79秒"
+      },
+      "TEE_Wait": {
+        "seconds": 2.6392672061920166,
+        "formatted": "2.64秒"
+      },
+      "DMSG": {
+        "seconds": 2.364699602127075,
+        "formatted": "2.36秒"
+      },
+      "TEE_MemCompare": {
+        "seconds": 2.2480273246765137,
+        "formatted": "2.25秒"
+      },
+      "strlen": {
+        "seconds": 2.2160556316375732,
+        "formatted": "2.22秒"
+      },
+      "TEE_Malloc": {
+        "seconds": 2.1187338829040527,
+        "formatted": "2.12秒"
+      },
+      "strcmp": {
+        "seconds": 2.0639383792877197,
+        "formatted": "2.06秒"
+      },
+      "TEE_PARAM_TYPES": {
+        "seconds": 2.031978130340576,
+        "formatted": "2.03秒"
+      },
+      "IMSG": {
+        "seconds": 1.818530797958374,
+        "formatted": "1.82秒"
+      }
+    }
+  },
+  "analysis_mode": "llm_only"
+}

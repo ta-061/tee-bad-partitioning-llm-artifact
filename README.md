@@ -8,13 +8,14 @@ issues in Trusted Applications (TAs).
 
 ## Scope
 
-The artifact contains the minimum data needed to inspect and regenerate the
-paper-facing experimental tables:
+The artifact contains curated data needed to inspect and regenerate the
+paper-facing experimental tables, plus e-series results retained for full-paper
+analysis:
 
 - the evaluated TA source file from PartitioningE-Bench,
 - manually curated ground-truth labels,
 - DITING output used as the rule-based baseline,
-- selected prompt versions used in the prompt-refinement comparison,
+- all e-series prompt versions used in the prompt-refinement experiments,
 - consensus evaluation outputs for nine LLMs,
 - scripts to regenerate the main tables from the released JSON/CSV files.
 
@@ -31,11 +32,11 @@ benchmark/
     labels/                   # ground-truth labels and partial-match map
     diting/                   # DITING baseline output used in evaluation
 
-prompts/                      # selected prompt versions
+prompts/                      # e-series prompt versions
 
 data/
   actual_evaluation/e12_5runs/ # five-run consensus evaluation for nine models
-  prompt_ablation/             # selected prompt-refinement experiments
+  prompt_ablation/             # e-series prompt-refinement experiments and raw runs
 
 scripts/
   generate_paper_tables.py     # regenerates CSV/Markdown tables
@@ -69,6 +70,7 @@ The main outputs are:
 - `results/tables/main_metrics_and_union.csv`
 - `results/tables/category_metrics.csv`
 - `results/tables/chain_coverage.csv`
+- `results/tables/all_prompt_ablation.csv`
 - `results/tables/prompt_refinement.csv`
 - `results/tables/paper_tables.md`
 
@@ -80,7 +82,8 @@ The script regenerates the paper-level tables for:
 - DITING and LLM union results,
 - category-level metrics for UDO, IVW, and DUS,
 - Phase 3 chain coverage,
-- prompt-refinement results for e03, e09c, e10, e11, and e12.
+- all e-series prompt-refinement results from e00 through e12,
+- the paper-facing prompt-refinement subset for e03, e09c, e10, e11, and e12.
 
 ## Data Provenance
 

@@ -33,16 +33,15 @@ The table-regeneration script reads `summary.json` and coverage fields.
 
 ## Prompt Ablation Data
 
-`data/prompt_ablation/experiments/` contains selected prompt versions:
-
-- `e03_line_grouped_end`
-- `e09c_call_forwarding_plus_recal`
-- `e10_modular_framework`
-- `e11_streamlined_framework`
-- `e12_general_sink_screening`
+`data/prompt_ablation/experiments/` contains the e-series prompt versions from
+`e00_v5_1_baseline` through `e12_general_sink_screening`.
 
 Each directory includes `summary.json`, category metrics, coverage information,
 and supporting CSV files.
+
+`data/prompt_ablation/raw_runs/` contains the corresponding one-run detector
+outputs for the e-series prompt experiments, including candidate flows, sinks,
+vulnerability JSON, and prompt/response transcripts where archived.
 
 The `e09c_call_forwarding_plus_recal` directory preserves the spelling used in
 the archived evaluation output. The corresponding prompt directory is
@@ -50,5 +49,5 @@ the archived evaluation output. The corresponding prompt directory is
 
 ## Prompts
 
-`prompts/` contains the selected prompt files used for each released prompt
-version. The final paper setting corresponds to `e12_general_sink_screening`.
+`prompts/` contains the e-series prompt files. The final paper setting
+corresponds to `e12_general_sink_screening`.

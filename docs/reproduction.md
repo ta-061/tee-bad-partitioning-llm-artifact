@@ -22,6 +22,7 @@ Expected outputs:
 results/tables/main_metrics_and_union.csv
 results/tables/category_metrics.csv
 results/tables/chain_coverage.csv
+results/tables/all_prompt_ablation.csv
 results/tables/prompt_refinement.csv
 results/tables/paper_tables.md
 ```
@@ -31,6 +32,8 @@ results/tables/paper_tables.md
 - Paper Table I corresponds to `results/tables/main_metrics_and_union.csv`.
 - Category-level details are in `results/tables/category_metrics.csv`.
 - Chain-coverage details are in `results/tables/chain_coverage.csv`.
+- The full e-series prompt-refinement results are in
+  `results/tables/all_prompt_ablation.csv`.
 - Paper Table II corresponds to `results/tables/prompt_refinement.csv`.
 
 ## Input Data Used by the Script

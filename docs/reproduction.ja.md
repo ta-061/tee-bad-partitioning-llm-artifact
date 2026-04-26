@@ -21,6 +21,7 @@ python3 scripts/generate_paper_tables.py --check
 results/tables/main_metrics_and_union.csv
 results/tables/category_metrics.csv
 results/tables/chain_coverage.csv
+results/tables/all_prompt_ablation.csv
 results/tables/prompt_refinement.csv
 results/tables/paper_tables.md
 ```
@@ -30,6 +31,7 @@ results/tables/paper_tables.md
 - 論文 Table I: `results/tables/main_metrics_and_union.csv`
 - カテゴリ別詳細: `results/tables/category_metrics.csv`
 - チェーンカバレッジ: `results/tables/chain_coverage.csv`
+- e 系列プロンプト改良の全結果: `results/tables/all_prompt_ablation.csv`
 - 論文 Table II: `results/tables/prompt_refinement.csv`
 
 ## LLM API の再実行について

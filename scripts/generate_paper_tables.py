@@ -77,6 +77,25 @@ PROMPT_ROWS = [
     ),
 ]
 
+PROMPT_ORDER = [
+    "e00_v5_1_baseline",
+    "e01_decomposed_end",
+    "e02_forwarding_gate",
+    "e03_line_grouped_end",
+    "e04_udo_tiebreak_line_grouped",
+    "e05_line_grouped_boundary_clarification",
+    "e06_line_grouped_v4_priority",
+    "e07_line_grouped_soft_priority",
+    "e08_minimal_end",
+    "e09a_call_forwarding_fix",
+    "e09b_call_forwarding_plus_category",
+    "e09c_call_forwarding_plus_recal",
+    "e09d_minimal_end_plus_fix",
+    "e10_modular_framework",
+    "e11_streamlined_framework",
+    "e12_general_sink_screening",
+]
+
 
 def load_json(path: Path) -> dict:
     with path.open(encoding="utf-8") as f:
@@ -214,6 +233,35 @@ def generate_prompt_table() -> list[dict]:
     return rows
 
 
+def generate_all_prompt_table() -> list[dict]:
+    rows: list[dict] = []
+    for dirname in PROMPT_ORDER:
+        summary = load_json(PROMPT_DIR / dirname / "summary.json")
+        metric = summary["current_metrics"]["vulnerability_all"]["strict_line_category"]
+        line_metric = summary["current_metrics"]["vulnerability_all"].get("line_only", {})
+        catprec = summary["current_metrics"]["vulnerability_all"]["line_hit_category_precision"]
+        coverage = summary.get("coverage", {})
+        row = {
+            "version": dirname.split("_", 1)[0],
+            "directory": dirname,
+            "f1": fmt(metric["f1"], 4),
+            "line_f1": fmt(line_metric.get("f1"), 4),
+            "catprec": fmt(catprec.get("value"), 4),
+            "recall": fmt(metric["recall"], 4),
+            "precision": fmt(metric["precision"], 4),
+            "tp": metric["tp"],
+            "fp": metric["fp"],
+            "fn": metric["fn"],
+            "candidate_coverage": fmt(coverage.get("coverage_percent"), 1),
+        }
+        for short in ("UDO", "IVW", "DUS"):
+            block = summary["current_metrics"]["vulnerability_by_category"][CAT_KEYS[short]]
+            row[f"{short.lower()}_f1"] = fmt(block["f1"], 4)
+            row[f"{short.lower()}_tp"] = block["tp"]
+        rows.append(row)
+    return rows
+
+
 def markdown_table(rows: list[dict], headers: list[tuple[str, str]]) -> list[str]:
     labels = [label for _, label in headers]
     keys = [key for key, _ in headers]
@@ -287,6 +335,7 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     model_rows, category_rows, coverage_rows = generate_actual_tables()
     prompt_rows = generate_prompt_table()
+    all_prompt_rows = generate_all_prompt_table()
 
     write_csv(
         OUT_DIR / "main_metrics_and_union.csv",
@@ -331,6 +380,29 @@ def main() -> int:
             "coverage_percent",
             "uncovered_lines",
             "uncovered_functions",
+        ],
+    )
+    write_csv(
+        OUT_DIR / "all_prompt_ablation.csv",
+        all_prompt_rows,
+        [
+            "version",
+            "directory",
+            "f1",
+            "line_f1",
+            "catprec",
+            "recall",
+            "precision",
+            "tp",
+            "fp",
+            "fn",
+            "candidate_coverage",
+            "udo_f1",
+            "udo_tp",
+            "ivw_f1",
+            "ivw_tp",
+            "dus_f1",
+            "dus_tp",
         ],
     )
     write_csv(

@@ -1,0 +1,23 @@
+Project: bad-partitioning
+TA: ta
+LLM Provider: openai
+LLM Model: gpt-5-mini-2025-08-07
+Results Root: <ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e04_udo_tiebreak_line_grouped
+Run Index: 1
+Analysis Mode: Hybrid (DITING rules only) (excluding debug macros)
+Token Tracking: Enabled
+Debug Macros: Excluded
+============================================================
+Start Time: 2026-04-12 09:11:47
+End Time: 2026-04-12 09:32:24
+Total Duration: 20m 37.22s
+Total Seconds: 1237.22s
+============================================================
+Phase Breakdown:
+  cleaning                                : 0.10s           (  0.0%)
+  build_db                                : 0.71s           (  0.1%)
+  phase1-2                                : 0.05s           (  0.0%)
+  phase3_identify_sinks                   : 41.36s          (  3.3%)
+  phase4_generate_candidate_flows         : 0.20s           (  0.0%)
+  phase5_taint_analysis                   : 19m 54.69s      ( 96.6%)
+  phase6_generate_report                  : 0.07s           (  0.0%)

@@ -1,0 +1,6 @@
+scope,category,current_tp,current_fp,current_fn,current_precision,current_recall,current_f1,scis_tp,scis_fp,scis_fn,scis_precision,scis_recall,scis_f1,delta_f1,verdict
+category_pair,direct_usage_of_shared_memory,6,28,20,0.1765,0.2308,0.2,0,2,26,0.0,0.0,0.0,0.2,improved
+category_pair,input_validation_weakness,18,24,10,0.4286,0.6429,0.5143,10,13,18,0.4348,0.3571,0.3922,0.1221,improved
+category_pair,unencrypted_data_output,4,5,17,0.4444,0.1905,0.2667,14,7,7,0.6667,0.6667,0.6667,-0.4,regressed
+overall_strict_line_category,all,28,50,47,0.359,0.3733,0.366,24,24,51,0.5,0.32,0.3902,-0.0242,regressed
+overall_line,all,47,31,28,0.6026,0.6267,0.6144,35,13,40,0.7292,0.4667,0.5691,0.0453,improved

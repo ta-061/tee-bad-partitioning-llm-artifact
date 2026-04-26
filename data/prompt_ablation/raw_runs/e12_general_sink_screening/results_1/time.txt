@@ -1,0 +1,23 @@
+Project: bad-partitioning
+TA: ta
+LLM Provider: openai
+LLM Model: gpt-5-mini-2025-08-07
+Results Root: <ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e12_general_sink_screening
+Run Index: 1
+Analysis Mode: Hybrid (DITING rules only) (excluding debug macros)
+Token Tracking: Enabled
+Debug Macros: Excluded
+============================================================
+Start Time: 2026-04-12 09:53:07
+End Time: 2026-04-12 10:44:16
+Total Duration: 51m 9.70s
+Total Seconds: 3069.70s
+============================================================
+Phase Breakdown:
+  cleaning                                : 0.14s           (  0.0%)
+  build_db                                : 0.67s           (  0.0%)
+  phase1-2                                : 0.09s           (  0.0%)
+  phase3_identify_sinks                   : 56.42s          (  1.8%)
+  phase4_generate_candidate_flows         : 0.15s           (  0.0%)
+  phase5_taint_analysis                   : 50m 12.06s      ( 98.1%)
+  phase6_generate_report                  : 0.12s           (  0.0%)

@@ -1,0 +1,23 @@
+Project: bad-partitioning
+TA: ta
+LLM Provider: openai
+LLM Model: gpt-5-mini-2025-08-07
+Results Root: <ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e02_forwarding_gate
+Run Index: 1
+Analysis Mode: Hybrid (DITING rules only) (excluding debug macros)
+Token Tracking: Enabled
+Debug Macros: Excluded
+============================================================
+Start Time: 2026-04-12 09:11:34
+End Time: 2026-04-12 09:41:19
+Total Duration: 29m 45.07s
+Total Seconds: 1785.07s
+============================================================
+Phase Breakdown:
+  cleaning                                : 0.13s           (  0.0%)
+  build_db                                : 1.04s           (  0.1%)
+  phase1-2                                : 0.06s           (  0.0%)
+  phase3_identify_sinks                   : 21.14s          (  1.2%)
+  phase4_generate_candidate_flows         : 0.11s           (  0.0%)
+  phase5_taint_analysis                   : 29m 22.46s      ( 98.7%)
+  phase6_generate_report                  : 0.09s           (  0.0%)

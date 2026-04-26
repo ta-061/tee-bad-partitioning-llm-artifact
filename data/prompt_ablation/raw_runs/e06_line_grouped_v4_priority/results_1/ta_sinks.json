@@ -1,0 +1,90 @@
+{
+  "sinks": [
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 2,
+      "rule_id": "weak_input_validation",
+      "reason": "length of bytes to copy",
+      "confidence": "high",
+      "role": "len"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer receiving formatted output",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 1,
+      "rule_id": "weak_input_validation",
+      "reason": "maximum number of bytes to write (buffer length parameter)",
+      "confidence": "high",
+      "role": "len"
+    }
+  ],
+  "analysis_time": {
+    "total_seconds": 22.57058048248291,
+    "total_formatted": "22.57秒",
+    "llm_analysis_seconds": 22.316990613937378,
+    "llm_analysis_formatted": "22.32秒",
+    "functions_analyzed": 10,
+    "per_function": {
+      "IMSG": {
+        "seconds": 3.7540557384490967,
+        "formatted": "3.75秒"
+      },
+      "snprintf": {
+        "seconds": 2.587153196334839,
+        "formatted": "2.59秒"
+      },
+      "TEE_MemMove": {
+        "seconds": 2.493687868118286,
+        "formatted": "2.49秒"
+      },
+      "TEE_Wait": {
+        "seconds": 2.3052191734313965,
+        "formatted": "2.31秒"
+      },
+      "TEE_Malloc": {
+        "seconds": 2.298809766769409,
+        "formatted": "2.30秒"
+      },
+      "TEE_PARAM_TYPES": {
+        "seconds": 1.9990980625152588,
+        "formatted": "2.00秒"
+      },
+      "TEE_MemCompare": {
+        "seconds": 1.7672717571258545,
+        "formatted": "1.77秒"
+      },
+      "strlen": {
+        "seconds": 1.7457735538482666,
+        "formatted": "1.75秒"
+      },
+      "strcmp": {
+        "seconds": 1.705810785293579,
+        "formatted": "1.71秒"
+      },
+      "DMSG": {
+        "seconds": 1.6601107120513916,
+        "formatted": "1.66秒"
+      }
+    }
+  },
+  "analysis_mode": "llm_only"
+}

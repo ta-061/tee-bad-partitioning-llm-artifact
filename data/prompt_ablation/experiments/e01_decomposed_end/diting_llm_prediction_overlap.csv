@@ -1,0 +1,142 @@
+line,category,in_llm,in_diting,is_ground_truth,overlap_bucket,status,function,label_id,group,diting_project,diting_file,diting_source_line,diting_source_category
+116,input_validation_weakness,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,116,Input Validation Weakness
+116,unencrypted_data_output,1,1,1,both,tp_both,produce_2,p2-1,UDO-produce_2,bad-partitioning,entry.c,116,Unencrypted Data Output
+117,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+117,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce_2,p2-2,UDO-produce_2,bad-partitioning,entry.c,117,Unencrypted Data Output
+118,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce_2,p2-3,UDO-produce_2,bad-partitioning,entry.c,118,Unencrypted Data Output
+119,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce_2,p2-4,UDO-produce_2,bad-partitioning,entry.c,119,Unencrypted Data Output
+121,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+121,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce_2,c9-10,UDO-produce_2,bad-partitioning,entry.c,121,Unencrypted Data Output
+122,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce_2,c11-12-13,UDO-produce_2,bad-partitioning,entry.c,122,Unencrypted Data Output
+125,unencrypted_data_output,1,0,0,llm_only,fp_llm_only,,,,,,,
+126,unencrypted_data_output,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,126,Unencrypted Data Output
+136,input_validation_weakness,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,136,Input Validation Weakness
+136,unencrypted_data_output,1,1,1,both,tp_both,produce,p1-1,UDO-produce,bad-partitioning,entry.c,136,Unencrypted Data Output
+137,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+137,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce,p1-2,UDO-produce,bad-partitioning,entry.c,137,Unencrypted Data Output
+138,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce,p1-3,UDO-produce,bad-partitioning,entry.c,138,Unencrypted Data Output
+139,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce,p1-4,UDO-produce,bad-partitioning,entry.c,139,Unencrypted Data Output
+141,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+143,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+143,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce,c12,UDO-produce,bad-partitioning,entry.c,143,Unencrypted Data Output
+144,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+144,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,produce,c345,UDO-produce,bad-partitioning,entry.c,144,Unencrypted Data Output
+148,unencrypted_data_output,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,148,Unencrypted Data Output
+151,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+154,input_validation_weakness,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,154,Input Validation Weakness
+154,unencrypted_data_output,1,0,1,llm_only,tp_llm_only,produce_3,p1-5,UDO-produce_3,,,,
+155,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+155,unencrypted_data_output,0,0,1,neither,fn_both,produce_3,p1-6,UDO-produce_3,,,,
+175,input_validation_weakness,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,175,Input Validation Weakness
+175,unencrypted_data_output,1,1,1,both,tp_both,output,b1,UDO-output,bad-partitioning,entry.c,175,Unencrypted Data Output
+176,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+176,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,b2,UDO-output,bad-partitioning,entry.c,176,Unencrypted Data Output
+177,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,b3,UDO-output,bad-partitioning,entry.c,177,Unencrypted Data Output
+178,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,b4,UDO-output,bad-partitioning,entry.c,178,Unencrypted Data Output
+179,unencrypted_data_output,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,179,Unencrypted Data Output
+181,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+182,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+184,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+184,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,f12,UDO-output,bad-partitioning,entry.c,184,Unencrypted Data Output
+185,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+185,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,f345,UDO-output,bad-partitioning,entry.c,185,Unencrypted Data Output
+186,unencrypted_data_output,0,1,1,diting_only,tp_diting_only,output,f6,UDO-output,bad-partitioning,entry.c,186,Unencrypted Data Output
+189,unencrypted_data_output,1,0,0,llm_only,fp_llm_only,,,,,,,
+190,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+190,unencrypted_data_output,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,190,Unencrypted Data Output
+191,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+191,unencrypted_data_output,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,191,Unencrypted Data Output
+201,input_validation_weakness,1,1,1,both,tp_both,produce_i2,p2-1,IVW-produce_i2,bad-partitioning,entry.c,201,Input Validation Weakness
+202,input_validation_weakness,0,0,1,neither,fn_both,produce_i2,p2-2,IVW-produce_i2,,,,
+203,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i2,p2-3,IVW-produce_i2,bad-partitioning,entry.c,203,Input Validation Weakness
+204,input_validation_weakness,1,1,1,both,tp_both,produce_i2,p2-4,IVW-produce_i2,bad-partitioning,entry.c,205,Input Validation Weakness
+208,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+208,input_validation_weakness,0,0,1,neither,fn_both,produce_i2,p2-5,IVW-produce_i2,,,,
+210,input_validation_weakness,1,0,1,llm_only,tp_llm_only,produce_i2,c7,IVW-produce_i2,,,,
+212,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+212,input_validation_weakness,0,0,1,neither,fn_both,produce_i2,c8,IVW-produce_i2,,,,
+220,input_validation_weakness,1,1,1,both,tp_both,produce_i0,p1-1,IVW-produce_i0,bad-partitioning,entry.c,220,Input Validation Weakness
+221,input_validation_weakness,0,0,1,neither,fn_both,produce_i0,p1-2,IVW-produce_i0,,,,
+222,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i0,p1-3,IVW-produce_i0,bad-partitioning,entry.c,222,Input Validation Weakness
+223,input_validation_weakness,1,1,1,both,tp_both,produce_i0,p1-4,IVW-produce_i0,bad-partitioning,entry.c,224,Input Validation Weakness
+227,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+227,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i0,p1-5,IVW-produce_i0,bad-partitioning,entry.c,227,Input Validation Weakness
+229,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+231,input_validation_weakness,1,1,1,both,tp_both,produce_i0,c1,IVW-produce_i0,bad-partitioning,entry.c,231,Input Validation Weakness
+233,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+238,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+238,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i0,c2,IVW-produce_i0,bad-partitioning,entry.c,238,Input Validation Weakness
+239,input_validation_weakness,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,239,Input Validation Weakness
+246,input_validation_weakness,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,246,Input Validation Weakness
+246,unencrypted_data_output,1,0,0,llm_only,fp_llm_only,,,,,,,
+254,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i3,p1-6,IVW-produce_i3,bad-partitioning,entry.c,254,Input Validation Weakness
+256,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i3,p1-7,IVW-produce_i3,bad-partitioning,entry.c,256,Input Validation Weakness
+258,input_validation_weakness,0,1,1,diting_only,tp_diting_only,produce_i3,c5,IVW-produce_i3,bad-partitioning,entry.c,258,Input Validation Weakness
+283,input_validation_weakness,1,1,1,both,tp_both,input,b1,IVW-input,bad-partitioning,entry.c,283,Input Validation Weakness
+284,input_validation_weakness,0,1,1,diting_only,tp_diting_only,input,b2,IVW-input,bad-partitioning,entry.c,284,Input Validation Weakness
+285,input_validation_weakness,1,1,1,both,tp_both,input,b3,IVW-input,bad-partitioning,entry.c,285,Input Validation Weakness
+286,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+286,input_validation_weakness,0,1,1,diting_only,tp_diting_only,input,b4,IVW-input,bad-partitioning,entry.c,287,Input Validation Weakness
+290,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+290,input_validation_weakness,0,1,1,diting_only,tp_diting_only,input,b5,IVW-input,bad-partitioning,entry.c,290,Input Validation Weakness
+291,input_validation_weakness,1,1,1,both,tp_both,input,b6,IVW-input,bad-partitioning,entry.c,291,Input Validation Weakness
+291,unencrypted_data_output,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,291,Unencrypted Data Output
+293,input_validation_weakness,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,293,Input Validation Weakness
+295,input_validation_weakness,1,1,1,both,tp_both,input,f1,IVW-input,bad-partitioning,entry.c,295,Input Validation Weakness
+296,input_validation_weakness,1,1,1,both,tp_both,input,f2,IVW-input,bad-partitioning,entry.c,296,Input Validation Weakness
+303,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+306,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+306,input_validation_weakness,0,1,1,diting_only,tp_diting_only,input,pa3,IVW-input,bad-partitioning,entry.c,306,Input Validation Weakness
+306,unencrypted_data_output,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,306,Unencrypted Data Output
+307,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+307,input_validation_weakness,0,1,1,diting_only,tp_diting_only,input,pa4,IVW-input,bad-partitioning,entry.c,307,Input Validation Weakness
+307,unencrypted_data_output,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,307,Unencrypted Data Output
+309,input_validation_weakness,1,1,1,both,tp_both,input,pa5,IVW-input,bad-partitioning,entry.c,309,Input Validation Weakness
+309,unencrypted_data_output,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,309,Unencrypted Data Output
+311,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+319,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s2,p2-1,SMO-produce_s2,bad-partitioning,entry.c,319,Shared Memory Overwrite
+326,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s2,p2-2,SMO-produce_s2,bad-partitioning,entry.c,324,Shared Memory Overwrite
+329,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s2,p2-3,SMO-produce_s2,bad-partitioning,entry.c,329,Shared Memory Overwrite
+334,direct_usage_of_shared_memory,1,1,1,both,tp_both,produce_s,p1-1,SMO-produce_s,bad-partitioning,entry.c,334,Shared Memory Overwrite
+338,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s,p1-2,SMO-produce_s,bad-partitioning,entry.c,338,Shared Memory Overwrite
+342,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s,p1-7,SMO-produce_s,bad-partitioning,entry.c,340,Shared Memory Overwrite
+350,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+350,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+352,direct_usage_of_shared_memory,1,1,0,both,fp_both,,,,bad-partitioning,entry.c,352,Shared Memory Overwrite
+357,direct_usage_of_shared_memory,1,1,1,both,tp_both,produce_s3,p1-3,SMO-produce_s3,bad-partitioning,entry.c,357,Shared Memory Overwrite
+358,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,358,Shared Memory Overwrite
+359,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,p1-5,SMO-produce_s3,bad-partitioning,entry.c,359,Shared Memory Overwrite
+364,direct_usage_of_shared_memory,1,1,1,both,tp_both,produce_s3,p1-6,SMO-produce_s3,bad-partitioning,entry.c,364,Shared Memory Overwrite
+368,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,c4,SMO-produce_s3,bad-partitioning,entry.c,366,Shared Memory Overwrite
+374,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,c5,SMO-produce_s3,bad-partitioning,entry.c,372,Shared Memory Overwrite
+380,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,c6,SMO-produce_s3,bad-partitioning,entry.c,378,Shared Memory Overwrite
+384,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,384,Shared Memory Overwrite
+385,direct_usage_of_shared_memory,0,0,1,neither,fn_both,produce_s3,c7,SMO-produce_s3,,,,
+389,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,c8,SMO-produce_s3,bad-partitioning,entry.c,389,Shared Memory Overwrite
+393,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,produce_s3,c9,SMO-produce_s3,bad-partitioning,entry.c,393,Shared Memory Overwrite
+397,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+401,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+401,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+422,direct_usage_of_shared_memory,1,1,1,both,tp_both,shared_memory,b1,SMO-shared_memory,bad-partitioning,entry.c,422,Shared Memory Overwrite
+423,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,423,Shared Memory Overwrite
+425,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,b3,SMO-shared_memory,bad-partitioning,entry.c,425,Shared Memory Overwrite
+430,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+432,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,b4,SMO-shared_memory,bad-partitioning,entry.c,432,Shared Memory Overwrite
+437,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,437,Shared Memory Overwrite
+437,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+439,direct_usage_of_shared_memory,0,0,1,neither,fn_both,shared_memory,b5,SMO-shared_memory,,,,
+443,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,b6,SMO-shared_memory,bad-partitioning,entry.c,443,Shared Memory Overwrite
+447,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,f1,SMO-shared_memory,bad-partitioning,entry.c,445,Shared Memory Overwrite
+453,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,f2,SMO-shared_memory,bad-partitioning,entry.c,451,Shared Memory Overwrite
+459,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,f3,SMO-shared_memory,bad-partitioning,entry.c,457,Shared Memory Overwrite
+463,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,463,Shared Memory Overwrite
+464,direct_usage_of_shared_memory,0,0,1,neither,fn_both,shared_memory,f4,SMO-shared_memory,,,,
+468,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,f5,SMO-shared_memory,bad-partitioning,entry.c,468,Shared Memory Overwrite
+472,direct_usage_of_shared_memory,0,1,1,diting_only,tp_diting_only,shared_memory,f6,SMO-shared_memory,bad-partitioning,entry.c,472,Shared Memory Overwrite
+476,direct_usage_of_shared_memory,0,1,0,diting_only,fp_diting_only,,,,bad-partitioning,entry.c,476,Shared Memory Overwrite
+477,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+485,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+485,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+508,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,
+510,input_validation_weakness,1,0,0,llm_only,fp_llm_only,,,,,,,
+512,direct_usage_of_shared_memory,1,0,0,llm_only,fp_llm_only,,,,,,,

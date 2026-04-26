@@ -1,0 +1,90 @@
+{
+  "sinks": [
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "TEE_MemMove",
+      "param_index": 2,
+      "rule_id": "weak_input_validation",
+      "reason": "length of bytes to copy",
+      "confidence": "high",
+      "role": "len"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 0,
+      "rule_id": "weak_input_validation",
+      "reason": "destination buffer receiving formatted output",
+      "confidence": "high",
+      "role": "dest"
+    },
+    {
+      "kind": "function",
+      "name": "snprintf",
+      "param_index": 1,
+      "rule_id": "weak_input_validation",
+      "reason": "maximum number of bytes to write to destination",
+      "confidence": "high",
+      "role": "len"
+    }
+  ],
+  "analysis_time": {
+    "total_seconds": 25.66347908973694,
+    "total_formatted": "25.66秒",
+    "llm_analysis_seconds": 25.332534313201904,
+    "llm_analysis_formatted": "25.33秒",
+    "functions_analyzed": 10,
+    "per_function": {
+      "TEE_MemMove": {
+        "seconds": 4.835640907287598,
+        "formatted": "4.84秒"
+      },
+      "snprintf": {
+        "seconds": 2.8792319297790527,
+        "formatted": "2.88秒"
+      },
+      "TEE_Malloc": {
+        "seconds": 2.856065034866333,
+        "formatted": "2.86秒"
+      },
+      "TEE_MemCompare": {
+        "seconds": 2.3565940856933594,
+        "formatted": "2.36秒"
+      },
+      "DMSG": {
+        "seconds": 2.317448139190674,
+        "formatted": "2.32秒"
+      },
+      "strcmp": {
+        "seconds": 2.193570852279663,
+        "formatted": "2.19秒"
+      },
+      "TEE_Wait": {
+        "seconds": 2.0673983097076416,
+        "formatted": "2.07秒"
+      },
+      "TEE_PARAM_TYPES": {
+        "seconds": 2.0529606342315674,
+        "formatted": "2.05秒"
+      },
+      "strlen": {
+        "seconds": 1.973325490951538,
+        "formatted": "1.97秒"
+      },
+      "IMSG": {
+        "seconds": 1.8002989292144775,
+        "formatted": "1.80秒"
+      }
+    }
+  },
+  "analysis_mode": "llm_only"
+}

@@ -1,0 +1,72 @@
+Final audit (END). Review every line-group from START/MIDDLE and produce one verdict per line.
+
+ROLE
+You are the final auditor. START/MIDDLE already identified candidate vulnerabilities and their tentative categories. Your job is to confirm or reject each line-group based on the code evidence, and to select the single best category when multiple candidates compete for the same line.
+
+INPUT
+- A JSON payload with a `line_groups` array follows this prompt.
+- Each line-group has: file, line, candidate_rules (list of {"rule_id", "why"}), and optionally code_snippet, propagation_summary, sanitizers_nearby.
+
+HOW TO DECIDE
+1. For each line-group, read the candidate_rules and any available context.
+2. Ask: does this line show a concrete unsafe mechanism that matches one of the vulnerability definitions below?
+3. Compare all plausible categories for the line-group before choosing the final rule_id.
+4. If the code clearly shows an effective mitigation or clearly disproves the candidate, reject it. Return verdict=no only when the visible code clearly contradicts the candidate or clearly shows an effective mitigation.
+5. When evidence is partial but a concrete unsafe pattern is visible, accept.
+
+VULNERABILITY DEFINITIONS
+--- begin definitions (replace this section for other vulnerability domains) ---
+
+UDO (Unencrypted Data Output)
+  Sensitive data (key, secret, credential, private, token, iv, nonce, session) is copied to REE-visible memory without encryption.
+
+IVW (Input Validation Weakness)
+  REE-tainted size, index, or length reaches a memory operation without an effective bounds check on all paths.
+
+DUS (Direct Usage of Shared Memory)
+  TA reads or trusts shared-memory content, and a gap between check and use (or no copy-to-private) allows REE-side modification. Writing to shared memory alone is not DUS.
+
+other
+  Security-relevant but does not fit the above three.
+
+--- end definitions ---
+
+OUTPUT
+One JSON object, no prose, no code fences.
+
+{
+  "phase": "end",
+  "candidate_reviews": [
+    {
+      "file": "ta.c",
+      "line": 42,
+      "verdict": "yes",
+      "rule_id": "Input Validation Weakness",
+      "why": "REE-tainted size controls memcpy length without bounds check; IVW best fits because the core issue is unchecked memory-control data.",
+      "why_not_categories": [
+        "Not UDO: no sensitive data reaches REE-visible memory.",
+        "Not DUS: the issue is unchecked size, not trust in shared content.",
+        "Not other: fits IVW."
+      ]
+    },
+    {
+      "file": "ta.c",
+      "line": 57,
+      "verdict": "no",
+      "rule_id": null,
+      "why": "Shared input is copied to private memory and only the private copy is used afterward.",
+      "why_not_categories": [
+        "Not UDO: no sensitive data exposed.",
+        "Not IVW: no unchecked tainted size.",
+        "Not DUS: private copy mitigates.",
+        "Not other: not security-relevant."
+      ]
+    }
+  ]
+}
+
+RULES
+- One verdict per file:line. Do not emit multiple yes entries for the same line.
+- verdict=yes requires rule_id from {Unencrypted Data Output, Input Validation Weakness, Direct Usage of Shared Memory, other}.
+- verdict=no requires rule_id=null.
+- why_not_categories: one sentence per non-selected category.

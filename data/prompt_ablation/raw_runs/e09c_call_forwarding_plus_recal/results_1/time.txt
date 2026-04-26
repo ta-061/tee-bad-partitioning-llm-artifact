@@ -1,0 +1,23 @@
+Project: bad-partitioning
+TA: ta
+LLM Provider: openai
+LLM Model: gpt-5-mini-2025-08-07
+Results Root: <ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e09c_call_forwarding_plus_recal
+Run Index: 1
+Analysis Mode: Hybrid (DITING rules only) (excluding debug macros)
+Token Tracking: Enabled
+Debug Macros: Excluded
+============================================================
+Start Time: 2026-04-12 09:50:28
+End Time: 2026-04-12 10:19:18
+Total Duration: 28m 50.08s
+Total Seconds: 1730.08s
+============================================================
+Phase Breakdown:
+  cleaning                                : 0.13s           (  0.0%)
+  build_db                                : 0.86s           (  0.0%)
+  phase1-2                                : 0.19s           (  0.0%)
+  phase3_identify_sinks                   : 25.86s          (  1.5%)
+  phase4_generate_candidate_flows         : 0.09s           (  0.0%)
+  phase5_taint_analysis                   : 28m 22.80s      ( 98.4%)
+  phase6_generate_report                  : 0.08s           (  0.0%)
