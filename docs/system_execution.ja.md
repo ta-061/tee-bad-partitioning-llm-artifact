@@ -43,11 +43,21 @@ PYTHONPATH=src python3 -m llm_settings.llm_cli test
 
 ## LLM 設定
 
+`src/main.py` で LLM 解析を再実行するには、選択した LLM provider の API キーが必要です。公開済みの集計表を再生成するだけなら API キーは不要ですが、新しい LLM 検出実行には API キーが必須です。
+
 APIキーはコミットしません。テンプレートから作成します。
 
 ```bash
 cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
+llm_config configure openai
+llm_config set openai
+llm_config status
+llm_config test
 ```
+
+`llm_config configure openai` では、API キー更新の質問に `y` と答えてキーを貼り付けます。example ファイルには artifact の smoke test で使った実行既定値が入っています。変更しない場合は残りの更新質問には `N` と答えます。他の provider を使う場合は
+`openai` を `claude`, `deepseek`, `openrouter`, `gemini` などに置き換え、
+`configs/paper_model_matrix.csv` のモデル名に合わせます。
 
 実験では、モデルは `llm_config` で切り替え、プロンプトは
 `--prompt-version` で切り替えました。

@@ -20,9 +20,10 @@ analysis:
 - the TEE Flow Inspector implementation used to produce the outputs,
 - scripts to regenerate the main tables from the released JSON/CSV files.
 
-It is not a full runtime environment for rerunning all LLM API calls. The raw
-LLM outputs and aggregate JSON/CSV files are included so that the reported
-metrics can be checked without access to private API keys or paid services.
+The Docker/DevContainer runtime can rerun the LLM analysis, but rerunning it
+requires a valid API key for the selected LLM provider. The archived LLM outputs
+and aggregate JSON/CSV files are also included so that the reported metrics can
+be checked without private API keys or paid services.
 
 ## Repository Layout
 
@@ -64,6 +65,10 @@ docs/
 The runtime path is Docker/DevContainer based. The container installs libclang,
 the Python dependencies, and the `llm_config` helper.
 
+Rerunning the LLM pipeline requires an API key. The default example
+configuration uses OpenAI and `gpt-5-mini-2025-08-07`; use an OpenAI API key for
+the commands below, or configure another provider with `llm_config`.
+
 ```bash
 docker compose -f .devcontainer/docker-compose.yml up -d --build
 docker exec -it tee-bad-partitioning-llm-artifact_devcontainer-latte-dev-1 bash
@@ -76,11 +81,19 @@ cd /workspace
 cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
 llm_config configure openai
 llm_config set openai
+llm_config status
+llm_config test
 
 python3 src/main.py \
     -p benchmark/partitioningE/bad-partitioning \
     --prompt-version experiments/e12_general_sink_screening
 ```
+
+When `llm_config configure openai` prompts for an API key, answer `y` and paste
+your key. The template already sets the paper-style runtime defaults
+(`temperature=0.2`, no OpenAI reasoning setting, JSON output). If you keep those
+defaults, answer `N` to the remaining update prompts. The generated
+`src/llm_settings/llm_config.json` is ignored by Git and must not be committed.
 
 The analysis writes outputs under:
 

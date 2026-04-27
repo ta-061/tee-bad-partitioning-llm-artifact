@@ -52,11 +52,26 @@ benchmark can be parsed without the large build tree. Warnings about the missing
 
 ## LLM Configuration
 
+Rerunning `src/main.py` requires an API key for the selected LLM provider. The
+released aggregate tables can be regenerated without an API key, but fresh LLM
+detection runs cannot.
+
 Do not commit API keys. Start from the included template:
 
 ```bash
 cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
+llm_config configure openai
+llm_config set openai
+llm_config status
+llm_config test
 ```
+
+For `llm_config configure openai`, answer `y` when asked whether to update the
+API key, then paste the key. The example file already contains the runtime
+defaults used for the artifact smoke test. If you do not want to change them,
+answer `N` to the remaining update prompts. For other providers, replace
+`openai` with `claude`, `deepseek`, `openrouter`, or `gemini` and set the model
+listed in `configs/paper_model_matrix.csv`.
 
 The experimental protocol used the model selected through `llm_config`.
 The prompt was changed with `--prompt-version`.

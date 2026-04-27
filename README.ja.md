@@ -15,11 +15,14 @@
 - 出力生成に使った TEE Flow Inspector 実装
 - 論文中の主要表を再生成するスクリプト
 
-LLM API を再実行する完全な実行環境ではありません。API キーや有料サービスなしで、論文中の集計値を確認できるように、集計済み JSON/CSV とプロンプトを中心に整理しています。
+Docker/DevContainer 環境では LLM 解析の再実行もできます。ただし、再実行には選択した LLM provider の有効な API キーが必要です。一方で、論文中の集計値を確認するだけなら、同梱済みの LLM 出力 JSON/CSV と集計スクリプトを使えるため、API キーは不要です。
 
 ## 使い方
 
 実行系は Docker/DevContainer 前提です。コンテナ内に libclang、Python依存関係、`llm_config` が入ります。
+
+LLM パイプラインを再実行するには API キーが必須です。初期設定例は OpenAI の
+`gpt-5-mini-2025-08-07` を使います。以下の手順では OpenAI API キーを用意してください。別 provider を使う場合は `llm_config` で provider とモデルを切り替えます。
 
 ```bash
 docker compose -f .devcontainer/docker-compose.yml up -d --build
@@ -33,11 +36,17 @@ cd /workspace
 cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
 llm_config configure openai
 llm_config set openai
+llm_config status
+llm_config test
 
 python3 src/main.py \
     -p benchmark/partitioningE/bad-partitioning \
     --prompt-version experiments/e12_general_sink_screening
 ```
+
+`llm_config configure openai` では、API キー更新の質問に `y` と答えてキーを貼り付けます。テンプレートには論文時の実行設定に合わせた既定値
+(`temperature=0.2`, OpenAI reasoning setting なし, JSON output) を入れているため、それらを変えない場合は残りの更新質問には `N` と答えます。生成される
+`src/llm_settings/llm_config.json` は Git 管理外で、公開リポジトリに commit しません。
 
 解析結果は次に出力されます。
 
