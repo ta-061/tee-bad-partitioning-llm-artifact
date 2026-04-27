@@ -1,0 +1,128 @@
+{
+  "name": "tee_vuln_detection_pipeline",
+  "version": "1.0.0",
+  "purpose": "Aggregate multiple CodeQL query outputs via keyed joins, tag sinks, classify by param types, and apply heuristics to detect 3 categories of weaknesses.",
+  "total_rules": 3,
+  "inputs": {
+    "codeql_outputs": [
+      {"name": "host.ql", "role": "param_kind_mask_per_function"},
+      {"name": "switch.ql", "role": "callee_id_to_func_name"},
+      {"name": "arrayaccess.ql", "role": "array_access_keys"},
+      {"name": "ifstmt.ql", "role": "if_statement_keys"},
+      {"name": "dataflow.ql", "role": "arg_to_sink_flows"},
+      {"name": "memory.ql", "role": "mem_and_output_operations"}
+    ]
+  },
+  "config": {
+    "db_name": "tee_example",
+    "query_dir": "../../query",
+    "out_dir": "./out",
+    "line_threshold_unenc": 100000,
+    "line_threshold_input": 100000,
+    "crypto_markers": ["aes", "enc"],
+    "crypto_api_whitelist": [
+      "TEE_AsymmetricEncrypt",
+      "TEE_AsymmetricDecrypt",
+      "TEE_AEInit",
+      "TEE_AEUpdate",
+      "TEE_AEUpdateAAD",
+      "TEE_AEEncryptFinal",
+      "TEE_AEDecryptFinal",
+      "TEE_CipherInit",
+      "TEE_CipherUpdate",
+      "TEE_CipherDoFinal"
+    ],
+    "sink_markers": ["snprintf", "TEE_MemMove"],
+    "shared_param_values": [12, 13, 14, 15],
+    "exclude_shared_tokens": ["TEE_MemMove", "TEE_CheckMemoryAccessRights"],
+    "exclude_symbols_shared": [">", "<", "+", "?", "-"]
+  },
+  "keying": {
+    "from_dataflow": {
+      "fields": ["srcIdx", "paramIdx", "calleeId", "pos", "sinkText"],
+      "compose": "key = `${srcIdx}_${paramIdx}_${funcName}` where funcName = switch[calleeId]"
+    },
+    "tags": [
+      {"from": "arrayaccess.ql", "on": "pos", "append_to": "sinkText", "value": "accesstoarray"},
+      {"from": "ifstmt.ql", "on": "pos", "append_to": "sinkText", "value": "if"}
+    ],
+    "classification": {
+      "source": "host.ql",
+      "logic": "if param_kind in shared_param_values -> params_shared else params_input"
+    }
+  },
+  "detection_rules": [
+    {
+      "rule_id": "unencrypted_output",
+      "source": "memory.ql",
+      "aggregation": "concat consecutive rows with same key",
+      "positive_if": {
+        "any_contains": {"field": "row_text", "tokens": ["snprintf", "TEE_MemMove"]},
+        "and_not_contains_in_buffer": {
+          "buffer": "key_concat_text",
+          "tokens": [
+            "aes", "enc",
+            "TEE_AsymmetricEncrypt", "TEE_AsymmetricDecrypt",
+            "TEE_AEInit", "TEE_AEUpdate", "TEE_AEUpdateAAD",
+            "TEE_AEEncryptFinal", "TEE_AEDecryptFinal",
+            "TEE_CipherInit", "TEE_CipherUpdate", "TEE_CipherDoFinal"
+          ]
+        }
+      },
+      "output": ["pos"]
+    },
+    {
+      "rule_id": "weak_input_validation",
+      "source": "params_input",
+      "iteration_order": "ascending by occurrence",
+      "state_var": "check_buffer",
+      "positive_if_any": [
+        {
+          "all": [
+            {"contains_any": {"field": "item_text", "tokens": ["accesstoarray", "Malloc"]}},
+            {"not_contains": {"buffer": "check_buffer", "token": "if"}}
+          ]
+        },
+        {
+          "all": [
+            {"contains": {"field": "item_text", "token": "MemMove"}},
+            {"not_contains": {"buffer": "check_buffer", "token": "Malloc"}},
+            {"not_contains": {"buffer": "check_buffer", "token": "if"}}
+          ]
+        }
+      ],
+      "deduplicate": true,
+      "output": ["pos"]
+    },
+    {
+      "rule_id": "shared_memory_overwrite",
+      "positive_if": {
+        "any_contains": {"field":"item_text",
+          "tokens":["TEE_MemMove","memcpy","snprintf","strncpy","memset","="]
+        }
+      },
+      "allow_if": [
+        {"neighbor_has_tokens":{"within_lines":[-6,1],
+          "tokens":["TEE_CheckMemoryAccessRights(","offset +","MIN(","outsz","size <=","len <="]}}
+      ],
+      "exclude_if": [
+        {"callee_in":{"any_of":["trace_printf","TRACE_*"]}}
+      ],
+      "output": ["pos"]
+    }
+  ],
+  "outputs": {
+    "format": "object",
+    "fields": [
+      {"name": "unencrypted_output", "type": "array", "items": "location"},
+      {"name": "weak_input_validation", "type": "array", "items": "location"},
+      {"name": "shared_memory_overwrite", "type": "array", "items": "location"},
+      {"name": "counts", "type": "object", "fields": ["unencrypted_output", "weak_input_validation", "shared_memory_overwrite"]}
+    ]
+  },
+  "assumptions_and_limits": [
+    "Line-based cutoffs are disabled here to avoid skew; rely on semantic cues instead.",
+    "The presence of 'if' is approximated by string accumulation (non-structural).",
+    "Crypto sinks are policy-excluded by explicit TEE crypto API whitelist to reduce false positives."
+  ]
+}

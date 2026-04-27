@@ -12,6 +12,7 @@
 - DITING のベースライン出力
 - プロンプト改良比較で使った e 系列プロンプト一式
 - 9 モデル、5 回実行、多数決後の評価データ
+- 出力生成に使った TEE Flow Inspector 実装
 - 論文中の主要表を再生成するスクリプト
 
 LLM API を再実行する完全な実行環境ではありません。API キーや有料サービスなしで、論文中の集計値を確認できるように、集計済み JSON/CSV とプロンプトを中心に整理しています。
@@ -45,7 +46,11 @@ results/tables/
 
 元データに含まれていたローカル絶対パスは、可能な範囲で `<SOURCE_REPO>` や `<ANALYSIS_WORKSPACE>` などのプレースホルダに置換しています。これらは来歴情報であり、表の再生成には不要です。
 
+実APIキーを含む `src/llm_settings/llm_config.json` は公開対象から除外し、代わりに `src/llm_settings/llm_config.example.json` を入れています。
+
 公開前の確認手順は [docs/publishing.ja.md](docs/publishing.ja.md) にまとめています。
+
+システム本体の実行コマンドと集計コマンドは [docs/system_execution.ja.md](docs/system_execution.ja.md) にまとめています。
 
 ## ライセンス
 

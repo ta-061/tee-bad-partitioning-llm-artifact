@@ -14,8 +14,11 @@ Before making the GitHub repository public:
 2. Check that no local absolute paths remain.
 
    ```bash
-   rg '[/]Users|[n]owstudy|[/]workspace|[O]bsidian|04_[I]nBox|集計[用]'
+   rg '[/]Users|[n]owstudy|[O]bsidian|04_[I]nBox|集計[用]'
    ```
+
+   The literal `/workspace` path is expected in Docker/DevContainer commands and
+   scripts.
 
 3. Check that no credentials or runtime secrets are present.
 

@@ -6,3 +6,12 @@ venv/
 .env
 .env.*
 results/tables/*.tmp
+src/llm_settings/llm_config.json
+benchmark/partitioningE/bad-partitioning/ta/compile_commands*.json
+benchmark/partitioningE/bad-partitioning/ta/*/results_*/
+benchmark/partitioningE/bad-partitioning/ta/*/run_history.*
+benchmark/partitioningE/bad-partitioning/ta/*/model_averages.csv
+benchmark/partitioningE/bad-partitioning/ta/e11/
+benchmark/partitioningE/bad-partitioning/ta/e12/
+benchmark/partitioningE/bad-partitioning/ta/experiments/
+!data/prompt_ablation/raw_runs/**/results_*/

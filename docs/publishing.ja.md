@@ -13,8 +13,10 @@ GitHub で public にする前に、次を確認してください。
 2. ローカル絶対パスが残っていないか確認する。
 
    ```bash
-   rg '[/]Users|[n]owstudy|[/]workspace|[O]bsidian|04_[I]nBox|集計[用]'
+   rg '[/]Users|[n]owstudy|[O]bsidian|04_[I]nBox|集計[用]'
    ```
+
+   `/workspace` は Docker/DevContainer 内の作業ディレクトリとして使うため、残っていて問題ありません。
 
 3. API キーや秘密情報が残っていないか確認する。
 

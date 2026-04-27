@@ -1,0 +1,10 @@
+model_label,provider_hint,model_name,temperature,reasoning_setting,gemini_thinking_level,notes
+GPT-5-mini,openai,gpt-5-mini-2025-08-07,0.2,unset,,Use JSON output mode.
+GPT-5.2,openai,gpt-5.2-2025-12-11,0.2,unset,,Use JSON output mode.
+Claude Sonnet 4.5,claude,claude-sonnet-4-5-20250929,0.2,unset,,
+Claude Haiku 4.5,claude,claude-haiku-4-5-20251001,0.2,unset,,
+DeepSeek V3.2,deepseek,deepseek-chat,0.2,unset,,Use JSON output mode.
+Gemini 3.1 Pro,gemini,gemini-3.1-pro,0.2,unset,low,Gemini was the only model with explicit low thinking.
+Qwen3.5-27B,local/openrouter,qwen3.5-27b,0.2,unset,,
+gemma-3-27b-it,local/openrouter,gemma-3-27b-it,0.2,unset,,
+gemma-4-31B-it,local/openrouter,gemma-4-31b-it,0.2,unset,,

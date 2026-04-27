@@ -17,6 +17,7 @@ analysis:
 - DITING output used as the rule-based baseline,
 - all e-series prompt versions used in the prompt-refinement experiments,
 - consensus evaluation outputs for nine LLMs,
+- the TEE Flow Inspector implementation used to produce the outputs,
 - scripts to regenerate the main tables from the released JSON/CSV files.
 
 It is not a full runtime environment for rerunning all LLM API calls. The raw
@@ -31,8 +32,14 @@ benchmark/
     ta/                       # evaluated TA source file
     labels/                   # ground-truth labels and partial-match map
     diting/                   # DITING baseline output used in evaluation
+  partitioningE/bad-partitioning/
+    ta/                       # compact runtime-compatible benchmark path
 
 prompts/                      # e-series prompt versions
+src/                          # TEE Flow Inspector implementation
+rules/                        # rule definitions and query references
+docker/                       # runtime dependency and container files
+configs/                      # paper model matrix and safe config references
 
 data/
   actual_evaluation/e12_5runs/ # five-run consensus evaluation for nine models
@@ -47,6 +54,7 @@ results/
 docs/
   reproduction.md
   data_format.md
+  system_execution.md
   publishing.md
   known_limitations.md
 ```
@@ -101,7 +109,12 @@ paths have been replaced with placeholders such as `<SOURCE_REPO>` and
 `<ANALYSIS_WORKSPACE>` where possible. These paths are provenance metadata and
 are not required for table regeneration.
 
+The real `src/llm_settings/llm_config.json` file is excluded because it contains
+runtime credentials. Use `src/llm_settings/llm_config.example.json` as the safe
+template.
+
 See [docs/publishing.md](docs/publishing.md) for the pre-publication checklist.
+See [docs/system_execution.md](docs/system_execution.md) for runtime commands.
 
 ## License
 
