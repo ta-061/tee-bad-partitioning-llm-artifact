@@ -22,6 +22,13 @@ Large OP-TEE build outputs and CodeQL databases are intentionally excluded.
 The original development environment used the Docker/DevContainer files under
 `.devcontainer/` and `docker/`.
 
+Start the container with:
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up -d --build
+docker exec -it tee-bad-partitioning-llm-artifact_devcontainer-latte-dev-1 bash
+```
+
 Inside the container, `llm_config` is available through
 `docker/scripts/llm_config.sh`. For a local Python environment, use:
 
@@ -36,6 +43,12 @@ The runtime dependencies are listed in `requirements.txt` and
 
 The main parser requires libclang. The Dockerfile installs LLVM/libclang 18 and
 `python3-clang-18`; using the container is the most reproducible path.
+
+The compact artifact does not include the full OP-TEE dev kit. Minimal OP-TEE
+header stubs are included under
+`benchmark/partitioningE/bad-partitioning/ta/include/` so the published
+benchmark can be parsed without the large build tree. Warnings about the missing
+`TA_DEV_KIT_DIR` during `make clean` are expected in this compact setup.
 
 ## LLM Configuration
 
@@ -65,6 +78,10 @@ python3 src/main.py \
     -p benchmark/partitioningE/bad-partitioning \
     --prompt-version experiments/e12_general_sink_screening
 ```
+
+In a smoke test of the released container, this command completed all phases and
+wrote `ta_phase12.json`, `ta_sinks.json`, `ta_candidate_flows.json`,
+`ta_vulnerabilities.json`, `ta_vulnerability_report.html`, and `time.txt`.
 
 For prompt-ablation runs, replace the prompt version:
 

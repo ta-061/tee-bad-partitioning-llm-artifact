@@ -370,9 +370,11 @@ class OpenAIClient(BaseLLMClient):
                 for deprecated in ("top_p", "presence_penalty", "frequency_penalty"):
                     sanitized_kwargs.pop(deprecated, None)
 
-                # temperature: Responses API でもモデルによっては対応 (e.g. gpt-5.2)
+                # temperature: Responses API でもモデルによっては対応 (e.g. gpt-5.2).
+                # gpt-5-mini rejects this parameter, so omit it even if the
+                # experiment config records temperature=0.2 for consistency.
                 temperature = sanitized_kwargs.pop("temperature", self.config.get("temperature"))
-                if temperature is not None:
+                if temperature is not None and not model_name.startswith("gpt-5-mini"):
                     response_kwargs["temperature"] = temperature
 
                 reasoning_cfg: Dict[str, Any] = {}

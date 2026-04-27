@@ -1,0 +1,83 @@
+# Domain Configuration: OP-TEE Bad-Partitioning Vulnerabilities
+#
+# This file contains ALL domain-specific definitions for OP-TEE bad partitioning
+# vulnerability detection. The framework prompts are domain-agnostic and reference
+# this file via {placeholder} notation.
+#
+# To adapt the framework for a different vulnerability domain:
+#   1. Copy this file and rename it (e.g., domain_android_ipc.txt).
+#   2. Replace the domain_definitions block and all variables below.
+#   3. The framework prompts (system.txt, taint_start/middle/end.txt) remain unchanged.
+
+# --- Domain Definitions Block ---
+# This entire block is inserted into system.txt via {domain_definitions}.
+# It contains vulnerability class definitions, trust boundaries, taint sources,
+# sanitizer patterns, and API lists — all specific to OP-TEE bad partitioning.
+
+domain_definitions: |
+  ========== DOMAIN-SPECIFIC DEFINITIONS (replace this section for other domains) ==========
+
+  VULNERABILITY CLASSES (3 types + other)
+  1. Unencrypted Data Output (UDO): Application-private secret (key, credential, session data) copied to untrusted-visible memory without encryption.
+     - Requires: dst_region=untrusted-visible AND sensitivity=secret/key/credential/private AND no encryption before copy.
+     - NOT triggered by: output-type annotation alone, random data, or crypto API intermediate buffers.
+
+  2. Input Validation Weakness (IVW): Untrusted-tainted value (size, index, length) used in memory operation without bounds check.
+     - Requires: untrusted-tainted size/index/length reaches copy/write AND no effective bounds check.
+     - Includes: buffer overflow via unchecked input size, tainted loop bounds, tainted array index.
+
+  3. Direct Usage of Shared Memory (DUS): TOCTOU / shared-memory trust violation.
+     - Requires BOTH: (a) trusted side READS or TRUSTS shared memory content for decisions, parsing, decryption, or struct-field reuse, AND (b) a boundary between check and use (function call, delay, yield, wait, or code distance where untrusted side can modify).
+     - Includes: parsing/decrypting/deciding directly on shared buffer; using shared ptrs/lens/flags later without copy_to_private; any compare/match/decode operation whose input is a shared-memory alias.
+     - NOT DUS: trusted side merely WRITING TO shared memory (that is UDO if sensitive, or IVW if tainted size). Only trusted side READING FROM shared memory qualifies.
+     - copy_to_private can mitigate DUS if trusted side uses ONLY the private copy after copying.
+     - Differs from IVW: DUS = integrity/TOCTOU (shared content may change); IVW = bounds/memory safety (unchecked size/index). When the primary risk is that the untrusted side can modify the data being read, prefer DUS even if a tainted size is also involved.
+
+  4. other: Issues not fitting above categories.
+
+  TRUST BOUNDARIES
+  - Untrusted-originated values (REE-originated values (TEE_Param, memref.buffer, memref.size, value.a/b)) are untrusted/tainted.
+  - memref.buffer = untrusted-visible shared memory. TEE_Malloc = trusted-private.
+  - Random-generator output is non-sensitive by default (elevate only if name/context implies secrecy).
+  - Variable names such as key/secret/token/credential/iv/nonce/session are strong sensitivity hints even when initialized with literal values or constant-derived data. Context-based sensitivity overrides provenance.
+
+  TAINTED SOURCES
+  - - params[i].memref.buffer (shared memory pointer, REE-visible)
+  - params[i].memref.size (REE-controlled size)
+  - params[i].value.a, params[i].value.b (REE-controlled scalars)
+
+  SANITIZER PATTERNS (domain-specific)
+  - bounds_check: `if (size > MAX)`, `if (len > buf_size)` with return/abort on failure
+  - range_check: `if (index >= ARRAY_LEN)`, `if (offset + len > total)` with return/abort
+  - type_validation: `if (paramTypes != expected)`, TEE_PARAM_TYPE_GET checks with return on mismatch
+  - null_check: `if (ptr == NULL)` with return/abort
+  - encryption: TEE_CipherDoFinal, TEE_AEEncryptFinal before copy to untrusted
+  - content_check: strcmp/memcmp/TEE_MemCompare that GUARDS a branch (if-return); NOT a standalone call. Note: content_check on shared memory is a DUS signal, not a sufficient mitigation, because shared data may change after the check.
+  - access_control: session/login checks before operation
+
+  NOT a sanitizer: plain copy (shared to private) = taint propagation. copy_to_private is a DUS mitigation, not a sanitizer — record in `why` when relevant, not in sanitizers[].
+
+  KNOWN EXTERNAL APIS
+  - memcpy, memmove, memset, snprintf, strcmp, memcmp,
+  TEE_MemMove, TEE_MemCopy, TEE_MemCompare
+
+  OUTPUT SINK APIS (write operations)
+  - snprintf, memcpy, TEE_MemMove, TEE_MemCopy, memmove
+
+  SHARED-MEMORY READ APIS (read/compare/decode operations on shared buffers)
+  - strcmp, memcmp, TEE_MemCompare,
+  and any other function whose arguments include a shared-memory pointer
+  and whose semantics involve reading, comparing, or decoding that buffer's content
+
+  ========== END DOMAIN-SPECIFIC DEFINITIONS ==========
+
+# --- Vulnerability Categories (for other placeholders) ---
+
+rule_id_list: >
+  {Unencrypted Data Output, Input Validation Weakness, Direct Usage of Shared Memory, other}
+
+category_list_for_parallel: |
+  1. Unencrypted Data Output (UDO)
+  2. Input Validation Weakness (IVW)
+  3. Direct Usage of Shared Memory (DUS)
+  4. other

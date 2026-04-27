@@ -1,0 +1,117 @@
+Produce the final line-group audit decision (END) using all START/MIDDLE results.
+
+PRIMARY TASK
+- Review every line-group reported by START/MIDDLE aggregation.
+- Each line-group may contain multiple candidate categories for the same file:line.
+- Treat START/MIDDLE candidates as meaningful first-pass findings. END is the final auditor, not a fresh issue discoverer.
+- Do NOT rediscover issues from scratch when auditing a line-group.
+
+BENCHMARK-ALIGNED AUDIT POLICY
+- Judge candidates according to the bad-partitioning vulnerability definitions in this workflow.
+- Prefer accepting a candidate when it shows a concrete unsafe mechanism and no explicit effective mitigation is visible.
+- Return verdict=no only when the code clearly disproves the candidate, clearly shows an effective mitigation, or clearly shows that the candidate is not security-relevant.
+- Do NOT reject a candidate only because exploitability is not fully proven.
+- Do NOT reject a candidate only because an API is generally trusted or usually safe. Use the visible code pattern and benchmark policy first.
+
+CANDIDATE LINE-GROUPS TO AUDIT
+- The host provides a JSON payload after this prompt.
+- The payload should be a JSON object with a `line_groups` array.
+- Each line-group represents one reviewed file:line and may contain multiple candidate rules for that same line.
+- Each line-group contains at least: file, line, candidate_rules.
+- `candidate_rules` is a list of objects such as {"rule_id": "...", "why": "..."}.
+- code_snippet may be included when available.
+- propagation_summary and sanitizers_nearby may also be included when available. Use them if present, but do not require them.
+
+PARALLEL CLASSIFICATION
+- For each line-group, evaluate ALL four outcomes independently before deciding:
+  1. Unencrypted Data Output (UDO)
+  2. Input Validation Weakness (IVW)
+  3. Direct Usage of Shared Memory (DUS)
+  4. other
+- Do NOT use an ordered if-else chain.
+- Compare the competing candidate_rules for the same line-group and choose the best-supported single final category for that line.
+
+CATEGORY CHECKS
+1. UDO
+   - Sensitive data (key/secret/credential/private/token/iv/nonce/session) reaches REE-visible memory without encryption.
+   - Random/public data is not UDO by default.
+
+2. IVW
+   - REE-tainted size/index/length reaches a memory operation without an effective guard on all relevant paths.
+
+3. DUS
+   - TA reads or trusts shared-memory content, and a check/use gap or later reuse allows REE-side modification.
+   - TA merely writing to shared memory is not DUS.
+   - copy_to_private can mitigate DUS if later use is on the private copy only.
+
+4. other
+   - Use only when the candidate is still security-relevant, but does not cleanly fit UDO, IVW, or DUS.
+   - Do NOT use other as a fallback for uncertainty.
+
+DECISION RULES
+- Use the provided candidate_rules as the first hypotheses for the reviewed line.
+- Preserve a candidate category when it remains the best-supported explanation for the line.
+- If multiple candidate_rules exist for the same line, choose the single best-supported category rather than emitting separate yes decisions for the same line.
+- Tie-break for mixed UDO vs IVW same-line candidates:
+  - If the reviewed line directly copies or formats clearly sensitive data into REE-visible memory without encryption, prefer UDO even when the same line also uses REE-tainted size/length.
+  - Prefer IVW over UDO only when the line's main demonstrated risk is unchecked memory-safety control and the sensitive-output claim is weak, indirect, or not concretely shown at that line.
+- verdict=yes:
+  - The reviewed line is a real vulnerability under this workflow.
+  - rule_id must be one of: "Unencrypted Data Output", "Input Validation Weakness", "Direct Usage of Shared Memory", "other".
+- verdict=no:
+  - The reviewed line is not a real vulnerability after review.
+  - Use this only when there is clear contradiction, clear mitigation, or clear non-security relevance.
+  - rule_id must be null.
+
+REASONING OUTPUT
+- `why`:
+  - If verdict=yes: explain why the line is vulnerable AND why the selected rule_id is the best fit among the competing candidate_rules.
+  - If verdict=no: explain why the line is not a real vulnerability.
+- `why_not_categories`:
+  - Write one sentence per item.
+  - If verdict=yes: include all non-selected categories.
+  - If verdict=no: include UDO, IVW, DUS, and other.
+  - Use explicit format such as "Not Unencrypted Data Output: ...".
+- Keep the response concise, but include enough evidence to justify category choice or rejection.
+
+SCHEMA
+{
+  "phase": "end",
+  "candidate_reviews": [
+    {
+      "file": "ta.c",
+      "line": 42,
+      "verdict": "yes",
+      "rule_id": "Input Validation Weakness",
+      "why": "REE-tainted size reaches a memory operation without visible bounds validation, so this is a real vulnerability and IVW is the best fit.",
+      "why_not_categories": [
+        "Not Unencrypted Data Output: no clear sensitive data is copied to REE-visible memory.",
+        "Not Direct Usage of Shared Memory: the main issue is unchecked size use rather than trust in shared-memory contents.",
+        "Not other: the candidate fits an existing benchmark category."
+      ]
+    },
+    {
+      "file": "ta.c",
+      "line": 57,
+      "verdict": "no",
+      "rule_id": null,
+      "why": "The candidate is not a real vulnerability because the shared input is copied to private memory before use and later use stays on the private copy.",
+      "why_not_categories": [
+        "Not Unencrypted Data Output: no sensitive data is exposed to REE-visible memory.",
+        "Not Input Validation Weakness: no unchecked tainted size or index is shown.",
+        "Not Direct Usage of Shared Memory: later use is on the private copy rather than the shared buffer.",
+        "Not other: the issue is not security-relevant enough to report as a vulnerability."
+      ]
+    }
+  ]
+}
+
+SELF-VERIFICATION
+1. Review every provided line-group exactly once.
+2. If verdict=yes, rule_id is one of the four allowed categories.
+3. If verdict=no, rule_id is null.
+4. why_not_categories contains one sentence per category item.
+5. Do not emit vulnerability_details, structural_risks, candidate_reports, or any second-layer issue bucket.
+6. Prefer line-level category resolution: do not emit multiple accepted reviews for the same file:line.
+
+Output exactly one JSON. No prose. No code fences.

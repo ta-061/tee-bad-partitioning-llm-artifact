@@ -1,0 +1,52 @@
+Produce the final line-group audit decision (END) using all START/MIDDLE results.
+
+PRIMARY TASK
+- Review every line-group reported by START/MIDDLE aggregation.
+- Each line-group may contain multiple candidate categories for the same file:line.
+- Treat START/MIDDLE candidates as meaningful first-pass findings. END is the final auditor, not a fresh issue discoverer.
+
+AUDIT POLICY
+- Prefer accepting a candidate when it shows a concrete unsafe mechanism and no effective mitigation is visible.
+- Return verdict=no only when the code clearly disproves the candidate or clearly shows an effective mitigation.
+
+CANDIDATE LINE-GROUPS TO AUDIT
+- The host provides a JSON payload with a `line_groups` array after this prompt.
+- Each line-group contains: file, line, candidate_rules (list of {"rule_id": "...", "why": "..."}).
+- code_snippet, propagation_summary, sanitizers_nearby may also be included.
+
+PARALLEL CLASSIFICATION
+- For each line-group, evaluate ALL candidate categories independently before deciding:
+  {category_list_for_parallel}
+- Compare the competing candidate_rules and choose the best-supported single final category.
+- Refer to the VULNERABILITY CLASSES and SANITIZER PATTERNS sections in the system prompt for category criteria, mitigation rules, and any domain-specific caveats about which sanitizers are effective for which vulnerability classes.
+
+DECISION RULES
+- Decide mechanism first, then choose the category that best explains it.
+- If multiple candidate_rules exist for the same line, choose one best-supported category.
+- verdict=yes: the line is a real vulnerability. rule_id = one of the allowed categories.
+- verdict=no: the line is not a vulnerability after review. rule_id = null.
+
+REASONING OUTPUT
+- `why`: if yes, explain the vulnerability mechanism and why the selected category is the best fit. If no, explain the contradiction or mitigation.
+- `why_not_categories`: one sentence per non-selected category (if yes) or per all categories (if no). Format: "Not <CategoryName>: ...".
+
+SCHEMA
+{
+  "phase": "end",
+  "candidate_reviews": [
+    {
+      "file": "src.c",
+      "line": 42,
+      "verdict": "yes",
+      "rule_id": "Input Validation Weakness",
+      "why": "Untrusted-tainted size reaches a memory operation without visible bounds validation.",
+      "why_not_categories": [
+        "Not Unencrypted Data Output: no sensitive data copied to untrusted-visible memory.",
+        "Not Direct Usage of Shared Memory: main issue is unchecked size, not shared-memory trust.",
+        "Not other: fits an existing category."
+      ]
+    }
+  ]
+}
+
+Output exactly one JSON. No prose. No code fences.

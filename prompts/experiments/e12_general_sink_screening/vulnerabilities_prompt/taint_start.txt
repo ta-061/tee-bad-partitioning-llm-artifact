@@ -1,0 +1,52 @@
+Analyze function "{source_function}" as the entry point (START).
+
+EXTERNAL FUNCTION CHECK: If the code below has no function body (only "// External function: ..."), return empty-result JSON immediately. Do NOT invent analysis for unavailable functions.
+
+CODE
+{code}
+
+TASK
+1. Identify tainted variables (untrusted-originated inputs per TRUST BOUNDARIES / TAINTED SOURCES).
+   - List only untrusted-origin sources and dangerous derived values. Use range notation for consecutive parameters.
+2. Trace propagation: record each "LHS <- RHS @ file:line".
+3. Detect sanitizers with evidence (per SANITIZER PATTERNS). Plain copy is NOT a sanitizer.
+4. Emit vulnerability candidates for each line showing a concrete unsafe mechanism:
+   - Pointer aliasing to untrusted-visible buffer.
+   - Tainted size/index arithmetic without bounds check.
+   - In-place writes to untrusted-visible buffers with tainted offset.
+   - Parameter type mismatch (declared vs actual access).
+   - DUS/TOCTOU: any line where the trusted side reads, compares, decodes, or operates on shared-memory content (or a shared-memory alias), including any SHARED-MEMORY READ API listed in the system prompt. Emit a candidate for EACH such line individually — do not pick one representative and skip the rest.
+   - Output to untrusted-visible memory: any OUTPUT SINK API listed in the system prompt that writes sensitive or tainted data into a shared buffer. Emit a candidate for EACH such output line individually.
+   - Do NOT emit candidates for call-forwarding lines (lines that merely pass arguments to another internal function).
+5. For each candidate, write `why` as mechanism-first factual basis (e.g., "tainted size controls copy length without bounds guard"). Do not argue exploitability or rejected categories — END handles final classification.
+6. Use `rule_id` as the best tentative label. Prefer recall over precision at this stage.
+
+When uncertain, use "unknown". Prefer emitting candidates over silence.
+
+SCHEMA
+{
+  "phase": "start",
+  "taint_analysis": {
+    "function": "{source_function}",
+    "tainted_vars": ["param_range", "tainted_size_var"],
+    "propagation": [
+      {"lhs": "dst", "rhs": "untrusted_input", "site": "file.c:42"}
+    ],
+    "sanitizers": [
+      {"kind": "bounds_check", "site": "file.c:45", "evidence": "if (size > MAX_BUF)"}
+    ],
+    "taint_blocked": false
+  },
+  "vulnerability_candidates": [
+    {
+      "file": "file.c",
+      "line": 42,
+      "function": "{source_function}",
+      "rule_id": "Input Validation Weakness",
+      "why": "tainted input size reaches a memory operation without visible bounds validation",
+      "sink_function": "="
+    }
+  ]
+}
+
+Output exactly one JSON. No prose. No code fences.

@@ -446,7 +446,11 @@ def main():
     # プロジェクト名を取得（TAプロジェクトのディレクトリ名）
     project_name = project_root.name if project_root else "Unknown"
     
-    external_funcs = {f["name"] for f in phase12.get("external_declarations", [])}
+    external_funcs = {
+        f["name"]
+        for f in phase12.get("external_declarations", [])
+        if f.get("kind") == "function"
+    }
     
     # ユーザ定義関数を除外するためのセット
     skip_user_funcs: set[str] = {

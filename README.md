@@ -61,7 +61,35 @@ docs/
 
 ## Quick Start
 
-Use Python 3.10 or newer.
+The runtime path is Docker/DevContainer based. The container installs libclang,
+the Python dependencies, and the `llm_config` helper.
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up -d --build
+docker exec -it tee-bad-partitioning-llm-artifact_devcontainer-latte-dev-1 bash
+```
+
+Inside the container:
+
+```bash
+cd /workspace
+cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
+llm_config configure openai
+llm_config set openai
+
+python3 src/main.py \
+    -p benchmark/partitioningE/bad-partitioning \
+    --prompt-version experiments/e12_general_sink_screening
+```
+
+The analysis writes outputs under:
+
+```text
+benchmark/partitioningE/bad-partitioning/ta/<model-name>/results_N/
+```
+
+For table regeneration from the released archived data, use Python 3.10 or
+newer:
 
 ```bash
 python3 scripts/generate_paper_tables.py --check

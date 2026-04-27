@@ -7,6 +7,7 @@ venv/
 .env.*
 results/tables/*.tmp
 src/llm_settings/llm_config.json
+benchmark/partitioningE/bad-partitioning/compile_commands*.json
 benchmark/partitioningE/bad-partitioning/ta/compile_commands*.json
 benchmark/partitioningE/bad-partitioning/ta/*/results_*/
 benchmark/partitioningE/bad-partitioning/ta/*/run_history.*

@@ -19,7 +19,33 @@ LLM API を再実行する完全な実行環境ではありません。API キ�
 
 ## 使い方
 
-Python 3.10 以降を想定しています。
+実行系は Docker/DevContainer 前提です。コンテナ内に libclang、Python依存関係、`llm_config` が入ります。
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up -d --build
+docker exec -it tee-bad-partitioning-llm-artifact_devcontainer-latte-dev-1 bash
+```
+
+コンテナ内で以下を実行します。
+
+```bash
+cd /workspace
+cp src/llm_settings/llm_config.example.json src/llm_settings/llm_config.json
+llm_config configure openai
+llm_config set openai
+
+python3 src/main.py \
+    -p benchmark/partitioningE/bad-partitioning \
+    --prompt-version experiments/e12_general_sink_screening
+```
+
+解析結果は次に出力されます。
+
+```text
+benchmark/partitioningE/bad-partitioning/ta/<model-name>/results_N/
+```
+
+公開済みの集計済みデータから表だけを再生成する場合は、Python 3.10 以降で次を実行します。
 
 ```bash
 python3 scripts/generate_paper_tables.py --check

@@ -18,6 +18,13 @@
 
 元の実験では `.devcontainer/` と `docker/` の Docker/DevContainer 環境を使いました。
 
+コンテナは次のように起動します。
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up -d --build
+docker exec -it tee-bad-partitioning-llm-artifact_devcontainer-latte-dev-1 bash
+```
+
 コンテナ内では `llm_config` が使えます。ローカル環境では次のように実行できます。
 
 ```bash
@@ -30,6 +37,9 @@ PYTHONPATH=src python3 -m llm_settings.llm_cli test
 
 メイン解析器は libclang を使います。Dockerfile では LLVM/libclang 18 と
 `python3-clang-18` を入れているため、再現性を重視する場合はコンテナ利用が前提です。
+
+この compact artifact には完全な OP-TEE dev kit は含めていません。代わりに、公開ベンチマークを巨大なビルドツリーなしでパースできるよう、
+`benchmark/partitioningE/bad-partitioning/ta/include/` に最小ヘッダスタブを入れています。`make clean` 時に `TA_DEV_KIT_DIR` が見つからない警告が出るのは、この compact 構成では想定内です。
 
 ## LLM 設定
 
@@ -59,6 +69,10 @@ python3 src/main.py \
     -p benchmark/partitioningE/bad-partitioning \
     --prompt-version experiments/e12_general_sink_screening
 ```
+
+公開コンテナでの動作確認では、このコマンドが全フェーズを完走し、
+`ta_phase12.json`, `ta_sinks.json`, `ta_candidate_flows.json`,
+`ta_vulnerabilities.json`, `ta_vulnerability_report.html`, `time.txt` が生成されました。
 
 プロンプト改良実験では、`--prompt-version` を適宜変更します。
 
