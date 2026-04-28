@@ -16,8 +16,12 @@ This directory contains scripts for aggregating all `results_*` runs of one mode
     - supported vulnerability formats:
       - original format: `vulnerabilities` + `structural_risks`
       - processed format: `merged_by_line` (line-key merged JSON)
-  - taint/sanitizer detections extracted from conversation logs
-    - supported filenames: `conversations.jsonl`, `ta_conversations.jsonl`, `conversations.json`, `ta_conversations.json`
+
+Taint-propagation and sanitizer-recognition scoring is optional legacy
+functionality. The current paper artifact does not include those labels, so the
+default run computes vulnerability, DITING complementarity, and coverage metrics
+only. Provide `--labels-dir` only if you intentionally restore that optional
+label set.
 
 ## Usage
 
@@ -85,8 +89,8 @@ python3 /workspace/bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py 
 
 ## Optional SCIS comparison
 
-SCIS comparison is disabled by default in actual evaluation.
-Enable it only when needed:
+SCIS comparison is disabled by default and is not included in the current paper
+artifact. Enable it only if you have the external baseline files locally:
 
 ```bash
 python3 /workspace/bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \

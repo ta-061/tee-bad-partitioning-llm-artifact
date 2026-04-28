@@ -344,10 +344,15 @@ def main() -> int:
     )
     parser.add_argument("--required-runs", type=int, default=5, help="Consensus window size (latest N runs).")
     parser.add_argument("--min-votes", type=int, default=3, help="Minimum votes for consensus inclusion.")
-    parser.add_argument("--sanitizer-tolerance", type=int, default=2, help="Line tolerance for sanitizer matching.")
+    parser.add_argument("--sanitizer-tolerance", type=int, default=2, help="Line tolerance for optional sanitizer matching.")
     parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GT, help="Ground truth labels CSV.")
     parser.add_argument("--partial-match", type=Path, default=DEFAULT_PARTIAL, help="Partial match mapping CSV.")
-    parser.add_argument("--labels-dir", type=Path, default=DEFAULT_LABELS, help="Taint/sanitizer labels directory.")
+    parser.add_argument(
+        "--labels-dir",
+        type=Path,
+        default=None,
+        help="Optional taint/sanitizer labels directory. If omitted, only vulnerability and coverage metrics are computed.",
+    )
     parser.add_argument(
         "--no-group-merge",
         action="store_true",
@@ -401,7 +406,8 @@ def main() -> int:
         raise FileNotFoundError(f"model root not found: {model_root}")
     if not args.ground_truth.exists():
         raise FileNotFoundError(f"ground truth not found: {args.ground_truth}")
-    if not args.labels_dir.exists():
+    taint_eval_enabled = args.labels_dir is not None
+    if taint_eval_enabled and not args.labels_dir.exists():
         raise FileNotFoundError(f"labels dir not found: {args.labels_dir}")
 
     if not _is_model_root_target(model_root):
@@ -433,14 +439,10 @@ def main() -> int:
                 str(args.required_runs),
                 "--min-votes",
                 str(args.min_votes),
-                "--sanitizer-tolerance",
-                str(args.sanitizer_tolerance),
                 "--ground-truth",
                 str(args.ground_truth),
                 "--partial-match",
                 str(args.partial_match),
-                "--labels-dir",
-                str(args.labels_dir),
                 "--diting-csv",
                 str(args.diting_csv),
                 "--diting-projects",
@@ -448,6 +450,9 @@ def main() -> int:
                 "--output-dir",
                 str(child_output),
             ]
+            if taint_eval_enabled:
+                cmd.extend(["--labels-dir", str(args.labels_dir)])
+                cmd.extend(["--sanitizer-tolerance", str(args.sanitizer_tolerance)])
             if args.no_group_merge:
                 cmd.append("--no-group-merge")
             if args.no_diting:
@@ -526,7 +531,10 @@ def main() -> int:
 
     for run_index, run_dir in result_dirs:
         vuln_path = resolve_vulnerabilities_path(run_dir)
-        conv_path = resolve_conversations_path(run_dir)
+        try:
+            conv_path = resolve_conversations_path(run_dir)
+        except FileNotFoundError:
+            conv_path = Path("")
 
         vuln_eval = build_vulnerability_eval(
             vuln_path,
@@ -534,60 +542,69 @@ def main() -> int:
             partial_map=partial_map,
             canonical_pair_map=group_canonical_map,
         )
-        ts_eval = build_taint_sanitizer_eval(conv_path, args.labels_dir, sanitizer_tolerance=args.sanitizer_tolerance)
+        ts_eval = None
+        if taint_eval_enabled:
+            if not conv_path:
+                raise FileNotFoundError(f"conversations jsonl not found: {run_dir}")
+            ts_eval = build_taint_sanitizer_eval(conv_path, args.labels_dir, sanitizer_tolerance=args.sanitizer_tolerance)
 
         run_name = run_dir.name
         run_labels.append(run_name)
         run_pred_pairs.append(vuln_eval["pred_pairs"])
         run_pred_lines_all.append(vuln_eval["pred_lines_all"])
-        run_detected_taints.append(ts_eval["detected_taints"])
-        run_detected_sanitizers.append(ts_eval["detected_sanitizers"])
+        if taint_eval_enabled and ts_eval is not None:
+            run_detected_taints.append(ts_eval["detected_taints"])
+            run_detected_sanitizers.append(ts_eval["detected_sanitizers"])
         coverage = summarize_candidate_flow_coverage(run_dir, gt_meta)
         run_coverages.append(coverage)
 
-        per_run_rows.append(
-            {
-                "run_name": run_name,
-                "run_index": run_index,
-                "vulnerability_json": str(vuln_path),
-                "conversations_jsonl": str(conv_path),
-                "strict_tp": vuln_eval["strict_metrics"]["tp"],
-                "strict_fp": vuln_eval["strict_metrics"]["fp"],
-                "strict_fn": vuln_eval["strict_metrics"]["fn"],
-                "strict_precision": to4(vuln_eval["strict_metrics"]["precision"]),
-                "strict_recall": to4(vuln_eval["strict_metrics"]["recall"]),
-                "strict_f1": to4(vuln_eval["strict_metrics"]["f1"]),
-                "line_tp": vuln_eval["line_metrics"]["tp"],
-                "line_fp": vuln_eval["line_metrics"]["fp"],
-                "line_fn": vuln_eval["line_metrics"]["fn"],
-                "line_precision": to4(vuln_eval["line_metrics"]["precision"]),
-                "line_recall": to4(vuln_eval["line_metrics"]["recall"]),
-                "line_f1": to4(vuln_eval["line_metrics"]["f1"]),
-                "taint_tp": ts_eval["taint_metrics"]["tp"],
-                "taint_fp": ts_eval["taint_metrics"]["fp"],
-                "taint_fn": ts_eval["taint_metrics"]["fn"],
-                "taint_precision": to4(ts_eval["taint_metrics"]["precision"]),
-                "taint_recall": to4(ts_eval["taint_metrics"]["recall"]),
-                "taint_f1": to4(ts_eval["taint_metrics"]["f1"]),
-                "sanitizer_tp": ts_eval["sanitizer_metrics"]["tp"],
-                "sanitizer_fp": ts_eval["sanitizer_metrics"]["fp"],
-                "sanitizer_fn": ts_eval["sanitizer_metrics"]["fn"],
-                "sanitizer_precision": to4(ts_eval["sanitizer_metrics"]["precision"]),
-                "sanitizer_recall": to4(ts_eval["sanitizer_metrics"]["recall"]),
-                "sanitizer_f1": to4(ts_eval["sanitizer_metrics"]["f1"]),
-                "phase3_profile_inferred": coverage["phase3_profile_inferred"],
-                "phase3_profile_source": coverage["phase3_profile_source"],
-                "analysis_mode": coverage["analysis_mode"] or "",
-                "coverage_available": int(bool(coverage["coverage_available"])),
-                "missing_artifacts": ",".join(coverage["missing_artifacts"]),
-                "sink_count": coverage["sink_count"],
-                "chain_count": coverage["chain_count"],
-                "covered_gt_line_count": coverage["covered_gt_line_count"],
-                "gt_total_line_count": coverage["gt_total_line_count"],
-                "coverage_percent": coverage["coverage_percent"],
-                "uncovered_functions": ",".join(coverage["uncovered_functions"]),
-            }
-        )
+        per_run_row = {
+            "run_name": run_name,
+            "run_index": run_index,
+            "vulnerability_json": str(vuln_path),
+            "conversations_jsonl": str(conv_path) if conv_path else "",
+            "strict_tp": vuln_eval["strict_metrics"]["tp"],
+            "strict_fp": vuln_eval["strict_metrics"]["fp"],
+            "strict_fn": vuln_eval["strict_metrics"]["fn"],
+            "strict_precision": to4(vuln_eval["strict_metrics"]["precision"]),
+            "strict_recall": to4(vuln_eval["strict_metrics"]["recall"]),
+            "strict_f1": to4(vuln_eval["strict_metrics"]["f1"]),
+            "line_tp": vuln_eval["line_metrics"]["tp"],
+            "line_fp": vuln_eval["line_metrics"]["fp"],
+            "line_fn": vuln_eval["line_metrics"]["fn"],
+            "line_precision": to4(vuln_eval["line_metrics"]["precision"]),
+            "line_recall": to4(vuln_eval["line_metrics"]["recall"]),
+            "line_f1": to4(vuln_eval["line_metrics"]["f1"]),
+            "phase3_profile_inferred": coverage["phase3_profile_inferred"],
+            "phase3_profile_source": coverage["phase3_profile_source"],
+            "analysis_mode": coverage["analysis_mode"] or "",
+            "coverage_available": int(bool(coverage["coverage_available"])),
+            "missing_artifacts": ",".join(coverage["missing_artifacts"]),
+            "sink_count": coverage["sink_count"],
+            "chain_count": coverage["chain_count"],
+            "covered_gt_line_count": coverage["covered_gt_line_count"],
+            "gt_total_line_count": coverage["gt_total_line_count"],
+            "coverage_percent": coverage["coverage_percent"],
+            "uncovered_functions": ",".join(coverage["uncovered_functions"]),
+        }
+        if taint_eval_enabled and ts_eval is not None:
+            per_run_row.update(
+                {
+                    "taint_tp": ts_eval["taint_metrics"]["tp"],
+                    "taint_fp": ts_eval["taint_metrics"]["fp"],
+                    "taint_fn": ts_eval["taint_metrics"]["fn"],
+                    "taint_precision": to4(ts_eval["taint_metrics"]["precision"]),
+                    "taint_recall": to4(ts_eval["taint_metrics"]["recall"]),
+                    "taint_f1": to4(ts_eval["taint_metrics"]["f1"]),
+                    "sanitizer_tp": ts_eval["sanitizer_metrics"]["tp"],
+                    "sanitizer_fp": ts_eval["sanitizer_metrics"]["fp"],
+                    "sanitizer_fn": ts_eval["sanitizer_metrics"]["fn"],
+                    "sanitizer_precision": to4(ts_eval["sanitizer_metrics"]["precision"]),
+                    "sanitizer_recall": to4(ts_eval["sanitizer_metrics"]["recall"]),
+                    "sanitizer_f1": to4(ts_eval["sanitizer_metrics"]["f1"]),
+                }
+            )
+        per_run_rows.append(per_run_row)
 
     per_run_csv = output_dir / "per_run_metrics.csv"
     write_csv(
@@ -609,18 +626,6 @@ def main() -> int:
             "line_precision",
             "line_recall",
             "line_f1",
-            "taint_tp",
-            "taint_fp",
-            "taint_fn",
-            "taint_precision",
-            "taint_recall",
-            "taint_f1",
-            "sanitizer_tp",
-            "sanitizer_fp",
-            "sanitizer_fn",
-            "sanitizer_precision",
-            "sanitizer_recall",
-            "sanitizer_f1",
             "phase3_profile_inferred",
             "phase3_profile_source",
             "analysis_mode",
@@ -632,7 +637,25 @@ def main() -> int:
             "gt_total_line_count",
             "coverage_percent",
             "uncovered_functions",
-        ],
+        ]
+        + (
+            [
+                "taint_tp",
+                "taint_fp",
+                "taint_fn",
+                "taint_precision",
+                "taint_recall",
+                "taint_f1",
+                "sanitizer_tp",
+                "sanitizer_fp",
+                "sanitizer_fn",
+                "sanitizer_precision",
+                "sanitizer_recall",
+                "sanitizer_f1",
+            ]
+            if taint_eval_enabled
+            else []
+        ),
         rows=per_run_rows,
     )
 
@@ -688,8 +711,8 @@ def main() -> int:
     selected_indices = list(range(total_runs - consensus_window, total_runs))
     selected_pairs = [run_pred_pairs[i] for i in selected_indices]
     selected_lines = [run_pred_lines_all[i] for i in selected_indices]
-    selected_taints = [run_detected_taints[i] for i in selected_indices]
-    selected_sanitizers = [run_detected_sanitizers[i] for i in selected_indices]
+    selected_taints = [run_detected_taints[i] for i in selected_indices] if taint_eval_enabled else []
+    selected_sanitizers = [run_detected_sanitizers[i] for i in selected_indices] if taint_eval_enabled else []
     selected_names = [run_labels[i] for i in selected_indices]
     selected_per_run_rows = [per_run_rows[i] for i in selected_indices]
     selected_coverages = [run_coverages[i] for i in selected_indices]
@@ -739,16 +762,19 @@ def main() -> int:
     consensus_line_metrics = line_metrics_from_lines(consensus_lines, gt_pairs)
     consensus_category_metrics = per_category_metrics(consensus_pairs, gt_pairs)
 
-    expected_taints = load_taint_expected(args.labels_dir)
-    expected_sanitizers = load_sanitizer_expected(args.labels_dir)
-    consensus_detected_taints = build_consensus_taints(selected_taints, min_votes=effective_min_votes)
-    consensus_detected_sanitizers = build_consensus_sanitizers(selected_sanitizers, min_votes=effective_min_votes)
-    consensus_taint_metrics = evaluate_taint(expected_taints, consensus_detected_taints)
-    consensus_sanitizer_metrics = evaluate_sanitizer(
-        expected_sanitizers,
-        consensus_detected_sanitizers,
-        tolerance=args.sanitizer_tolerance,
-    )
+    consensus_taint_metrics = None
+    consensus_sanitizer_metrics = None
+    if taint_eval_enabled:
+        expected_taints = load_taint_expected(args.labels_dir)
+        expected_sanitizers = load_sanitizer_expected(args.labels_dir)
+        consensus_detected_taints = build_consensus_taints(selected_taints, min_votes=effective_min_votes)
+        consensus_detected_sanitizers = build_consensus_sanitizers(selected_sanitizers, min_votes=effective_min_votes)
+        consensus_taint_metrics = evaluate_taint(expected_taints, consensus_detected_taints)
+        consensus_sanitizer_metrics = evaluate_sanitizer(
+            expected_sanitizers,
+            consensus_detected_sanitizers,
+            tolerance=args.sanitizer_tolerance,
+        )
 
     strict_f1_values = [float(row["strict_f1"]) for row in selected_per_run_rows]
     run_stability = {
@@ -1178,25 +1204,30 @@ def main() -> int:
             "line_hit_category_precision": _line_hit_category_precision(consensus_strict_metrics, consensus_line_metrics),
         },
         "vulnerability_by_category": _category_block(consensus_category_metrics),
-        "taint_propagation": {
-            "tp": consensus_taint_metrics["tp"],
-            "fp": consensus_taint_metrics["fp"],
-            "fn": consensus_taint_metrics["fn"],
-            "expected_count": consensus_taint_metrics["expected_count"],
-            "precision": to4(consensus_taint_metrics["precision"]),
-            "recall": to4(consensus_taint_metrics["recall"]),
-            "f1": to4(consensus_taint_metrics["f1"]),
-        },
-        "sanitizer_recognition": {
-            "tp": consensus_sanitizer_metrics["tp"],
-            "fp": consensus_sanitizer_metrics["fp"],
-            "fn": consensus_sanitizer_metrics["fn"],
-            "expected_count": consensus_sanitizer_metrics["expected_count"],
-            "precision": to4(consensus_sanitizer_metrics["precision"]),
-            "recall": to4(consensus_sanitizer_metrics["recall"]),
-            "f1": to4(consensus_sanitizer_metrics["f1"]),
-        },
     }
+    if taint_eval_enabled and consensus_taint_metrics is not None and consensus_sanitizer_metrics is not None:
+        target_scores.update(
+            {
+                "taint_propagation": {
+                    "tp": consensus_taint_metrics["tp"],
+                    "fp": consensus_taint_metrics["fp"],
+                    "fn": consensus_taint_metrics["fn"],
+                    "expected_count": consensus_taint_metrics["expected_count"],
+                    "precision": to4(consensus_taint_metrics["precision"]),
+                    "recall": to4(consensus_taint_metrics["recall"]),
+                    "f1": to4(consensus_taint_metrics["f1"]),
+                },
+                "sanitizer_recognition": {
+                    "tp": consensus_sanitizer_metrics["tp"],
+                    "fp": consensus_sanitizer_metrics["fp"],
+                    "fn": consensus_sanitizer_metrics["fn"],
+                    "expected_count": consensus_sanitizer_metrics["expected_count"],
+                    "precision": to4(consensus_sanitizer_metrics["precision"]),
+                    "recall": to4(consensus_sanitizer_metrics["recall"]),
+                    "f1": to4(consensus_sanitizer_metrics["f1"]),
+                },
+            }
+        )
 
     diff_vs_scis: Dict[str, Any] = {"enabled": False}
     scis_scores: Dict[str, Any] = {}
@@ -1212,8 +1243,6 @@ def main() -> int:
             partial_map=partial_map,
             canonical_pair_map=group_canonical_map,
         )
-        scis_ts = build_taint_sanitizer_eval(args.scis_conversations, args.labels_dir, sanitizer_tolerance=args.sanitizer_tolerance)
-
         scis_scores = {
             "source": {
                 "vulnerability_json": str(args.scis_vuln),
@@ -1225,25 +1254,35 @@ def main() -> int:
                 "line_hit_category_precision": _line_hit_category_precision(scis_v["strict_metrics"], scis_v["line_metrics"]),
             },
             "vulnerability_by_category": _category_block(scis_v["category_metrics"]),
-            "taint_propagation": {
-                "tp": scis_ts["taint_metrics"]["tp"],
-                "fp": scis_ts["taint_metrics"]["fp"],
-                "fn": scis_ts["taint_metrics"]["fn"],
-                "expected_count": scis_ts["taint_metrics"]["expected_count"],
-                "precision": to4(scis_ts["taint_metrics"]["precision"]),
-                "recall": to4(scis_ts["taint_metrics"]["recall"]),
-                "f1": to4(scis_ts["taint_metrics"]["f1"]),
-            },
-            "sanitizer_recognition": {
-                "tp": scis_ts["sanitizer_metrics"]["tp"],
-                "fp": scis_ts["sanitizer_metrics"]["fp"],
-                "fn": scis_ts["sanitizer_metrics"]["fn"],
-                "expected_count": scis_ts["sanitizer_metrics"]["expected_count"],
-                "precision": to4(scis_ts["sanitizer_metrics"]["precision"]),
-                "recall": to4(scis_ts["sanitizer_metrics"]["recall"]),
-                "f1": to4(scis_ts["sanitizer_metrics"]["f1"]),
-            },
         }
+        if taint_eval_enabled:
+            scis_ts = build_taint_sanitizer_eval(
+                args.scis_conversations,
+                args.labels_dir,
+                sanitizer_tolerance=args.sanitizer_tolerance,
+            )
+            scis_scores.update(
+                {
+                    "taint_propagation": {
+                        "tp": scis_ts["taint_metrics"]["tp"],
+                        "fp": scis_ts["taint_metrics"]["fp"],
+                        "fn": scis_ts["taint_metrics"]["fn"],
+                        "expected_count": scis_ts["taint_metrics"]["expected_count"],
+                        "precision": to4(scis_ts["taint_metrics"]["precision"]),
+                        "recall": to4(scis_ts["taint_metrics"]["recall"]),
+                        "f1": to4(scis_ts["taint_metrics"]["f1"]),
+                    },
+                    "sanitizer_recognition": {
+                        "tp": scis_ts["sanitizer_metrics"]["tp"],
+                        "fp": scis_ts["sanitizer_metrics"]["fp"],
+                        "fn": scis_ts["sanitizer_metrics"]["fn"],
+                        "expected_count": scis_ts["sanitizer_metrics"]["expected_count"],
+                        "precision": to4(scis_ts["sanitizer_metrics"]["precision"]),
+                        "recall": to4(scis_ts["sanitizer_metrics"]["recall"]),
+                        "f1": to4(scis_ts["sanitizer_metrics"]["f1"]),
+                    },
+                }
+            )
 
         category_delta: Dict[str, Dict[str, Any]] = {}
         target_cat = target_scores["vulnerability_by_category"]
@@ -1274,14 +1313,6 @@ def main() -> int:
                 ),
             },
             "vulnerability_by_category": category_delta,
-            "taint_propagation": _delta_metric_block(
-                target_scores["taint_propagation"],
-                scis_scores["taint_propagation"],
-            ),
-            "sanitizer_recognition": _delta_metric_block(
-                target_scores["sanitizer_recognition"],
-                scis_scores["sanitizer_recognition"],
-            ),
             "diagnostics": {
                 "scis_strict_tp_observed": scis_scores["vulnerability_all"]["strict_line_category"]["tp"],
                 "scis_strict_fp_observed": scis_scores["vulnerability_all"]["strict_line_category"]["fp"],
@@ -1290,6 +1321,19 @@ def main() -> int:
                 "ground_truth_pairs_missed_but_line_detected": scis_missed_line_hit,
             },
         }
+        if taint_eval_enabled:
+            diff_vs_scis.update(
+                {
+                    "taint_propagation": _delta_metric_block(
+                        target_scores["taint_propagation"],
+                        scis_scores["taint_propagation"],
+                    ),
+                    "sanitizer_recognition": _delta_metric_block(
+                        target_scores["sanitizer_recognition"],
+                        scis_scores["sanitizer_recognition"],
+                    ),
+                }
+            )
 
     summary = {
         "model_root": str(model_root),
@@ -1299,12 +1343,11 @@ def main() -> int:
             "min_votes": args.min_votes,
             "effective_consensus_window": consensus_window,
             "effective_min_votes": effective_min_votes,
-            "sanitizer_tolerance": args.sanitizer_tolerance,
             "ground_truth": str(args.ground_truth),
             "partial_match": str(args.partial_match),
             "group_merge_enabled": not args.no_group_merge,
             "group_merge_pair_mappings": len(group_canonical_map),
-            "labels_dir": str(args.labels_dir),
+            "taint_sanitizer_eval_enabled": taint_eval_enabled,
             "diting_csv": str(args.diting_csv),
             "diting_projects": args.diting_projects,
             "diting_enabled": diting_enabled,
@@ -1341,6 +1384,7 @@ def main() -> int:
             "partial_match_lines": "Detected Line -> Related Ground Truth Line is applied only when category also matches",
             "group_merge_rule": "Predictions are canonicalized by manual equivalent GT-line mapping (e.g., 238->223, 290->286).",
             "actual_evaluation_scis_note": "SCIS comparison is disabled by default; enable via --with-scis.",
+            "taint_sanitizer_note": "Taint propagation and sanitizer-recognition scoring is optional and disabled unless --labels-dir is provided.",
             "diting_note": "DITING complementarity compares consensus LLM vs DITING answers on same GT using strict(line+category-set) and line-only.",
             "run_stability_note": "strict_f1 range is computed over the runs used for consensus; strict_jaccard is the mean/min/max pairwise Jaccard similarity over predicted (line, category) sets; line_only_jaccard is the mean/min/max pairwise Jaccard similarity over predicted line sets from those runs.",
         },
@@ -1348,6 +1392,9 @@ def main() -> int:
         "diff_vs_scis": diff_vs_scis,
         "diting_complementarity": diting_complementarity,
     }
+    if taint_eval_enabled:
+        summary["config"]["labels_dir"] = str(args.labels_dir)
+        summary["config"]["sanitizer_tolerance"] = args.sanitizer_tolerance
 
     summary_path = output_dir / "summary.json"
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -19,6 +19,7 @@ analysis:
 - consensus evaluation outputs for nine LLMs,
 - the TEE Flow Inspector implementation used to produce the outputs,
 - scripts to regenerate the main tables from the released JSON/CSV files.
+- SQLite snapshots and clean Markdown summaries of the final aggregate tables.
 
 The Docker/DevContainer runtime can rerun the LLM analysis, but rerunning it
 requires a valid API key for the selected LLM provider. The archived LLM outputs
@@ -45,14 +46,17 @@ configs/                      # paper model matrix and safe config references
 data/
   actual_evaluation/e12_5runs/ # five-run consensus evaluation for nine models
   prompt_ablation/             # e-series prompt-refinement experiments and raw runs
+  derived_databases/            # SQLite snapshots used for inspection
 
 scripts/
   generate_paper_tables.py     # regenerates CSV/Markdown tables
 
 results/
   tables/                      # regenerated tables written by the script
+  source_tables/               # clean Markdown copies of aggregate tables
 
 docs/
+  artifact_inventory.md
   reproduction.md
   data_format.md
   system_execution.md
@@ -123,6 +127,13 @@ The main outputs are:
 - `results/tables/prompt_refinement.csv`
 - `results/tables/paper_tables.md`
 
+Additional inspection artifacts are:
+
+- `data/derived_databases/consensus_results_e12_5runs.db`
+- `data/derived_databases/chain_coverage_e12_5runs.db`
+- `results/source_tables/generated_results_tables_e12_5runs.md`
+- `results/source_tables/generated_prompt_ablation_tables.md`
+
 ## What Can Be Reproduced
 
 The script regenerates the paper-level tables for:
@@ -156,6 +167,8 @@ template.
 
 See [docs/publishing.md](docs/publishing.md) for the pre-publication checklist.
 See [docs/system_execution.md](docs/system_execution.md) for runtime commands.
+See [docs/artifact_inventory.md](docs/artifact_inventory.md) for what is kept
+and what is intentionally excluded.
 
 ## License
 

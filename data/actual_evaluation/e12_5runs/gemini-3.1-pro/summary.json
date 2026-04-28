@@ -6,12 +6,10 @@
     "min_votes": 3,
     "effective_consensus_window": 5,
     "effective_min_votes": 3,
-    "sanitizer_tolerance": 2,
     "ground_truth": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv",
     "partial_match": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv",
     "group_merge_enabled": true,
     "group_merge_pair_mappings": 0,
-    "labels_dir": "<SOURCE_REPO>/bad-partitioning-ta_groundtruth_labels/flow_labels/taint_sanitizer_labels",
     "diting_csv": "<SOURCE_REPO>/src/metrics/DITING_ans.csv",
     "diting_projects": "bad-partitioning,badpartitioning",
     "diting_enabled": true
@@ -674,7 +672,6 @@
     "line_hit_category_precision": "strict_tp / line_tp",
     "partial_match_lines": "Detected Line -> Related Ground Truth Line is applied only when category also matches",
     "group_merge_rule": "Predictions are canonicalized by manual equivalent GT-line mapping (e.g., 238->223, 290->286).",
-    "actual_evaluation_scis_note": "SCIS comparison is disabled by default; enable via --with-scis.",
     "diting_note": "DITING complementarity compares consensus LLM vs DITING answers on same GT using strict(line+category-set) and line-only.",
     "run_stability_note": "strict_f1 range is computed over the runs used for consensus; strict_jaccard is the mean/min/max pairwise Jaccard similarity over predicted (line, category) sets; line_only_jaccard is the mean/min/max pairwise Jaccard similarity over predicted line sets from those runs."
   },
@@ -731,28 +728,7 @@
         "recall": 0.6667,
         "f1": 0.6667
       }
-    },
-    "taint_propagation": {
-      "tp": 42,
-      "fp": 15,
-      "fn": 5,
-      "expected_count": 47,
-      "precision": 0.7368,
-      "recall": 0.8936,
-      "f1": 0.8077
-    },
-    "sanitizer_recognition": {
-      "tp": 7,
-      "fp": 2,
-      "fn": 10,
-      "expected_count": 17,
-      "precision": 0.7778,
-      "recall": 0.4118,
-      "f1": 0.5385
     }
-  },
-  "diff_vs_scis": {
-    "enabled": false
   },
   "diting_complementarity": {
     "enabled": true,

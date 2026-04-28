@@ -3,17 +3,11 @@
     "vulnerability_json": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e04_udo_tiebreak_line_grouped/results_1/ta_vulnerabilities.json",
     "conversations_jsonl": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e04_udo_tiebreak_line_grouped/results_1/conversations.jsonl"
   },
-  "scis_baseline": {
-    "vulnerability_json": "<ANALYSIS_WORKSPACE>/SCIS2026-bad-partitioning-ta_LLMs_output/gpt5-mini-bad-partitioning/gpt-5-mini-ta_vulnerabilities.json",
-    "conversations_jsonl": "<ANALYSIS_WORKSPACE>/SCIS2026-bad-partitioning-ta_LLMs_output/gpt5-mini-bad-partitioning/gpt-5-mini-conversations.jsonl"
-  },
   "gold_labels": {
     "category_ground_truth": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv",
-    "partial_match": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv",
-    "taint_sanitizer_labels_dir": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/flow_labels/taint_sanitizer_labels"
+    "partial_match": "<ANALYSIS_WORKSPACE>/bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv"
   },
   "config": {
-    "sanitizer_tolerance": 2,
     "group_merge_enabled": true,
     "group_merge_pair_mappings": 0,
     "diting_csv": "<ANALYSIS_WORKSPACE>/src/metrics/DITING_ans.csv",
@@ -29,15 +23,11 @@
   },
   "verdict": {
     "strict_line_category_f1": "improved",
-    "line_f1": "regressed",
-    "taint_f1": "improved",
-    "sanitizer_f1": "regressed"
+    "line_f1": "regressed"
   },
   "delta": {
     "strict_line_category_f1": 0.0669,
-    "line_f1": -0.012,
-    "taint_f1": 0.0066,
-    "sanitizer_f1": -0.1078
+    "line_f1": -0.012
   },
   "coverage": {
     "results_dir": "<ANALYSIS_WORKSPACE>/benchmark/partitioningE/bad-partitioning/ta/experiments/e04_udo_tiebreak_line_grouped/results_1",
@@ -208,97 +198,6 @@
         "recall": 0.5238,
         "f1": 0.5946
       }
-    },
-    "taint": {
-      "tp": 41,
-      "fp": 45,
-      "fn": 6,
-      "expected_count": 47,
-      "precision": 0.4767,
-      "recall": 0.8723,
-      "f1": 0.6165
-    },
-    "sanitizer": {
-      "tp": 6,
-      "fp": 9,
-      "fn": 11,
-      "expected_count": 17,
-      "precision": 0.4,
-      "recall": 0.3529,
-      "f1": 0.375
-    }
-  },
-  "scis_metrics": {
-    "vulnerability_all": {
-      "strict_line_category": {
-        "tp": 24,
-        "fp": 24,
-        "fn": 51,
-        "pred_count": 48,
-        "gt_count": 75,
-        "precision": 0.5,
-        "recall": 0.32,
-        "f1": 0.3902
-      },
-      "line_only": {
-        "tp": 35,
-        "fp": 13,
-        "fn": 40,
-        "pred_count": 48,
-        "gt_count": 75,
-        "precision": 0.7292,
-        "recall": 0.4667,
-        "f1": 0.5691
-      },
-      "line_hit_category_precision": {
-        "value": 0.6857,
-        "strict_tp": 24,
-        "line_tp": 35
-      }
-    },
-    "vulnerability_by_category": {
-      "direct_usage_of_shared_memory": {
-        "tp": 0,
-        "fp": 2,
-        "fn": 26,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
-      },
-      "input_validation_weakness": {
-        "tp": 10,
-        "fp": 13,
-        "fn": 18,
-        "precision": 0.4348,
-        "recall": 0.3571,
-        "f1": 0.3922
-      },
-      "unencrypted_data_output": {
-        "tp": 14,
-        "fp": 7,
-        "fn": 7,
-        "precision": 0.6667,
-        "recall": 0.6667,
-        "f1": 0.6667
-      }
-    },
-    "taint": {
-      "tp": 43,
-      "fp": 51,
-      "fn": 4,
-      "expected_count": 47,
-      "precision": 0.4574,
-      "recall": 0.9149,
-      "f1": 0.6099
-    },
-    "sanitizer": {
-      "tp": 7,
-      "fp": 5,
-      "fn": 10,
-      "expected_count": 17,
-      "precision": 0.5833,
-      "recall": 0.4118,
-      "f1": 0.4828
     }
   },
   "diting_complementarity": {

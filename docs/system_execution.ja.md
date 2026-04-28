@@ -8,9 +8,8 @@
 - `rules/`: ルール定義と DITING/CodeQL クエリ
 - `prompts/`: e 系列プロンプト
 - `benchmark/partitioningE/bad-partitioning/`: 実行コマンド用の最小ベンチマークパス
-- `bad-partitioning-ta_groundtruth_labels/`: 正解ラベルと taint/sanitizer ラベル
+- `bad-partitioning-ta_groundtruth_labels/`: 脆弱性評価と coverage 評価に必要な正解ラベル・candidate-flow ラベル
 - `bad-partitiont-ta_actual_evaluation/`: 実評価集計スクリプト
-- `bad-partitiont-ta_pronpt_renovation/`: プロンプト改良評価スクリプト
 
 巨大な OP-TEE ビルド生成物や CodeQL DB は除外しています。
 
@@ -108,12 +107,13 @@ python3 src/main.py \
 生の検出出力から多数決・正解ラベル評価を再計算するため、集計コマンドも必要です。
 公開済み表は `scripts/generate_paper_tables.py` で再生成できますが、実験時の集計経路は次の通りです。
 
+今回の公開 artifact では taint propagation / sanitizer recognition の評価は対象外にしたため、`--labels-dir` は不要です。将来その評価軸も必要な場合だけ、任意で label directory を指定します。
+
 ```bash
 BASE_DIR="benchmark/partitioningE/bad-partitioning/ta/e12"
 OUT_BASE="bad-partitiont-ta_actual_evaluation/e12_5runs"
 GT="bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv"
 PM="bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv"
-LABELS="bad-partitioning-ta_groundtruth_labels/flow_labels/taint_sanitizer_labels"
 DITING="src/metrics/DITING_ans.csv"
 
 for model_dir in "$BASE_DIR"/*; do
@@ -123,7 +123,6 @@ for model_dir in "$BASE_DIR"/*; do
         --no-group-merge \
         --ground-truth "$GT" \
         --partial-match "$PM" \
-        --labels-dir "$LABELS" \
         --diting-csv "$DITING" \
         --diting-projects "bad-partitioning" \
         --output-dir "$out_dir" \
@@ -139,3 +138,10 @@ python3 scripts/generate_paper_tables.py --check
 
 このスクリプトは `data/actual_evaluation/e12_5runs/` と
 `data/prompt_ablation/experiments/` を読みます。
+
+最終集計を直接確認するため、SQLite snapshot も残しています。
+
+```text
+data/derived_databases/consensus_results_e12_5runs.db
+data/derived_databases/chain_coverage_e12_5runs.db
+```

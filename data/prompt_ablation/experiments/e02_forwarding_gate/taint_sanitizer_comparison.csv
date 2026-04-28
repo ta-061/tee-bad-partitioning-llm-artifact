@@ -1,3 +1,0 @@
-target,current_tp,current_fp,current_fn,current_precision,current_recall,current_f1,scis_tp,scis_fp,scis_fn,scis_precision,scis_recall,scis_f1,delta_f1,verdict
-taint,41,37,6,0.5256,0.8723,0.656,43,51,4,0.4574,0.9149,0.6099,0.0461,improved
-sanitizer,6,5,11,0.5455,0.3529,0.4286,7,5,10,0.5833,0.4118,0.4828,-0.0542,regressed

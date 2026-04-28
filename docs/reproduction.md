@@ -47,7 +47,7 @@ The script also reads coverage information embedded in the summary JSON files.
 
 ## Re-running LLM Calls
 
-This artifact does not include credentials or runtime configuration for
-re-running LLM API calls. The released data are the archived outputs used for
-the paper-level aggregation. This design keeps the public repository small and
-avoids publishing private API configuration.
+The Docker/DevContainer runtime can rerun `src/main.py`, but fresh LLM calls
+require a valid API key for the selected provider. See
+`docs/system_execution.md` for the runtime command. Table regeneration from the
+released aggregate data does not require an API key.

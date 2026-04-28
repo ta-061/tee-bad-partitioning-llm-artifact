@@ -30,6 +30,8 @@ model. Each model directory contains:
 - `diting_llm_gt_pair_breakdown.csv`: overlap on ground-truth labels
 
 The table-regeneration script reads `summary.json` and coverage fields.
+Taint-propagation and sanitizer-recognition evaluation fields are intentionally
+excluded from the paper-facing release.
 
 ## Prompt Ablation Data
 
@@ -38,6 +40,8 @@ The table-regeneration script reads `summary.json` and coverage fields.
 
 Each directory includes `summary.json`, category metrics, coverage information,
 and supporting CSV files.
+Legacy SCIS comparison files and taint/sanitizer comparison files are excluded
+because they are not used by the current paper tables.
 
 `data/prompt_ablation/raw_runs/` contains the corresponding one-run detector
 outputs for the e-series prompt experiments, including candidate flows, sinks,
@@ -46,6 +50,19 @@ vulnerability JSON, and prompt/response transcripts where archived.
 The `e09c_call_forwarding_plus_recal` directory preserves the spelling used in
 the archived evaluation output. The corresponding prompt directory is
 `prompts/e09c_call_forwarding_plus_recall/`.
+
+## Derived Databases and Tables
+
+`data/derived_databases/` contains SQLite snapshots for direct inspection:
+
+- `consensus_results_e12_5runs.db`: ground truth, DITING detections, model
+  metadata, and line/category consensus votes
+- `chain_coverage_e12_5runs.db`: per-run candidate-chain coverage and END review
+  rows
+
+`results/source_tables/` contains clean Markdown copies of the aggregate tables.
+They are generated from the released CSV summaries and exclude local workspace
+paths, private-note metadata, taint/sanitizer metrics, and legacy SCIS fields.
 
 ## Prompts
 

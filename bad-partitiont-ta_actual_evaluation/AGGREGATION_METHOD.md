@@ -1,11 +1,16 @@
 # 集計方法ドキュメント（Actual Evaluation）
 
+> Public artifact scope: this release uses vulnerability line/category metrics,
+> DITING complementarity, and candidate-chain coverage. Taint/sanitizer scoring
+> and SCIS comparison remain optional legacy paths in the script, but their
+> labels and derived outputs are not included in this repository.
+
 ## 1. 目的と対象
 - 目的: 1モデルの `results_*` 複数回実行を多数決で統合し、GT（正解ラベル）に対する最終性能を算出する。
 - 対象スクリプト: `run_actual_evaluation.py`（共通処理: `evaluation_common.py`）。
 - 主な比較軸:
   - LLM単体（consensus）
-  - LLM vs SCIS（任意、`--with-scis`）
+  - LLM vs SCIS（任意、`--with-scis`、この artifact では除外）
   - LLM vs DITING / LLM+DITING（既定で有効、CSVが存在する場合）
 
 ## 2. 入力データ
@@ -15,7 +20,7 @@
 - 正解データ
   - `ground_truth_labels.csv`（行・カテゴリGT）
   - `partial_match_lines.csv`（検出行→GT行の部分一致マップ）
-  - taint/sanitizer ラベルCSV群
+  - taint/sanitizer ラベルCSV群（任意。この artifact では除外）
 - 補助データ
   - DITING: `DITING_ans.csv`
   - SCIS（任意）: `--scis-vuln`, `--scis-conversations`

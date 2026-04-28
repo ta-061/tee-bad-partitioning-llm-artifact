@@ -36,4 +36,4 @@ results/tables/paper_tables.md
 
 ## LLM API の再実行について
 
-この artifact は LLM API の再実行環境ではありません。API キーや各サービスの設定は含めず、論文で使った出力 JSON/CSV を保存し、そこから集計値を再生成できるようにしています。
+Docker/DevContainer 環境では `src/main.py` を再実行できます。ただし、新しい LLM 呼び出しには選択した provider の有効な API キーが必要です。実行コマンドは `docs/system_execution.ja.md` にまとめています。公開済みの集計データから表を再生成するだけなら API キーは不要です。

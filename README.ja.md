@@ -14,6 +14,7 @@
 - 9 モデル、5 回実行、多数決後の評価データ
 - 出力生成に使った TEE Flow Inspector 実装
 - 論文中の主要表を再生成するスクリプト
+- 最終集計を確認するための SQLite `.db` と clean な Markdown 集計表
 
 Docker/DevContainer 環境では LLM 解析の再実行もできます。ただし、再実行には選択した LLM provider の有効な API キーが必要です。一方で、論文中の集計値を確認するだけなら、同梱済みの LLM 出力 JSON/CSV と集計スクリプトを使えるため、API キーは不要です。
 
@@ -75,6 +76,13 @@ results/tables/
 - `prompt_refinement.csv`
 - `paper_tables.md`
 
+追加の確認用 artifact:
+
+- `data/derived_databases/consensus_results_e12_5runs.db`
+- `data/derived_databases/chain_coverage_e12_5runs.db`
+- `results/source_tables/generated_results_tables_e12_5runs.md`
+- `results/source_tables/generated_prompt_ablation_tables.md`
+
 ## 公開時の注意
 
 元の作業ディレクトリには CodeQL DB、ビルド生成物、個人用メモ、キャッシュが含まれていました。この artifact では、それらを除外し、再現に必要なデータとスクリプトだけを残しています。
@@ -86,6 +94,8 @@ results/tables/
 公開前の確認手順は [docs/publishing.ja.md](docs/publishing.ja.md) にまとめています。
 
 システム本体の実行コマンドと集計コマンドは [docs/system_execution.ja.md](docs/system_execution.ja.md) にまとめています。
+
+何を含め、何を除外したかは [docs/artifact_inventory.md](docs/artifact_inventory.md) にまとめています。
 
 ## ライセンス
 
