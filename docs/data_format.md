@@ -33,6 +33,16 @@ The table-regeneration script reads `summary.json` and coverage fields.
 Taint-propagation and sanitizer-recognition evaluation fields are intentionally
 excluded from the paper-facing release.
 
+Important `summary.json` sections:
+
+- `target_scores.vulnerability_all.strict_line_category`: main line+category
+  metric used for model F1
+- `target_scores.vulnerability_all.line_hit_category_precision`: category
+  precision among line hits
+- `target_scores.vulnerability_by_category`: UDO, IVW, and DUS metrics
+- `diting_complementarity`: LLM-only, DITING-only, and union metrics
+- `coverage`: candidate-chain coverage used for `chain_coverage.csv`
+
 ## Prompt Ablation Data
 
 `data/prompt_ablation/experiments/` contains the e-series prompt versions from
@@ -59,6 +69,23 @@ the archived evaluation output. The corresponding prompt directory is
   metadata, and line/category consensus votes
 - `chain_coverage_e12_5runs.db`: per-run candidate-chain coverage and END review
   rows
+
+Main tables:
+
+```text
+consensus_results_e12_5runs.db
+  models
+  ground_truth
+  diting_detections
+  consensus_votes
+
+chain_coverage_e12_5runs.db
+  models
+  ground_truth
+  coverage_per_run
+  coverage_summary
+  end_reviews
+```
 
 `results/source_tables/` contains clean Markdown copies of the aggregate tables.
 They are generated from the released CSV summaries and exclude local workspace

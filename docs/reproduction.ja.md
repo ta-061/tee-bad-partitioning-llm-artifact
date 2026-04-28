@@ -26,6 +26,8 @@ results/tables/prompt_refinement.csv
 results/tables/paper_tables.md
 ```
 
+このコマンドは公開済みの `data/` だけを読みます。LLM API は呼ばず、Docker も不要です。
+
 ## 論文中の表との対応
 
 - 論文 Table I: `results/tables/main_metrics_and_union.csv`
@@ -33,6 +35,33 @@ results/tables/paper_tables.md
 - チェーンカバレッジ: `results/tables/chain_coverage.csv`
 - e 系列プロンプト改良の全結果: `results/tables/all_prompt_ablation.csv`
 - 論文 Table II: `results/tables/prompt_refinement.csv`
+
+## データの確認
+
+簡単な確認コマンド:
+
+```bash
+head -n 5 bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv
+head -n 5 results/tables/main_metrics_and_union.csv
+sqlite3 data/derived_databases/consensus_results_e12_5runs.db '.tables'
+sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
+```
+
+SQLite の確認例:
+
+```sql
+select model_name, count(*) as rows
+from consensus_votes
+group by model_name
+order by model_name;
+
+select model_id, count(*) as runs, avg(coverage_percent) as avg_coverage
+from coverage_per_run
+group by model_id
+order by model_id;
+```
+
+`.db` は確認用 snapshot です。論文表の canonical な再生成元は `data/` 以下の JSON summary です。
 
 ## LLM API の再実行について
 

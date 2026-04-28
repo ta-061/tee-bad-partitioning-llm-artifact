@@ -1,7 +1,7 @@
 # TEE Bad Partitioning LLM Artifact
 
 このリポジトリは、Trusted Application (TA) における bad partitioning issues
-に対して、ルールベース解析と LLM ベースのテイント解析の相補性を評価した短報の再現用 artifact です。
+に対して、ルールベース解析と LLM ベースの脆弱性解析の相補性を評価した短報の再現用 artifact です。
 
 基本の説明は英語版 [README.md](README.md) にあります。この日本語版は公開時の理解を助けるための補足です。
 
@@ -18,7 +18,45 @@
 
 Docker/DevContainer 環境では LLM 解析の再実行もできます。ただし、再実行には選択した LLM provider の有効な API キーが必要です。一方で、論文中の集計値を確認するだけなら、同梱済みの LLM 出力 JSON/CSV と集計スクリプトを使えるため、API キーは不要です。
 
-## 使い方
+## Quick Start
+
+論文中の表を確認するだけなら API キーは不要です。まず以下を実行してください。
+
+```bash
+python3 scripts/generate_paper_tables.py --check
+```
+
+出力先:
+
+```text
+results/tables/
+```
+
+主な出力:
+
+- `main_metrics_and_union.csv`
+- `category_metrics.csv`
+- `chain_coverage.csv`
+- `all_prompt_ablation.csv`
+- `prompt_refinement.csv`
+- `paper_tables.md`
+
+最終集計を直接確認する場合は、SQLite snapshot も見られます。
+
+```bash
+sqlite3 data/derived_databases/consensus_results_e12_5runs.db '.tables'
+sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
+```
+
+確認の入口:
+
+- `results/tables/paper_tables.md`: 論文向けの簡潔な表
+- `results/source_tables/generated_results_tables_e12_5runs.md`: 5-run 集計表
+- `results/source_tables/generated_prompt_ablation_tables.md`: e 系列 prompt ablation 表
+- `data/actual_evaluation/e12_5runs/<model>/summary.json`: 各モデルの集計値
+- `data/prompt_ablation/experiments/<prompt>/summary.json`: 各プロンプト版の集計値
+
+## LLM 解析の再実行
 
 実行系は Docker/DevContainer 前提です。コンテナ内に libclang、Python依存関係、`llm_config` が入ります。
 
@@ -55,33 +93,32 @@ python3 src/main.py \
 benchmark/partitioningE/bad-partitioning/ta/<model-name>/results_N/
 ```
 
-公開済みの集計済みデータから表だけを再生成する場合は、Python 3.10 以降で次を実行します。
+新しく生成した raw output を集計する場合は、次を実行します。
 
 ```bash
-python3 scripts/generate_paper_tables.py --check
+python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
+    --no-group-merge \
+    --ground-truth bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv \
+    --partial-match bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv \
+    --diting-csv src/metrics/DITING_ans.csv \
+    --diting-projects bad-partitioning \
+    --output-dir /tmp/artifact_eval \
+    benchmark/partitioningE/bad-partitioning/ta/<model-name>
 ```
 
-出力先:
+## データ対応表
 
-```text
-results/tables/
-```
-
-主な出力:
-
-- `main_metrics_and_union.csv`
-- `category_metrics.csv`
-- `chain_coverage.csv`
-- `all_prompt_ablation.csv`
-- `prompt_refinement.csv`
-- `paper_tables.md`
-
-追加の確認用 artifact:
-
-- `data/derived_databases/consensus_results_e12_5runs.db`
-- `data/derived_databases/chain_coverage_e12_5runs.db`
-- `results/source_tables/generated_results_tables_e12_5runs.md`
-- `results/source_tables/generated_prompt_ablation_tables.md`
+| 確認したいこと | ファイルまたはディレクトリ |
+| --- | --- |
+| 評価対象 TA source | `benchmark/partitioningE_bad_partitioning/ta/entry.c` と runtime copy の `benchmark/partitioningE/bad-partitioning/ta/entry.c` |
+| 脆弱性正解ラベル | `bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv` |
+| 近傍行を同一扱いする対応 | `bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv` |
+| DITING 出力 | `src/metrics/DITING_ans.csv`, `benchmark/partitioningE_bad_partitioning/diting/diting_generated.csv` |
+| 9モデル5-run集計 | `data/actual_evaluation/e12_5runs/<model>/summary.json` |
+| e系列 prompt ablation 集計 | `data/prompt_ablation/experiments/<prompt>/summary.json` |
+| e系列 raw output | `data/prompt_ablation/raw_runs/<prompt>/results_1/` |
+| 論文用に再生成される表 | `results/tables/` |
+| SQLite snapshot | `data/derived_databases/` |
 
 ## 公開時の注意
 

@@ -1,8 +1,8 @@
 # TEE Bad Partitioning LLM Artifact
 
 This repository is a reproducibility artifact for a short paper on the
-complementarity of rule-based and LLM-based taint analysis for bad partitioning
-issues in Trusted Applications (TAs).
+complementarity of rule-based and LLM-based bad-partitioning analysis in
+Trusted Applications (TAs).
 
 日本語で読みたい場合は [README.ja.md](README.ja.md) を参照してください。
 
@@ -18,7 +18,7 @@ analysis:
 - all e-series prompt versions used in the prompt-refinement experiments,
 - consensus evaluation outputs for nine LLMs,
 - the TEE Flow Inspector implementation used to produce the outputs,
-- scripts to regenerate the main tables from the released JSON/CSV files.
+- scripts to regenerate the main tables from the released JSON/CSV files,
 - SQLite snapshots and clean Markdown summaries of the final aggregate tables.
 
 The Docker/DevContainer runtime can rerun the LLM analysis, but rerunning it
@@ -66,8 +66,47 @@ docs/
 
 ## Quick Start
 
-The runtime path is Docker/DevContainer based. The container installs libclang,
-the Python dependencies, and the `llm_config` helper.
+Most paper-level checks do not require an API key. Start here if you only want
+to verify the reported tables from the released data:
+
+```bash
+python3 scripts/generate_paper_tables.py --check
+```
+
+This regenerates:
+
+```text
+results/tables/main_metrics_and_union.csv
+results/tables/category_metrics.csv
+results/tables/chain_coverage.csv
+results/tables/all_prompt_ablation.csv
+results/tables/prompt_refinement.csv
+results/tables/paper_tables.md
+```
+
+To inspect the final aggregate data directly:
+
+```bash
+sqlite3 data/derived_databases/consensus_results_e12_5runs.db '.tables'
+sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
+```
+
+Useful starting points are:
+
+- `results/tables/paper_tables.md`: compact paper-facing tables
+- `results/source_tables/generated_results_tables_e12_5runs.md`: clean
+  five-run aggregate tables
+- `results/source_tables/generated_prompt_ablation_tables.md`: clean e-series
+  prompt-ablation tables
+- `data/actual_evaluation/e12_5runs/<model>/summary.json`: metrics for one
+  evaluated model
+- `data/prompt_ablation/experiments/<prompt>/summary.json`: metrics for one
+  prompt version
+
+## Rerun LLM Analysis
+
+The LLM runtime path is Docker/DevContainer based. The container installs
+libclang, the Python dependencies, and the `llm_config` helper.
 
 Rerunning the LLM pipeline requires an API key. The default example
 configuration uses OpenAI and `gpt-5-mini-2025-08-07`; use an OpenAI API key for
@@ -105,34 +144,32 @@ The analysis writes outputs under:
 benchmark/partitioningE/bad-partitioning/ta/<model-name>/results_N/
 ```
 
-For table regeneration from the released archived data, use Python 3.10 or
-newer:
+After generating fresh raw outputs, aggregate them with:
 
 ```bash
-python3 scripts/generate_paper_tables.py --check
+python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
+    --no-group-merge \
+    --ground-truth bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv \
+    --partial-match bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv \
+    --diting-csv src/metrics/DITING_ans.csv \
+    --diting-projects bad-partitioning \
+    --output-dir /tmp/artifact_eval \
+    benchmark/partitioningE/bad-partitioning/ta/<model-name>
 ```
 
-The command writes regenerated tables to:
+## Data Map
 
-```text
-results/tables/
-```
-
-The main outputs are:
-
-- `results/tables/main_metrics_and_union.csv`
-- `results/tables/category_metrics.csv`
-- `results/tables/chain_coverage.csv`
-- `results/tables/all_prompt_ablation.csv`
-- `results/tables/prompt_refinement.csv`
-- `results/tables/paper_tables.md`
-
-Additional inspection artifacts are:
-
-- `data/derived_databases/consensus_results_e12_5runs.db`
-- `data/derived_databases/chain_coverage_e12_5runs.db`
-- `results/source_tables/generated_results_tables_e12_5runs.md`
-- `results/source_tables/generated_prompt_ablation_tables.md`
+| Question | File or Directory |
+| --- | --- |
+| What is the evaluated TA source? | `benchmark/partitioningE_bad_partitioning/ta/entry.c` and runtime copy under `benchmark/partitioningE/bad-partitioning/ta/entry.c` |
+| What are the ground-truth vulnerability labels? | `bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv` |
+| Which nearby lines are counted as equivalent? | `bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv` |
+| What DITING output was used? | `src/metrics/DITING_ans.csv` and `benchmark/partitioningE_bad_partitioning/diting/diting_generated.csv` |
+| Where are the five-run model summaries? | `data/actual_evaluation/e12_5runs/<model>/summary.json` |
+| Where are the prompt-ablation summaries? | `data/prompt_ablation/experiments/<prompt>/summary.json` |
+| Where are raw e-series detector outputs? | `data/prompt_ablation/raw_runs/<prompt>/results_1/` |
+| Where are regenerated paper tables? | `results/tables/` |
+| Where are SQLite inspection snapshots? | `data/derived_databases/` |
 
 ## What Can Be Reproduced
 

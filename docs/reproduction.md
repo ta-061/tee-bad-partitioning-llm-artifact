@@ -27,6 +27,9 @@ results/tables/prompt_refinement.csv
 results/tables/paper_tables.md
 ```
 
+The command is deterministic over the released `data/` files. It does not call
+an LLM API and does not require Docker.
+
 ## Paper Table Mapping
 
 - Paper Table I corresponds to `results/tables/main_metrics_and_union.csv`.
@@ -44,6 +47,34 @@ data/prompt_ablation/experiments/*/summary.json
 ```
 
 The script also reads coverage information embedded in the summary JSON files.
+
+## Inspect Released Data
+
+Quick checks:
+
+```bash
+head -n 5 bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv
+head -n 5 results/tables/main_metrics_and_union.csv
+sqlite3 data/derived_databases/consensus_results_e12_5runs.db '.tables'
+sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
+```
+
+Useful SQLite queries:
+
+```sql
+select model_name, count(*) as rows
+from consensus_votes
+group by model_name
+order by model_name;
+
+select model_id, count(*) as runs, avg(coverage_percent) as avg_coverage
+from coverage_per_run
+group by model_id
+order by model_id;
+```
+
+These databases are inspection snapshots. The canonical paper tables are still
+generated from the JSON summaries under `data/`.
 
 ## Re-running LLM Calls
 
