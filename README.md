@@ -9,8 +9,8 @@ Trusted Applications (TAs).
 ## Scope
 
 The artifact contains curated data needed to inspect and regenerate the
-paper-facing experimental tables, plus e-series results retained for full-paper
-analysis:
+short-paper experimental tables, plus archived experimental outputs retained
+for transparency and future full-paper analysis:
 
 - the evaluated TA source file from PartitioningE-Bench,
 - manually curated ground-truth labels,
@@ -21,10 +21,30 @@ analysis:
 - scripts to regenerate the main tables from the released JSON/CSV files,
 - SQLite snapshots and clean Markdown summaries of the final aggregate tables.
 
+Data in this repository is organized into two tiers. The paper-table tier is
+the authoritative input for the short-paper tables and is used by
+`scripts/generate_paper_tables.py`. The supplemental data tier contains
+additional collected runs, intermediate outputs, or exploratory comparisons
+that were not all discussed in the short paper because of space constraints.
+Supplemental data is included to preserve provenance, but it should not be
+treated as evidence for a paper table unless a README or script explicitly maps
+it to that table.
+
 The Docker/DevContainer runtime can rerun the LLM analysis, but rerunning it
 requires a valid API key for the selected LLM provider. The archived LLM outputs
 and aggregate JSON/CSV files are also included so that the reported metrics can
 be checked without private API keys or paid services.
+
+## How to Navigate
+
+| Goal | Start Here | Notes |
+| --- | --- | --- |
+| Check the short-paper tables | `docs/en/reproduction.md` or `python3 scripts/generate_paper_tables.py --check` | Rebuilds `results/tables/` from released JSON summaries. No API key or Docker required. |
+| Inspect the table inputs | `data/actual_evaluation/e12_5runs/` and `data/prompt_ablation/experiments/` | These are the authoritative aggregate inputs for the short-paper tables. |
+| Inspect copied table snapshots | `results/source_tables/README.md` | Reference copies from the original aggregation workspace. Not the authoritative reproduction output. |
+| Inspect raw prompt-ablation runs | `data/prompt_ablation/raw_runs/` | Archived one-run detector outputs and transcripts. |
+| Rerun the LLM pipeline | `docs/en/system_execution.md` | Requires Docker/DevContainer and an LLM API key. |
+| Understand scope and exclusions | `docs/en/artifact_inventory.md`, `docs/en/known_limitations.md` | Explains paper-table data and supplemental data. |
 
 ## Repository Layout
 
@@ -54,14 +74,22 @@ scripts/
 results/
   tables/                      # regenerated tables written by the script
   source_tables/               # clean Markdown copies of aggregate tables
+    original_aggregation_workspace/
+                                # fuller copied table snapshots
 
 docs/
-  artifact_inventory.md
-  reproduction.md
-  data_format.md
-  system_execution.md
-  publishing.md
-  known_limitations.md
+  en/                         # English documentation
+    artifact_inventory.md
+    reproduction.md
+    data_format.md
+    system_execution.md
+    known_limitations.md
+  jp/                         # Japanese documentation with matching content
+    artifact_inventory.md
+    reproduction.md
+    data_format.md
+    system_execution.md
+    known_limitations.md
 ```
 
 ## Quick Start
@@ -84,6 +112,9 @@ results/tables/prompt_refinement.csv
 results/tables/paper_tables.md
 ```
 
+In this context, "regenerates" means rebuilding the CSV/Markdown table files
+from the released summary JSON files in `data/`. It is not an LLM rerun.
+
 To inspect the final aggregate data directly:
 
 ```bash
@@ -91,17 +122,15 @@ sqlite3 data/derived_databases/consensus_results_e12_5runs.db '.tables'
 sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
 ```
 
-Useful starting points are:
+Useful starting points:
 
-- `results/tables/paper_tables.md`: compact paper-facing tables
-- `results/source_tables/generated_results_tables_e12_5runs.md`: clean
-  five-run aggregate tables
-- `results/source_tables/generated_prompt_ablation_tables.md`: clean e-series
-  prompt-ablation tables
-- `data/actual_evaluation/e12_5runs/<model>/summary.json`: metrics for one
-  evaluated model
-- `data/prompt_ablation/experiments/<prompt>/summary.json`: metrics for one
-  prompt version
+- Authoritative paper-table output:
+  `results/tables/paper_tables.md`
+- Authoritative input summaries:
+  `data/actual_evaluation/e12_5runs/<model>/summary.json` and
+  `data/prompt_ablation/experiments/<prompt>/summary.json`
+- Reference table snapshots copied from the aggregation workspace:
+  `results/source_tables/README.md`
 
 ## Rerun LLM Analysis
 
@@ -169,6 +198,9 @@ python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
 | Where are the prompt-ablation summaries? | `data/prompt_ablation/experiments/<prompt>/summary.json` |
 | Where are raw e-series detector outputs? | `data/prompt_ablation/raw_runs/<prompt>/results_1/` |
 | Where are regenerated paper tables? | `results/tables/` |
+| Where are copied Markdown table snapshots? | `results/source_tables/` |
+| Which data is authoritative for paper tables? | `docs/en/reproduction.md` and `scripts/generate_paper_tables.py` |
+| Which data is supplemental? | `docs/en/artifact_inventory.md` |
 | Where are SQLite inspection snapshots? | `data/derived_databases/` |
 
 ## What Can Be Reproduced
@@ -180,7 +212,7 @@ The script regenerates the paper-level tables for:
 - category-level metrics for UDO, IVW, and DUS,
 - Phase 3 chain coverage,
 - all e-series prompt-refinement results from e00 through e12,
-- the paper-facing prompt-refinement subset for e03, e09c, e10, e11, and e12.
+- the short-paper prompt-refinement subset for e03, e09c, e10, e11, and e12.
 
 ## Data Provenance
 
@@ -202,10 +234,10 @@ The real `src/llm_settings/llm_config.json` file is excluded because it contains
 runtime credentials. Use `src/llm_settings/llm_config.example.json` as the safe
 template.
 
-See [docs/publishing.md](docs/publishing.md) for the pre-publication checklist.
-See [docs/system_execution.md](docs/system_execution.md) for runtime commands.
-See [docs/artifact_inventory.md](docs/artifact_inventory.md) for what is kept
-and what is intentionally excluded.
+See [docs/en/system_execution.md](docs/en/system_execution.md) for runtime commands.
+See [docs/en/artifact_inventory.md](docs/en/artifact_inventory.md) for what is kept
+as paper-table data, what is kept as supplemental data, and what is
+intentionally excluded.
 
 ## License
 

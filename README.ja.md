@@ -3,7 +3,7 @@
 このリポジトリは、Trusted Application (TA) における bad partitioning issues
 に対して、ルールベース解析と LLM ベースの脆弱性解析の相補性を評価した短報の再現用 artifact です。
 
-基本の説明は英語版 [README.md](README.md) にあります。この日本語版は公開時の理解を助けるための補足です。
+基本の説明は英語版 [README.md](README.md) にあります。この日本語版は日本語で内容を確認するための補足です。
 
 ## 含まれるもの
 
@@ -16,7 +16,20 @@
 - 論文中の主要表を再生成するスクリプト
 - 最終集計を確認するための SQLite `.db` と clean な Markdown 集計表
 
+このリポジトリのデータは、論文中の表を作り直すための正式な入力データと、短報の紙幅では説明しきれなかった取得済みの補足データに分けて扱います。補足データは来歴確認や将来の full paper 解析のために公開していますが、README やスクリプトで明示的に対応付けられていない限り、論文中の表の根拠データとしては扱いません。
+
 Docker/DevContainer 環境では LLM 解析の再実行もできます。ただし、再実行には選択した LLM provider の有効な API キーが必要です。一方で、論文中の集計値を確認するだけなら、同梱済みの LLM 出力 JSON/CSV と集計スクリプトを使えるため、API キーは不要です。
+
+## データの見方
+
+| 目的 | 最初に見る場所 | 補足 |
+| --- | --- | --- |
+| 論文中の主要表を確認する | `docs/jp/reproduction.md` または `python3 scripts/generate_paper_tables.py --check` | 公開済み JSON summary から `results/tables/` を作り直します。API キーや Docker は不要です。 |
+| 表の入力集計を確認する | `data/actual_evaluation/e12_5runs/`, `data/prompt_ablation/experiments/` | 論文表を作り直すための正式な入力です。 |
+| コピー済み Markdown 表を見る | `results/source_tables/README.md` | 元の集計用ワークスペースからの参照コピーです。正式な再生成結果ではありません。 |
+| prompt ablation の raw output を見る | `data/prompt_ablation/raw_runs/` | 1-run の検出結果、transcript、中間JSONです。 |
+| LLM パイプラインを再実行する | `docs/jp/system_execution.md` | Docker/DevContainer と LLM API キーが必要です。 |
+| 含まれるデータ・除外データを確認する | `docs/jp/artifact_inventory.md`, `docs/jp/known_limitations.md` | 論文表用データと補足データの区別を説明しています。 |
 
 ## Quick Start
 
@@ -41,6 +54,8 @@ results/tables/
 - `prompt_refinement.csv`
 - `paper_tables.md`
 
+ここでいう「再生成」は、`data/` 以下の公開済み summary JSON から CSV/Markdown の表ファイルを作り直すという意味です。LLM の再実行ではありません。
+
 最終集計を直接確認する場合は、SQLite snapshot も見られます。
 
 ```bash
@@ -50,11 +65,9 @@ sqlite3 data/derived_databases/chain_coverage_e12_5runs.db '.tables'
 
 確認の入口:
 
-- `results/tables/paper_tables.md`: 論文向けの簡潔な表
-- `results/source_tables/generated_results_tables_e12_5runs.md`: 5-run 集計表
-- `results/source_tables/generated_prompt_ablation_tables.md`: e 系列 prompt ablation 表
-- `data/actual_evaluation/e12_5runs/<model>/summary.json`: 各モデルの集計値
-- `data/prompt_ablation/experiments/<prompt>/summary.json`: 各プロンプト版の集計値
+- 論文表の正式な出力: `results/tables/paper_tables.md`
+- 正式な入力集計: `data/actual_evaluation/e12_5runs/<model>/summary.json`, `data/prompt_ablation/experiments/<prompt>/summary.json`
+- 元の集計用ワークスペースからの参照コピー: `results/source_tables/README.md`
 
 ## LLM 解析の再実行
 
@@ -118,21 +131,22 @@ python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
 | e系列 prompt ablation 集計 | `data/prompt_ablation/experiments/<prompt>/summary.json` |
 | e系列 raw output | `data/prompt_ablation/raw_runs/<prompt>/results_1/` |
 | 論文用に再生成される表 | `results/tables/` |
+| コピー済み Markdown 表 | `results/source_tables/` |
+| 論文表の正式な再生成経路 | `docs/jp/reproduction.md` と `scripts/generate_paper_tables.py` |
+| 補足データの扱い | `docs/jp/artifact_inventory.md` |
 | SQLite snapshot | `data/derived_databases/` |
 
-## 公開時の注意
+## 利用上の注意
 
-元の作業ディレクトリには CodeQL DB、ビルド生成物、個人用メモ、キャッシュが含まれていました。この artifact では、それらを除外し、再現に必要なデータとスクリプトだけを残しています。
+元の作業ディレクトリには CodeQL DB、ビルド生成物、個人用メモ、キャッシュが含まれていました。この artifact では、それらを除外し、再現に必要なデータとスクリプトを中心に残しています。論文本文で使わなかった取得済みデータは、論文表用データとは別の補足データとして置き、論文表の再生成には不要であることを明記します。
 
 元データに含まれていたローカル絶対パスは、可能な範囲で `<SOURCE_REPO>` や `<ANALYSIS_WORKSPACE>` などのプレースホルダに置換しています。これらは来歴情報であり、表の再生成には不要です。
 
-実APIキーを含む `src/llm_settings/llm_config.json` は公開対象から除外し、代わりに `src/llm_settings/llm_config.example.json` を入れています。
+実APIキーを含む `src/llm_settings/llm_config.json` はこの公開リポジトリから除外し、代わりに `src/llm_settings/llm_config.example.json` を入れています。
 
-公開前の確認手順は [docs/publishing.ja.md](docs/publishing.ja.md) にまとめています。
+システム本体の実行コマンドと集計コマンドは [docs/jp/system_execution.md](docs/jp/system_execution.md) にまとめています。
 
-システム本体の実行コマンドと集計コマンドは [docs/system_execution.ja.md](docs/system_execution.ja.md) にまとめています。
-
-何を含め、何を除外したかは [docs/artifact_inventory.md](docs/artifact_inventory.md) にまとめています。
+何を含め、何を除外したかは [docs/jp/artifact_inventory.md](docs/jp/artifact_inventory.md) にまとめています。
 
 ## ライセンス
 

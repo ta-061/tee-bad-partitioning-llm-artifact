@@ -1,6 +1,8 @@
 # 再現手順
 
-この文書では、公開用 artifact に含まれる JSON/CSV から、論文中の主要表を再生成する方法を説明します。
+この文書では、公開用 artifact に含まれる JSON/CSV から、論文中の主要表を作り直す方法を説明します。
+
+ここでいう「表の再生成」とは、`data/` 以下に公開済みの summary JSON を読み、表の行をもう一度計算して、`results/tables/` に CSV/Markdown として書き出すことです。これはデータ整合性の確認です。LLM パイプラインを再実行するものではなく、LLM API も Docker も不要です。
 
 ## 必要環境
 
@@ -27,6 +29,19 @@ results/tables/paper_tables.md
 ```
 
 このコマンドは公開済みの `data/` だけを読みます。LLM API は呼ばず、Docker も不要です。
+
+入力:
+
+```text
+data/actual_evaluation/e12_5runs/*/summary.json
+data/prompt_ablation/experiments/*/summary.json
+```
+
+出力:
+
+```text
+results/tables/
+```
 
 ## 論文中の表との対応
 
@@ -61,8 +76,8 @@ group by model_id
 order by model_id;
 ```
 
-`.db` は確認用 snapshot です。論文表の canonical な再生成元は `data/` 以下の JSON summary です。
+`.db` は確認用 snapshot です。論文表の正式な再生成元は `data/` 以下の JSON summary です。
 
 ## LLM API の再実行について
 
-Docker/DevContainer 環境では `src/main.py` を再実行できます。ただし、新しい LLM 呼び出しには選択した provider の有効な API キーが必要です。実行コマンドは `docs/system_execution.ja.md` にまとめています。公開済みの集計データから表を再生成するだけなら API キーは不要です。
+Docker/DevContainer 環境では `src/main.py` を再実行できます。ただし、新しい LLM 呼び出しには選択した provider の有効な API キーが必要です。実行コマンドは `system_execution.md` にまとめています。公開済みの集計データから表を再生成するだけなら API キーは不要です。

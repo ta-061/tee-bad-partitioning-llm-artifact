@@ -93,9 +93,12 @@ python3 src/main.py \
     --prompt-version experiments/e12_general_sink_screening
 ```
 
-In a smoke test of the released container, this command completed all phases and
-wrote `ta_phase12.json`, `ta_sinks.json`, `ta_candidate_flows.json`,
-`ta_vulnerabilities.json`, `ta_vulnerability_report.html`, and `time.txt`.
+In a smoke test of the released container, this command was confirmed to start
+correctly and progress into the LLM-dependent analysis phases. A complete fresh
+LLM run can take a long time and depends on the configured provider. When the
+run completes, the expected output files include `ta_phase12.json`,
+`ta_sinks.json`, `ta_candidate_flows.json`, `ta_vulnerabilities.json`,
+`ta_vulnerability_report.html`, and `time.txt`.
 
 For prompt-ablation runs, replace the prompt version:
 
@@ -128,30 +131,29 @@ The current paper artifact excludes taint-propagation and sanitizer-recognition
 scoring. Therefore `--labels-dir` is not required. If a future experiment needs
 those metrics, provide the optional label directory explicitly.
 
-Example for a directory containing model outputs:
+Example for a directory containing freshly generated model outputs:
 
 ```bash
-BASE_DIR="benchmark/partitioningE/bad-partitioning/ta/e12"
+BASE_DIR="benchmark/partitioningE/bad-partitioning/ta"
 OUT_BASE="bad-partitiont-ta_actual_evaluation/e12_5runs"
 GT="bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv"
 PM="bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv"
 DITING="src/metrics/DITING_ans.csv"
 
-for model_dir in "$BASE_DIR"/*; do
-    model_name=$(basename "$model_dir")
-    out_dir="$OUT_BASE/$model_name"
-    python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
-        --no-group-merge \
-        --ground-truth "$GT" \
-        --partial-match "$PM" \
-        --diting-csv "$DITING" \
-        --diting-projects "bad-partitioning" \
-        --output-dir "$out_dir" \
-        "$model_dir"
-done
+python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
+    --no-group-merge \
+    --ground-truth "$GT" \
+    --partial-match "$PM" \
+    --diting-csv "$DITING" \
+    --diting-projects "bad-partitioning" \
+    --output-dir "$OUT_BASE" \
+    "$BASE_DIR"
 ```
 
-For the released artifact data, the paper-facing CSV/Markdown tables are
+The aggregation script automatically skips non-model children and batch-processes
+child directories that contain `results_*` runs.
+
+For the released artifact data, the short-paper CSV/Markdown tables are
 regenerated with:
 
 ```bash

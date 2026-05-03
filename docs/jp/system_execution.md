@@ -79,9 +79,9 @@ python3 src/main.py \
     --prompt-version experiments/e12_general_sink_screening
 ```
 
-公開コンテナでの動作確認では、このコマンドが全フェーズを完走し、
+公開コンテナでの動作確認では、このコマンドが正常に起動し、LLM に依存する解析フェーズまで進むことを確認しています。完全な新規 LLM 実行は時間がかかり、設定した provider にも依存します。完了時に期待される主な出力は
 `ta_phase12.json`, `ta_sinks.json`, `ta_candidate_flows.json`,
-`ta_vulnerabilities.json`, `ta_vulnerability_report.html`, `time.txt` が生成されました。
+`ta_vulnerabilities.json`, `ta_vulnerability_report.html`, `time.txt` です。
 
 プロンプト改良実験では、`--prompt-version` を適宜変更します。
 
@@ -110,25 +110,23 @@ python3 src/main.py \
 今回の公開 artifact では taint propagation / sanitizer recognition の評価は対象外にしたため、`--labels-dir` は不要です。将来その評価軸も必要な場合だけ、任意で label directory を指定します。
 
 ```bash
-BASE_DIR="benchmark/partitioningE/bad-partitioning/ta/e12"
+BASE_DIR="benchmark/partitioningE/bad-partitioning/ta"
 OUT_BASE="bad-partitiont-ta_actual_evaluation/e12_5runs"
 GT="bad-partitioning-ta_groundtruth_labels/category_labels/ground_truth_labels.csv"
 PM="bad-partitioning-ta_groundtruth_labels/category_labels/partial_match_lines.csv"
 DITING="src/metrics/DITING_ans.csv"
 
-for model_dir in "$BASE_DIR"/*; do
-    model_name=$(basename "$model_dir")
-    out_dir="$OUT_BASE/$model_name"
-    python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
-        --no-group-merge \
-        --ground-truth "$GT" \
-        --partial-match "$PM" \
-        --diting-csv "$DITING" \
-        --diting-projects "bad-partitioning" \
-        --output-dir "$out_dir" \
-        "$model_dir"
-done
+python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
+    --no-group-merge \
+    --ground-truth "$GT" \
+    --partial-match "$PM" \
+    --diting-csv "$DITING" \
+    --diting-projects "bad-partitioning" \
+    --output-dir "$OUT_BASE" \
+    "$BASE_DIR"
 ```
+
+この集計スクリプトは、`results_*` を含む子ディレクトリを model root として自動的に batch 処理します。
 
 公開artifact内の集計済みデータから論文用表を再生成する場合は次を実行します。
 
@@ -144,4 +142,19 @@ python3 scripts/generate_paper_tables.py --check
 ```text
 data/derived_databases/consensus_results_e12_5runs.db
 data/derived_databases/chain_coverage_e12_5runs.db
+```
+
+## Prompt-Ablation Data
+
+e 系列 prompt-ablation outputs は以下に archive しています。
+
+```text
+data/prompt_ablation/raw_runs/
+data/prompt_ablation/experiments/
+```
+
+e 系列全体の summary table は以下です。
+
+```text
+results/tables/all_prompt_ablation.csv
 ```

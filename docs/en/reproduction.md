@@ -1,7 +1,12 @@
 # Reproduction Guide
 
-This guide explains how to regenerate the paper-facing tables from the released
-artifact data.
+This guide explains how to rebuild the short-paper result tables from the
+released artifact data.
+
+Here, "regenerate tables" means: read the released summary JSON files under
+`data/`, compute the table rows again, and write fresh CSV/Markdown files under
+`results/tables/`. This is a data-consistency check. It does not rerun the LLM
+pipeline, does not contact any LLM API, and does not require Docker.
 
 ## Requirements
 
@@ -30,6 +35,19 @@ results/tables/paper_tables.md
 The command is deterministic over the released `data/` files. It does not call
 an LLM API and does not require Docker.
 
+Inputs:
+
+```text
+data/actual_evaluation/e12_5runs/*/summary.json
+data/prompt_ablation/experiments/*/summary.json
+```
+
+Outputs:
+
+```text
+results/tables/
+```
+
 ## Paper Table Mapping
 
 - Paper Table I corresponds to `results/tables/main_metrics_and_union.csv`.
@@ -38,15 +56,6 @@ an LLM API and does not require Docker.
 - The full e-series prompt-refinement results are in
   `results/tables/all_prompt_ablation.csv`.
 - Paper Table II corresponds to `results/tables/prompt_refinement.csv`.
-
-## Input Data Used by the Script
-
-```text
-data/actual_evaluation/e12_5runs/*/summary.json
-data/prompt_ablation/experiments/*/summary.json
-```
-
-The script also reads coverage information embedded in the summary JSON files.
 
 ## Inspect Released Data
 
@@ -73,12 +82,12 @@ group by model_id
 order by model_id;
 ```
 
-These databases are inspection snapshots. The canonical paper tables are still
+These databases are inspection snapshots. The authoritative paper tables are
 generated from the JSON summaries under `data/`.
 
 ## Re-running LLM Calls
 
 The Docker/DevContainer runtime can rerun `src/main.py`, but fresh LLM calls
 require a valid API key for the selected provider. See
-`docs/system_execution.md` for the runtime command. Table regeneration from the
+`system_execution.md` for the runtime command. Table regeneration from the
 released aggregate data does not require an API key.

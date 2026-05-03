@@ -31,7 +31,7 @@ model. Each model directory contains:
 
 The table-regeneration script reads `summary.json` and coverage fields.
 Taint-propagation and sanitizer-recognition evaluation fields are intentionally
-excluded from the paper-facing release.
+excluded from the short-paper table release.
 
 Important `summary.json` sections:
 
@@ -87,9 +87,11 @@ chain_coverage_e12_5runs.db
   end_reviews
 ```
 
-`results/source_tables/` contains clean Markdown copies of the aggregate tables.
-They are generated from the released CSV summaries and exclude local workspace
-paths, private-note metadata, taint/sanitizer metrics, and legacy SCIS fields.
+`results/source_tables/` contains reference Markdown table copies for
+inspection. The compact files directly under `results/source_tables/` are
+cleaned summaries. The `original_aggregation_workspace/` subdirectory contains
+fuller copied snapshots from the original aggregation workspace; those snapshots
+may include extra columns that are not used in the short-paper tables.
 
 ## Prompts
 

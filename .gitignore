@@ -6,6 +6,8 @@ venv/
 .env
 .env.*
 results/tables/*.tmp
+docs/en/publishing.md
+docs/jp/publishing.md
 src/llm_settings/llm_config.json
 benchmark/partitioningE/bad-partitioning/compile_commands*.json
 benchmark/partitioningE/bad-partitioning/ta/compile_commands*.json

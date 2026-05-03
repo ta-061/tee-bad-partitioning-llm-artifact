@@ -22,7 +22,7 @@ Clean copy derived from `results/tables/all_prompt_ablation.csv` and `results/ta
 | e10 | e10_modular_framework | 0.5641 | 0.6282 | 0.8980 | 0.5867 | 0.5432 | 44 | 37 | 31 | 92.0 | 0.6222 | 14 | 0.6780 | 20 | 0.3704 | 10 |
 | e11 | e11_streamlined_framework | 0.5665 | 0.6590 | 0.8596 | 0.6533 | 0.5000 | 49 | 49 | 26 | 92.0 | 0.6222 | 14 | 0.6780 | 20 | 0.4286 | 15 |
 | e12 | e12_general_sink_screening | 0.6199 | 0.7018 | 0.8833 | 0.7067 | 0.5521 | 53 | 43 | 22 | 96.0 | 0.6222 | 14 | 0.6567 | 22 | 0.4928 | 17 |
-## Paper-Facing Prompt Refinement Subset
+## Short-Paper Prompt Refinement Subset
 
 | version | main_change | f1 | dus_f1 | dus_tp | candidate_coverage |
 | --- | --- | --- | --- | --- | --- |
