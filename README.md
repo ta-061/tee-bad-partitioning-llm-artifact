@@ -223,6 +223,23 @@ The evaluated TA comes from PartitioningE-Bench:
 The included benchmark source and DITING-derived outputs are redistributed only
 for reproducibility. Please check the upstream project for its license terms.
 
+This artifact includes only the minimal benchmark files needed to reproduce the
+paper-level evaluation. The full PartitioningE-Bench repository, OP-TEE build
+trees, OP-TEE binaries, CodeQL databases, and generated build products are not
+redistributed here. To inspect or rebuild the complete upstream environments,
+clone the original projects separately, for example:
+
+```bash
+git clone https://github.com/CharlieMCY/PartitioningE-in-TEE.git
+git clone https://github.com/OP-TEE/optee_os.git
+```
+
+The repository also contains small OP-TEE-compatible headers and TA support
+files under `benchmark/partitioningE/bad-partitioning/ta/` so the released
+benchmark can be parsed and rerun without the large OP-TEE build tree. These
+files are part of the compact reproducibility artifact and are not a substitute
+for the full upstream OP-TEE source or dev kit.
+
 ## Notes on Paths
 
 Some original JSON/CSV files were generated in local workspaces. Local absolute

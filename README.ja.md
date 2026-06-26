@@ -140,6 +140,15 @@ python3 bad-partitiont-ta_actual_evaluation/run_actual_evaluation.py \
 
 元の作業ディレクトリには CodeQL DB、ビルド生成物、個人用メモ、キャッシュが含まれていました。この artifact では、それらを除外し、再現に必要なデータとスクリプトを中心に残しています。論文本文で使わなかった取得済みデータは、論文表用データとは別の補足データとして置き、論文表の再生成には不要であることを明記します。
 
+この artifact に含めているベンチマークファイルは、論文レベルの評価を再現するために必要な最小限のものです。PartitioningE-Bench の完全なリポジトリ、OP-TEE の build tree、OP-TEE バイナリ、CodeQL DB、生成済み build product は同梱していません。上流の完全な環境を確認または再構築したい場合は、必要に応じて元リポジトリを別途 clone してください。
+
+```bash
+git clone https://github.com/CharlieMCY/PartitioningE-in-TEE.git
+git clone https://github.com/OP-TEE/optee_os.git
+```
+
+`benchmark/partitioningE/bad-partitioning/ta/` には、公開ベンチマークを大きな OP-TEE build tree なしで parse または再実行できるようにするための小さな OP-TEE 互換ヘッダと TA support file も含めています。これらは compact な再現用 artifact の一部であり、上流 OP-TEE source や dev kit 全体の代替ではありません。
+
 元データに含まれていたローカル絶対パスは、可能な範囲で `<SOURCE_REPO>` や `<ANALYSIS_WORKSPACE>` などのプレースホルダに置換しています。これらは来歴情報であり、表の再生成には不要です。
 
 実APIキーを含む `src/llm_settings/llm_config.json` はこの公開リポジトリから除外し、代わりに `src/llm_settings/llm_config.example.json` を入れています。

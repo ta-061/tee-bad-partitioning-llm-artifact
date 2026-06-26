@@ -27,10 +27,29 @@ THIRD-PARTY NOTICES
 
 This repository includes or references the following third-party components:
 
-1. PartitioningE-Bench (benchmark/bad-partitioning/)
+1. PartitioningE-Bench
+   Included paths:
+   - benchmark/partitioningE_bad_partitioning/ta/
+   - benchmark/partitioningE_bad_partitioning/diting/
+   - benchmark/partitioningE/bad-partitioning/ta/entry.c
+   - benchmark/partitioningE/bad-partitioning/ta/include/hello_world_ta.h
    Source: https://github.com/CharlieMCY/PartitioningE-in-TEE
    License: Please refer to the original repository for license terms.
+   Embedded copyright and license notices are retained where present. These
+   files are included only as a minimal benchmark slice for reproducibility, not
+   as a full redistribution of the upstream project.
 
 2. OP-TEE
+   Included paths:
+   - benchmark/partitioningE/bad-partitioning/ta/include/tee_internal_api.h
+   - benchmark/partitioningE/bad-partitioning/ta/include/tee_internal_api_extensions.h
+   - benchmark/partitioningE/bad-partitioning/ta/include/string.h
+   - benchmark/partitioningE/bad-partitioning/ta/Makefile
+   - benchmark/partitioningE/bad-partitioning/ta/sub.mk
+   - benchmark/partitioningE/bad-partitioning/ta/ta.lds
+   - benchmark/partitioningE/bad-partitioning/ta/user_ta_header_defines.h
    Source: https://github.com/op-tee
-   License: Please refer to the original repository for license terms.
+   License: Please refer to the original OP-TEE repositories for license terms.
+   These files are minimal OP-TEE-compatible headers and TA support files used
+   by the compact runtime-compatible benchmark path. They are not a substitute
+   for the full OP-TEE source tree or dev kit.
